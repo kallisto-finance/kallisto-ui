@@ -14,7 +14,7 @@ const DepositConfirm = ({ onBack, balance }) => {
     <ViewContainer logo={false}>
       <div className="view-container-nav">
         <div className="view-navigator" onClick={(e) => onBack()}>
-          <FontAwesomeIcon icon={faChevronLeft} />
+
         </div>
         <div className="view-container-title">CONFIRM YOUR DEPOSIT</div>
       </div>
