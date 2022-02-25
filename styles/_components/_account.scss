@@ -1,0 +1,126 @@
+.connnect-wallet-button-container {
+  display: block;
+  width: 263px;
+
+  &.full-width {
+    width: 100%;
+  }
+
+
+  .wallet-button {
+    width: 100%;
+    height: 47px;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .not-connected {
+    background: #E58410;
+    color: #fff;
+  }
+
+  .connected {
+    background: #142233;
+    border: 1px solid #E58410;
+    box-shadow: 1px 1px 20px rgba(255, 134, 0, 0.1);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  img {
+    height: 34px;
+    margin-left: 15px;
+  }
+
+  .wallet-info {
+    position: absolute;
+    width: 263px;
+    margin-top:-8px;
+    padding: 18px 32px 33px;
+    border: 1px solid #E58410;
+    border-top: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-address {
+      display: flex;
+      margin-top: 20px;
+
+      .circle {
+        width: 15px;
+        height: 15px;
+        background: #cb7815;
+        border: 3px solid #704d24;
+        border-radius: 7.5px;
+      }
+
+      .address {
+        font-weight: 500;
+        font-size: 12px;
+        color: #fff;
+        padding-left: 7px;
+      }      
+    }
+
+    .copy-address {
+      cursor: pointer;
+      margin-top: 7px;
+
+      .icon {
+        height: 12px;
+      }
+
+      .copied {
+        font-weight: 400;
+        font-size: 12px;
+        color: #3B4A61;
+        padding-left: 7px;
+      }
+    }
+
+    .wallet-balance {
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      font-weight: normal;
+      font-size: 12px;
+      color: #fff;
+      margin-top: 24px;
+
+      &-token {
+        width: calc(50% - 5px);
+        height: 19px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 3px;
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .wallet-disconnect-button {
+      background: #FFFFFF;
+      border-radius: 8px;
+      height: 29px;
+      width: 155px;
+      color: #142233;
+      font-weight: 500;
+      font-size: 12px;
+      border: none;
+      outline: none;
+      margin-top: 26px;
+    }
+  }
+}

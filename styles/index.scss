@@ -1,0 +1,28 @@
+@import 'libraries/global';
+
+@import 'components';
+@import 'pages';
+
+@import 'layout';
+
+body {
+  background-color: #142233;
+  font-family: $font-family-ubuntu;
+}
+
+body * {
+  box-sizing: border-box;
+}
+
+.page-container {
+  padding: 30px 67px;
+  width: 100vw;
+  max-width: 100%;
+  min-height: calc(100vh - #{$header-height});
+  display: flex;
+  justify-content: center;
+}
+
+.ml-2 {
+  margin-left: 20px;
+}

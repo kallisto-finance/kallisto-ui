@@ -1,0 +1,147 @@
+.view-container {
+  width: 90vw;
+  max-width: 594px;
+  background: #17273A80;
+  border-radius: 13px;
+  border: 2px solid #8C9ABF;
+  padding: 76px 89px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+
+  .logo {
+    width: 200px;
+    margin-top: -180px;
+    margin-bottom: 10px;
+  }
+
+  &-title {
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: #FFFFFF;
+  }
+
+  &-subtitle {
+    color: #8C99BF;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  &-noticetitle {
+    color: #FFF;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  &-nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+    .view-navigator {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 255, 255, 1);
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 52px;
+
+      svg {
+        color: #fff;
+        height: 11px;
+      }
+    }
+  }
+
+  &-row {
+    width: 100%;
+    margin-top: 26px;
+
+    &.half {
+      width: 50%;
+      align-self: flex-start;
+    }
+
+    &.border {
+      border: 1px solid rgba(140, 154, 191, 1);
+      border-radius: 8px;
+    }
+
+    &.hoverable {
+      &:hover {
+        border: 1px solid rgba(255, 111, 3, 1)
+      }
+    }
+  }
+
+  &-balance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  &-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 69px;
+
+    .value {
+      font-size: 28px;
+      color: #FFFFFF;
+      font-weight: bold;
+    }
+
+    .description {
+      font-weight: normal;
+      font-size: 16px;
+      color: #8C9ABF;
+      padding-left: 11px;
+    }
+  }
+
+  &-market {
+    height: 57px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .market-token {
+      height: 32px;
+    }
+
+    .market-name {
+      font-weight: 500;
+      font-size: 16px;
+      color: #FFFFFF;
+      padding-left: 11px;
+    }
+  }
+
+  &-button {
+    width: 100%;
+    border-radius: 8px;
+    height: 47px;
+    border: none;
+    outline: none;
+    font-weight: 500;
+    font-size: 16px;
+
+    &.deposit {
+      background: #E58410;
+      color: #FFFFFF;
+    }
+  }
+}
