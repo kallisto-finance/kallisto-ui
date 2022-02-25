@@ -27,7 +27,7 @@ export default function Layout({
       <main className='layout-container'>
         <header>
           <header className='layout-container__header'>
-            <ConnectWalletButton />
+            <ConnectWalletButton className={undefined} />
           </header>
         </header>
         {(
