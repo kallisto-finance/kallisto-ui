@@ -52,9 +52,9 @@ const ConnectWalletButton = ({ className = "" }) => {
 
         setBalance({
           ust: formatBalance(coins._coins.uusd.amount),
-          aUST: formatBalance(aUSTBalance.balance),
-          bETH: formatBalance(bETHBalance.balance),
-          bLUNA: formatBalance(bLunaBalance.balance)
+          aUST: formatBalance(aUSTBalance['balance']),
+          bETH: formatBalance(bETHBalance['balance']),
+          bLUNA: formatBalance(bLunaBalance['balance'])
         })
       });
     } else {
