@@ -6,6 +6,7 @@ import DepositPool from "./DepositPool";
 import DepositConfirm from "./DepositConfirm";
 
 import { useLCDClient } from "hooks";
+import { formatBalance } from "utils/wasm";
 
 const Liquidity = () => {
   const lcd = useLCDClient();
@@ -13,7 +14,7 @@ const Liquidity = () => {
 
   const [ustBalance, setUstBalance] = useState("0");
 
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState('');
   const handleChangeDepositInputAmount = (value) => {
     setBalance(value);
   };
@@ -22,7 +23,7 @@ const Liquidity = () => {
     if (connectedWallet && lcd) {
       lcd.bank.balance(connectedWallet.walletAddress).then(([coins]) => {
         setUstBalance(
-          new BigNumber(coins._coins.uusd.amount).div(10 ** 6).toString()
+          formatBalance(coins._coins.uusd.amount, 6)
         );
       });
     } else {

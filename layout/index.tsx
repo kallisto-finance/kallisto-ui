@@ -25,10 +25,17 @@ export default function Layout({
       </Head>
 
       <main className='layout-container'>
-        <header>
-          <header className='layout-container__header'>
-            <ConnectWalletButton className={undefined} />
-          </header>
+        <header className='layout-container__header'>
+          <div className="layout-container__header__logo">
+            <a href="/"><img className="" src="/assets/logo.png" alt="Kallisto" /></a>
+          </div>
+          <div className="layout-container__header__buttons">
+            <a href="https://t.me/kallistofinance" className="join-telegram-community" target="_blank">
+              <span>Join our Community</span>
+              <img src="/assets/social/telegram.png" alt="telegram" />
+            </a>
+            <ConnectWalletButton />
+          </div>
         </header>
         {(
           React.cloneElement(children, {

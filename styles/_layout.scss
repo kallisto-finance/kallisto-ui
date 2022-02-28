@@ -5,7 +5,39 @@
     height: $header-height;
     padding: 0px 67px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+
+    &__logo {
+      img {
+        height: 100px;
+      }
+    }
+
+    &__buttons { 
+      display: flex;
+    }
+
+    .join-telegram-community {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 263px;
+      height: 47px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #fff;
+      outline: none;
+      font-size: 16px;
+      font-weight: 500;
+      margin-right: 26px;
+      color: #fff;
+      text-decoration: none;
+
+      img {
+        height: 20px;
+        margin-left: 14px;
+      }
+    }
   }
 }

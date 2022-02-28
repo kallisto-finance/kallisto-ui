@@ -1,0 +1,127 @@
+.modal-mask {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.9);
+  width: 100vw;
+  height: 100vh;
+  z-index: 400;
+  left: 0px;
+  top: 0px;
+  max-width: 100%;
+}
+
+.modal-container {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  left: 0px;
+  top: 0px;
+  z-index: 600;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  min-width: 450px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+
+  position: relative;
+  padding: 24px;
+  box-sizing: border-box;
+
+  $border: 2px;
+  color: #FFF;
+  background: #162537;
+  background-clip: padding-box; /* !importanté */
+  border: solid $border transparent; /* !importanté */
+  border-radius: 13px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -1;
+    margin: -$border; /* !importanté */
+    border-radius: inherit; /* !importanté */
+    background: linear-gradient(180deg, #FF6F03 0%, rgba(51, 63, 95, 1) 100%);
+  }
+
+}
+
+.modal-header {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.modal-header-close {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #FFFFFF;
+  border-radius: 8px;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.modal-view-title {
+  font-weight: bold;
+  font-size: 20px;
+  color: #FFFFFF;
+}
+
+.modal-select-wallet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px 40px;
+
+  .modal-choose-wallet-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .wallet-choose-item {
+    cursor: pointer;
+    height: 90px;
+    border: 1px solid rgba(140, 154, 191, 1);
+    border-radius: 8px;
+    padding: 0px 40px;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    img {
+      margin-right: 12px;
+    }
+
+    .wallet-choose-item-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wallet-choose-item-name {
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 28px;
+    }
+
+    .wallet-choose-item-sub {
+      font-weight: normal;
+      font-size: 12px;
+      padding-top: 4px;
+    }
+  }
+}
