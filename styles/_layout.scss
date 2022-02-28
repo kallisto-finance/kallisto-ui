@@ -5,7 +5,11 @@
     height: $header-height;
     padding: 0px 67px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+
+    &__logo {
+      height: 100px;
+    }
   }
 }

@@ -10,12 +10,13 @@ import {
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import Button from "components/Button";
+import { ModalContainer, ModalSelectWallet } from "components/Modal";
 
 import { getWalletAddressEllipsis } from "utils/common";
 
 import cn from 'classnames'
 
-const ConnectWalletButton = ({ className }) => {
+const ConnectWalletButton = ({ className = "" }) => {
   const {
     status,
     network,
@@ -46,12 +47,20 @@ const ConnectWalletButton = ({ className }) => {
 
   const [copied, setCopied] = useState(false);
 
+  const [showChooseWalletModal, setShowChooseWalletModal] = useState(false);
   const [showWalletInfo, setShowWalletInfo] = useState(false);
 
   const handleConnectTerraStationWallet = () => {
     setShowWalletInfo(false)
+    setShowChooseWalletModal(false);
     connect(ConnectType.EXTENSION);
   };
+
+  const handleConnectWalletConnect = () => {
+    setShowWalletInfo(false);
+    setShowChooseWalletModal(false);
+    connect(ConnectType.WALLETCONNECT);
+  }
 
   useEffect(() => {
     if (copied) {
@@ -66,7 +75,7 @@ const ConnectWalletButton = ({ className }) => {
       {status === WalletStatus.WALLET_NOT_CONNECTED && (
         <Button
           className="wallet-button not-connected"
-          onClick={(e) => handleConnectTerraStationWallet()}
+          onClick={(e) => setShowChooseWalletModal(true)}
         >
           Connect Wallet
         </Button>
@@ -123,6 +132,16 @@ const ConnectWalletButton = ({ className }) => {
             </div>
           )}
         </>
+      )}
+      {showChooseWalletModal && (
+        <ModalContainer
+          onClose={() => setShowChooseWalletModal(false)}
+        >
+          <ModalSelectWallet
+            onChooseTerraWallet={() => handleConnectTerraStationWallet()}
+            onChooseWalletConnect={() => handleConnectWalletConnect()}
+          />
+        </ModalContainer>
       )}
     </div>
   );
