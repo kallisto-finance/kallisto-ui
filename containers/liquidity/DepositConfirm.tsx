@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BigNumber from "bignumber.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
@@ -9,12 +10,14 @@ import {
 import ViewContainer from "components/ViewContainer";
 import Button from "components/Button";
 
+const faPropIcon = faChevronLeft as IconProp;
+
 const DepositConfirm = ({ onBack, balance }) => {
   return (
     <ViewContainer logo={false}>
       <div className="view-container-nav">
         <div className="view-navigator" onClick={(e) => onBack()}>
-
+          <FontAwesomeIcon icon={faPropIcon} />
         </div>
         <div className="view-container-title">CONFIRM YOUR DEPOSIT</div>
       </div>
