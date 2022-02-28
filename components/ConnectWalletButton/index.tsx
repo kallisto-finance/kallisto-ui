@@ -5,7 +5,6 @@ import {
   WalletStatus,
   ConnectType,
   useConnectedWallet,
-  useLCDClient,
 } from "@terra-money/wallet-provider";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
@@ -13,6 +12,9 @@ import Button from "components/Button";
 import { ModalContainer, ModalSelectWallet } from "components/Modal";
 
 import { getWalletAddressEllipsis } from "utils/common";
+import { getBalance, formatBalance } from 'utils/wasm';
+import { addresses } from 'utils/constants';
+import { useLCDClient } from "hooks";
 
 import cn from 'classnames'
 
@@ -30,20 +32,40 @@ const ConnectWalletButton = ({ className = "" }) => {
     disconnect,
   } = useWallet();
 
-  // const lcd = useLCDClient();
-  // const connectedWallet = useConnectedWallet();
+  const lcd = useLCDClient();
+  const connectedWallet = useConnectedWallet();
 
-  // const [bank, setBank] = useState<null | string>();
+  const [balance, setBalance] = useState({
+    ust: '0.000',
+    aUST: '0.000',
+    bETH: '0.000',
+    bLUNA: '0.000'
+  })
 
-  // useEffect(() => {
-  //   if (lcd && connectedWallet) {
-  //     lcd.bank.balance(connectedWallet.walletAddress).then(([coins]) => {
-  //       setBank(coins.toString());
-  //     });
-  //   } else {
-  //     setBank(null);
-  //   }
-  // }, [connectedWallet, lcd]);
+  useEffect(() => {
+    if (connectedWallet && lcd) {
+      lcd.bank.balance(connectedWallet.walletAddress).then(async ([coins]) => {
+        
+        const aUSTBalance = await getBalance(addresses.mainnet.contracts.aUST.address, connectedWallet.walletAddress);
+        const bETHBalance = await getBalance(addresses.mainnet.contracts.bETH.address, connectedWallet.walletAddress);
+        const bLunaBalance = await getBalance(addresses.mainnet.contracts.bLuna.address, connectedWallet.walletAddress);
+
+        setBalance({
+          ust: formatBalance(coins._coins.uusd.amount),
+          aUST: formatBalance(aUSTBalance.balance),
+          bETH: formatBalance(bETHBalance.balance),
+          bLUNA: formatBalance(bLunaBalance.balance)
+        })
+      });
+    } else {
+      setBalance({
+        ust: '0.000',
+        aUST: '0.000',
+        bETH: '0.000',
+        bLUNA: '0.000'
+      })
+    }
+  }, [connectedWallet, lcd])
 
   const [copied, setCopied] = useState(false);
 
@@ -112,12 +134,12 @@ const ConnectWalletButton = ({ className = "" }) => {
                 </div>
               </CopyToClipboard>
 
-              {/* <div className="wallet-balance">
-                <div className="wallet-balance-token">1.000 UST</div>
-                <div className="wallet-balance-token">1.000 UST</div>
-                <div className="wallet-balance-token">1.000 UST</div>
-                <div className="wallet-balance-token">1.000 UST</div>
-              </div> */}
+              <div className="wallet-balance">
+                <div className="wallet-balance-token">{balance.ust} UST</div>
+                <div className="wallet-balance-token">{balance.aUST} aUST</div>
+                <div className="wallet-balance-token">{balance.bETH} bETH</div>
+                <div className="wallet-balance-token">{balance.bLUNA} bLUNA</div>
+              </div>
 
               <Button
                 className="wallet-disconnect-button"
