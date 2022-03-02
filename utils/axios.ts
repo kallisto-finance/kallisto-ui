@@ -13,6 +13,4 @@ const axiosClient = () => {
 const getGasPrices = () =>
   axiosClient().get("https://bombay-fcd.terra.dev/v1/txs/gas_prices");
 
-export {
-  getGasPrices,
-};
+export { getGasPrices };

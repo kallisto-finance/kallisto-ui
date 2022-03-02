@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 import {
   useWallet,
   WalletStatus,
@@ -72,10 +72,15 @@ const ConnectWalletButton = ({ className = "" }) => {
   const [showChooseWalletModal, setShowChooseWalletModal] = useState(false);
   const [showWalletInfo, setShowWalletInfo] = useState(false);
 
-  const handleConnectTerraStationWallet = () => {
-    setShowWalletInfo(false)
-    setShowChooseWalletModal(false);
-    connect(ConnectType.EXTENSION);
+  const handleConnectTerraStationWallet = async () => {
+
+    if (availableInstallTypes.includes(ConnectType.EXTENSION)) {
+      window.open("https://chrome.google.com/webstore/detail/terra-station-wallet/aiifbnbfobpmeekipheeijimdpnlpgpp");
+    } else {
+      setShowWalletInfo(false)
+      setShowChooseWalletModal(false);
+      connect(ConnectType.EXTENSION);
+    }
   };
 
   const handleConnectWalletConnect = () => {

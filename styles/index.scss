@@ -21,6 +21,10 @@ body * {
   min-height: calc(100vh - #{$header-height});
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 500px) {
+    padding: 0px 15px 30px;
+  }
 }
 
 .ml-2 {

@@ -8,6 +8,10 @@
     font-size: 16px;
     font-weight: normal;
     color: #FFFFFF;
+
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
   }
   
   .divider {
@@ -15,6 +19,10 @@
     width: 1px;
     background: #fff;
     margin-left: 28px;
+
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
   }
 
   .input {
