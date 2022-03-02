@@ -10,10 +10,20 @@
   align-items: center;
   margin-top: 50px;
 
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    padding: 30px 24px;
+  }
+
   .logo {
     width: 200px;
     margin-top: -180px;
     margin-bottom: 10px;
+
+    @media screen and (max-width: 500px) {
+      width: 100px;
+      margin-top: -80px;
+    }
   }
 
   &-title {
@@ -21,6 +31,10 @@
     font-size: 20px;
     letter-spacing: 0.08em;
     color: #FFFFFF;
+
+    @media screen and (max-width: 500px) {
+      font-size: 16px;
+    }
   }
 
   &-subtitle {
@@ -52,6 +66,10 @@
       justify-content: center;
       align-items: center;
       margin-right: 52px;
+
+      @media screen and (max-width: 500px) {
+        margin-right: 20px;
+      }
 
       svg {
         color: #fff;
@@ -90,6 +108,10 @@
     border-radius: 8px;
     font-weight: 500;
     font-size: 20px;
+
+    @media screen and (max-width: 500px) {
+      height: 40px;
+    }
   }
 
   &-info {
@@ -98,10 +120,18 @@
     align-items: center;
     height: 69px;
 
+    @media screen and (max-width: 500px) {
+      height: 48px;
+    }
+
     .value {
       font-size: 28px;
       color: #FFFFFF;
       font-weight: bold;
+
+      @media screen and (max-width: 500px) {
+        font-size: 16px;
+      }
     }
 
     .description {
@@ -109,6 +139,10 @@
       font-size: 16px;
       color: #8C9ABF;
       padding-left: 11px;
+
+      @media screen and (max-width: 500px) {
+        font-size: 12px;
+      }
     }
   }
 
@@ -117,6 +151,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media screen and (max-width: 500px) {
+      height: 45px;
+    }
 
     .market-token {
       height: 32px;
