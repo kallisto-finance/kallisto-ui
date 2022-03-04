@@ -43,12 +43,12 @@ const ConnectWalletButton = ({ className = "" }) => {
   })
 
   useEffect(() => {
-    if (connectedWallet && lcd) {
+    if (connectedWallet && lcd && network) {
       lcd.bank.balance(connectedWallet.walletAddress).then(async ([coins]) => {
         
-        const aUSTBalance = await getBalance(addresses.mainnet.contracts.aUST.address, connectedWallet.walletAddress);
-        const bETHBalance = await getBalance(addresses.mainnet.contracts.bETH.address, connectedWallet.walletAddress);
-        const bLunaBalance = await getBalance(addresses.mainnet.contracts.bLuna.address, connectedWallet.walletAddress);
+        const aUSTBalance = await getBalance(addresses[network.chainID].contracts.aUST.address, connectedWallet.walletAddress, network.chainID);
+        const bETHBalance = await getBalance(addresses[network.chainID].contracts.bETH.address, connectedWallet.walletAddress, network.chainID);
+        const bLunaBalance = await getBalance(addresses[network.chainID].contracts.bLuna.address, connectedWallet.walletAddress, network.chainID);
 
         setBalance({
           ust: formatBalance(coins._coins.uusd.amount),
@@ -65,7 +65,7 @@ const ConnectWalletButton = ({ className = "" }) => {
         bLUNA: '0.000'
       })
     }
-  }, [connectedWallet, lcd])
+  }, [connectedWallet, lcd, network])
 
   const [copied, setCopied] = useState(false);
 
@@ -126,18 +126,6 @@ const ConnectWalletButton = ({ className = "" }) => {
                   {getWalletAddressEllipsis(wallets[0].terraAddress, 15, 10)}
                 </span>
               </div>
-
-              <CopyToClipboard
-                text={wallets[0].terraAddress}
-                onCopy={() => setCopied(true)}
-              >
-                <div className="copy-address">
-                  <img className="icon" src="/assets/copy.png" />
-                  <span className="copied ">
-                    {copied ? "Copied" : "Copy Address"}
-                  </span>
-                </div>
-              </CopyToClipboard>
 
               <div className="wallet-balance">
                 <div className="wallet-balance-token">{balance.ust} UST</div>

@@ -6,8 +6,8 @@
 @import 'layout';
 
 body {
-  background-color: #142233;
-  font-family: $font-family-ubuntu;
+  background-color: #20253B;
+  font-family: $font-family-default;
 }
 
 body * {
@@ -15,12 +15,13 @@ body * {
 }
 
 .page-container {
-  padding: 30px 67px;
+  padding: 30px 67px 89px;
   width: 100vw;
   max-width: 100%;
-  min-height: calc(100vh - #{$header-height});
+  // min-height: calc(100vh - #{$header-height});
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 
   @media screen and (max-width: 500px) {
     padding: 0px 15px 30px;

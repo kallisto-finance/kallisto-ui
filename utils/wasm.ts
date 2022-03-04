@@ -10,8 +10,8 @@ const formatBalance = (value, fixed = 3, decimals = 6) => {
   return balance
 }
 
-const getBalance = async (contractAddress, userAddress) => {
-  const wasm = new WasmAPI(new APIRequester(addresses.mainnet.endpoint))
+const getBalance = async (contractAddress, userAddress, chainId) => {
+  const wasm = new WasmAPI(new APIRequester(addresses[chainId].endpoint));
 
   const balance = await wasm.contractQuery(
     contractAddress,

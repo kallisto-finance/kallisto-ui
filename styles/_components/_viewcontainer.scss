@@ -1,86 +1,92 @@
 .view-container {
   width: 90vw;
-  max-width: 594px;
-  background: #17273A80;
-  border-radius: 13px;
-  border: 2px solid #8C9ABF;
-  padding: 76px 89px;
+  max-width: 653px;
+  background: #262b43;
+  border-radius: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
+
+  &.your-liquidity-panel {
+    width: 415px;
+    margin-right: 80px;
+  }
 
   @media screen and (max-width: 500px) {
     width: 100%;
     padding: 30px 24px;
   }
 
-  .logo {
-    width: 200px;
-    margin-top: -180px;
-    margin-bottom: 10px;
-
-    @media screen and (max-width: 500px) {
-      width: 100px;
-      margin-top: -80px;
-    }
-  }
-
-  &-title {
-    font-weight: bold;
-    font-size: 20px;
-    letter-spacing: 0.08em;
-    color: #FFFFFF;
-
-    @media screen and (max-width: 500px) {
-      font-size: 16px;
-    }
-  }
-
-  &-subtitle {
-    color: #8C99BF;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 18px;
-  }
-
-  &-noticetitle {
-    color: #FFF;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 18px;
-  }
-
-  &-nav {
-    width: 100%;
+  &-header {
     display: flex;
-    align-items: center;
     justify-content: flex-start;
-    
-    .view-navigator {
-      width: 34px;
-      height: 34px;
-      border: 1px solid rgba(255, 255, 255, 1);
-      border-radius: 8px;
+    align-items: center;
+    font-weight: bold;
+    font-size: 24px;
+    height: 86px;
+    width: 100%;
+    color: #efeeff;
+
+    &.border {
+      border-bottom: 1px solid #b6b2ef;
+    }
+
+    .view-navigator-left {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #b6b2ef;
+      border-radius: 12px;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-right: 52px;
+      position: absolute;
+      margin-left: 32px;
 
       @media screen and (max-width: 500px) {
         margin-right: 20px;
       }
 
       svg {
-        color: #fff;
+        color: #b6b2ef;
         height: 11px;
       }
     }
+
+    .view-container-title {
+      width: 100%;
+      text-align: center;
+      padding: 0px 32px;
+    }
+  }
+
+  &-content {
+    width: 100%;
+
+    &.border {
+      padding-top: 20px;
+    }
+  }
+
+  &-subtitle {
+    color: #b6b2ef;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 18px;
+    padding: 6px 0px;
+  }
+
+  &-noticetitle {
+    color: #fff;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
   }
 
   &-row {
     width: 100%;
-    margin-top: 26px;
+    margin-bottom: 20px;
+    padding: 0px 29px;
 
     &.half {
       width: 50%;
@@ -94,92 +100,58 @@
 
     &.hoverable {
       &:hover {
-        border: 1px solid rgba(255, 111, 3, 1)
+        border: 1px solid rgba(255, 111, 3, 1);
       }
-    }
-  }
-
-  &-balance {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 48px;
-    background: #FFFFFF;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 20px;
-
-    @media screen and (max-width: 500px) {
-      height: 40px;
-    }
-  }
-
-  &-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 69px;
-
-    @media screen and (max-width: 500px) {
-      height: 48px;
-    }
-
-    .value {
-      font-size: 28px;
-      color: #FFFFFF;
-      font-weight: bold;
-
-      @media screen and (max-width: 500px) {
-        font-size: 16px;
-      }
-    }
-
-    .description {
-      font-weight: normal;
-      font-size: 16px;
-      color: #8C9ABF;
-      padding-left: 11px;
-
-      @media screen and (max-width: 500px) {
-        font-size: 12px;
-      }
-    }
-  }
-
-  &-market {
-    height: 57px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    @media screen and (max-width: 500px) {
-      height: 45px;
-    }
-
-    .market-token {
-      height: 32px;
-    }
-
-    .market-name {
-      font-weight: 500;
-      font-size: 16px;
-      color: #FFFFFF;
-      padding-left: 11px;
     }
   }
 
   &-button {
     width: 100%;
-    border-radius: 8px;
-    height: 47px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    height: 90px;
     border: none;
     outline: none;
+    background: #b6b2ef;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 24px;
+    color: #20253b;
+    margin-top: 25px;
 
-    &.deposit {
-      background: #E58410;
-      color: #FFFFFF;
+    // &.deposit {
+    //   background: #E58410;
+    //   color: #FFFFFF;
+    // }
+  }
+
+  .collect-select {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .collect-item {
+      width: calc(50% - 12px);
+      height: 90px;
+      background: #313650;
+      border-radius: 51.5863px;
+      height: 90px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 500;
+      font-size: 20px;
+      color: #60699e;
+
+      &.selected {
+        background: #FFFFFF;
+        border: 1px solid #B6B2EF;
+        color: #20253B;
+      }
+
+      img {
+        height: 61px;
+        margin-right: 11px;
+      }
     }
   }
 }
