@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BigNumber from "bignumber.js";
 
-import Slider, { Range } from 'rc-slider';
+import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import Button from "components/Button";
