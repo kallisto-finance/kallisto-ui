@@ -10,7 +10,7 @@ const DepositAmountInput = ({
   return (
     <div className="deposit-amount-input-container">
       <div className="label">Deposit amount</div>
-      <div className="divider">|</div>
+      <div className="divider"></div>
       <div className="input">
         <input
           className="inputbox"

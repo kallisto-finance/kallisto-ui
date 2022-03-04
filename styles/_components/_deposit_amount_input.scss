@@ -1,13 +1,17 @@
 .deposit-amount-input-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 14px;
+  height: 90px;
+  background: #313650;
+  border-radius: 51.5863px;
+  padding: 0px 69px;
 
   .label {
     font-size: 16px;
-    font-weight: normal;
-    color: #FFFFFF;
+    font-weight: 500;
+    color: #60699E;
 
     @media screen and (max-width: 500px) {
       display: none;
@@ -41,15 +45,15 @@
   }
 
   .max-button {
-    background: #3B4A61;
-    border-radius: 8px;
-    width: 46.05px;
+    background: #FFF;
+    border-radius: 34px;
+    width: 55.05px;
     height: 29.98px;
     font-weight: 500;
     font-size: 12px;
     border: none;
     outline: none;
-    color: #fff;
+    color: #262B43;
     margin-left: 23px;
   }
 }

@@ -1,37 +1,37 @@
-@import 'libraries/global';
+@import "libraries/global";
 
 .layout-container {
   &__header {
-    height: $header-height;
-    padding: 0px 67px;
+    padding: 0px 134px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 78px;
 
     &__logo {
       img {
-        height: 100px;
+        height: 107px;
       }
     }
 
-    &__buttons { 
+    &__buttons {
       display: flex;
     }
 
-    .join-telegram-community {
+    .header-button {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 263px;
-      height: 47px;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #fff;
+      min-width: 137px;
+      height: 45px;
+      padding: 8px 30px;
+      border-radius: 830px;
+      border: 1px solid #b6b2ef;
       outline: none;
-      font-size: 16px;
       font-weight: 500;
-      margin-right: 26px;
-      color: #fff;
+      font-size: 20px;
+      margin-right: 7px;
+      color: #b6b2ef;
       text-decoration: none;
 
       img {
@@ -40,4 +40,17 @@
       }
     }
   }
+}
+
+.notice-container {
+  width: 95vw;
+  max-width: 1147px;
+  margin: 0px auto 77px;
+  background: #262b43;
+  border-radius: 11px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 24px 47px 17px;
+  color: #FFFFFF;
 }

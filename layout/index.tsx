@@ -1,7 +1,10 @@
 import React, { useReducer, useEffect } from 'react'
 import Head from 'next/head'
 
-import ConnectWalletButton from 'components/ConnectWalletButton'
+import LayoutHeader from './header'
+import Notice from './notice'
+import Banner from 'components/Banner'
+import Ukraine from 'components/Ukraine'
 
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -25,18 +28,9 @@ export default function Layout({
       </Head>
 
       <main className='layout-container'>
-        <header className='layout-container__header'>
-          <div className="layout-container__header__logo">
-            <a href="/"><img className="" src="/assets/logo.png" alt="Kallisto" /></a>
-          </div>
-          <div className="layout-container__header__buttons">
-            <a href="https://t.me/kallistofinance" className="join-telegram-community" target="_blank">
-              <span>Join our Community</span>
-              <img src="/assets/social/telegram.png" alt="telegram" />
-            </a>
-            <ConnectWalletButton />
-          </div>
-        </header>
+        <Banner />
+        <LayoutHeader />
+        <Ukraine />
         {(
           React.cloneElement(children, {
             router,
@@ -44,6 +38,7 @@ export default function Layout({
             walletConnectChainIds,
           })
         )}
+        <Notice />
       </main>
       <NotificationContainer />
     </>
