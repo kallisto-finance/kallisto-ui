@@ -118,6 +118,15 @@
     color: #20253b;
     margin-top: 25px;
 
+    &.enter-amount {
+      background: #313650;
+      color: #60699E;
+    }
+
+    &.insufficient {
+      background: #FF6230;
+      color: #20253B;
+    }
     // &.deposit {
     //   background: #E58410;
     //   color: #FFFFFF;

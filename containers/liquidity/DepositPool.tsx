@@ -1,16 +1,45 @@
-import React, { useState, useEffect } from "react"
-import { useConnectedWallet } from "@terra-money/wallet-provider";
-import BigNumber from 'bignumber.js'
+import React, { useState, useEffect, useMemo } from "react"
 
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import AmountView from "components/AmountView";
+import { LIQUIDITY_BALANCE_STATUS } from 'types'
 
 import ViewContainer from "components/ViewContainer"
-import Button from "components/Button"
+import AmountView from "components/AmountView";
 import DepositAmountInput from 'components/DepositAmountInput'
+import LiquidityButton from 'components/LiquidityButton'
+
+import { isNaN, compare } from 'utils/number'
 
 const DepositPool = ({ onDeposit, ustBalance, balance, onChangeDepositInputAmount }) => {
-  const connectedWallet = useConnectedWallet()
+
+  const liquidityButtonStatus = useMemo((): LIQUIDITY_BALANCE_STATUS => {
+
+    if (isNaN(balance)) {
+      return {
+        status: "enter_amount",
+        text: "Enter an amount"
+      }
+    }
+
+    if (compare(balance, 0) === 0) {
+      return {
+        status: "enter_amount",
+        text: "Enter an amount"
+      }
+    }
+
+    if (compare(balance, ustBalance) === 1) {
+      return {
+        status: "insufficient",
+        text: "Insufficient Balance"
+      }
+    }
+
+    return {
+      status: "success",
+      text: "Deposit UST"
+    }
+
+  }, [balance, ustBalance]);
 
   return (
     <ViewContainer 
@@ -45,9 +74,7 @@ const DepositPool = ({ onDeposit, ustBalance, balance, onChangeDepositInputAmoun
       <div className="view-container-row">
         <DepositAmountInput maxBalance={ustBalance} balance={balance} onChangeDepositInputAmount={(value) => onChangeDepositInputAmount(value)} />
       </div>
-      <Button className="view-container-button" onClick={(e) => onDeposit()}>
-        Deposit UST
-      </Button>
+      <LiquidityButton className="view-container-button" onClick={() => onDeposit()} label={liquidityButtonStatus.text} status={liquidityButtonStatus.status} />
     </ViewContainer>
   );
 };
