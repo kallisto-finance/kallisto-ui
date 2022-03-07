@@ -55,7 +55,7 @@ const DepositPool = ({ onDeposit, ustBalance, balance, onChangeDepositInputAmoun
       </div>
       <div className="view-container-row">
         <AmountView
-          label="24 hr Volume"
+          label="7 day Volume"
           value="6,946,194 UST"
         />
       </div>
