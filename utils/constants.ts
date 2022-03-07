@@ -17,6 +17,9 @@ export const addresses = {
         address: "terra1dzhzukyezv0etz22ud940z7adyv7xgcjkahuun",
         icon: "https://whitelist.anchorprotocol.com/logo/bETH.png",
       },
+      kallistoPool: {
+        address: "terra1fczzvllmy20uyuw70kp27lvljqnrljs08z0f76",
+      },
     },
   },
   ["bombay-12"]: {
@@ -33,6 +36,9 @@ export const addresses = {
       bETH: {
         address: "terra19mkj9nec6e3y5754tlnuz4vem7lzh4n0lc2s3l",
         icon: "https://whitelist.anchorprotocol.com/logo/bETH.png",
+      },
+      kallistoPool: {
+        address: "terra1654scl8qy2wh53hxfn02tt65n93gd7e346z7zm",
       },
     },
   },
