@@ -21,9 +21,9 @@ const Liquidity = () => {
     setBalance(value);
   };
 
-  const [withdrawPercentage, setWithdrawPercentage] = useState("");
-  const handleChangeWithdrawPercentage = (value) => {
-    setWithdrawPercentage(value);
+  const [withdrawAmount, setWithdrawAmount] = useState(new BigNumber(0));
+  const handleChangeWithdrawAmount = (value) => {
+    setWithdrawAmount(value);
   };
 
   useEffect(() => {
@@ -64,10 +64,10 @@ const Liquidity = () => {
       {step === 2 && (
         <WithdrawConfirm
           onBack={() => setStep(0)}
-          depositedBalance={1000}
-          percentage={withdrawPercentage}
-          onChangeWithdrawPercentage={(value) =>
-            handleChangeWithdrawPercentage(value)
+          totalAvailableBalance={1000}
+          withdrawAmount={withdrawAmount}
+          onChangeWithdrawAmount={(value) =>
+            handleChangeWithdrawAmount(value)
           }
         />
       )}
