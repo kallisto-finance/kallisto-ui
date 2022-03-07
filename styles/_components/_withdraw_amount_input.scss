@@ -13,6 +13,7 @@
 .withdraw-balance-section {
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
 
   .balance-value {
@@ -28,21 +29,53 @@
     }
   }
 
+  .balance-input {
+    display: flex;
+    align-items: center;
+
+    .line {
+      width: 1px;
+      height: 34.07px;
+      background: #fff;
+      margin-right: 6px;
+    }
+
+    .input {
+      font-size: 34px;
+      font-weight: bold;
+      color: #ffffff;
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 200px;
+    }
+
+    .collect-type {
+      font-weight: bold;
+      font-size: 34px;
+      color: #fff;
+      padding-left: 16px;
+    }
+  }
+
   .withdraw-percentage-selector {
+    margin-top: 20px;
+
     .percent-selector {
-      width: 40px;
-      height: 29px;
-      background: #ffffff;
+      width: 50px;
+      height: 40.73px;
+      background: transparent;
       border-radius: 126px;
       font-weight: 500;
       font-size: 12px;
-      color: #262b43;
-      border: none;
+      color: #60699e;
+      border: 2.01897px solid #60699e;
       outline: none;
       margin-left: 4px;
 
-      &.max {
-        background: #B6B2EF;
+      &.selected {
+        background: #b6b2ef;
+        border: none;
       }
     }
   }

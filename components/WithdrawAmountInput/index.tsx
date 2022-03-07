@@ -1,44 +1,68 @@
 import React, { useState } from "react";
 import BigNumber from "bignumber.js";
 
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
-
 import Button from "components/Button";
+
+import cn from "classnames";
 
 const WithdrawAmountInput = ({
   maxBalance,
-  percentage,
-  onChangeWithdrawPercentage,
+  withdrawAmount,
+  onChangeWithdrawAmount,
+  collectType,
 }) => {
+  const [percent, setPercent] = useState(0);
+
+  const handleClickPercentage = (value) => {
+    setPercent(value)
+    const balance = new BigNumber(maxBalance)
+      .multipliedBy(value)
+      .dividedBy(100);
+    onChangeWithdrawAmount(balance);
+  };
+
   return (
     <div className="withdraw-amount-input-container">
       <div className="withdraw-balance-section">
-        <div className="balance-value">{`${new BigNumber(maxBalance).toFormat()}`}<span>UST</span></div>
-        <div className="withdraw-percentage-selector">
-          <Button className="percent-selector" onClick={(e) => onChangeWithdrawPercentage(25)}>25%</Button>
-          <Button className="percent-selector" onClick={(e) => onChangeWithdrawPercentage(50)}>50%</Button>
-          <Button className="percent-selector" onClick={(e) => onChangeWithdrawPercentage(75)}>75%</Button>
-          <Button className="percent-selector max" onClick={(e) => onChangeWithdrawPercentage(100)}>MAX</Button>
+        <div className="balance-input">
+          <div className="line"></div>
+          <input
+            type="text"
+            className="input"
+            value={withdrawAmount.toString()}
+            onChange={(e) => {
+              setPercent(0);
+              onChangeWithdrawAmount(e.target.value);
+            }}
+          />
+          <span className="collect-type">{collectType}</span>
         </div>
-      </div>
-      <div className="amount-slider-section">
-        <Slider
-          min={0}
-          max={100}
-          railStyle={{ backgroundColor: '#B6B2EF', height: 5 }}
-          trackStyle={{ backgroundColor: '#B6B2EF', height: 5 }}
-          handleStyle={{
-            border: 'none',
-            height: 28,
-            width: 28,
-            marginTop: -12,
-            background: '#B6B2EF',
-            opacity: 1,
-          }}
-          value={percentage}
-          onChange={(value) => onChangeWithdrawPercentage(value)}
-        />
+        <div className="withdraw-percentage-selector">
+          <Button
+            className={cn("percent-selector", { selected: percent === 25 })}
+            onClick={(e) => handleClickPercentage(25)}
+          >
+            25%
+          </Button>
+          <Button
+            className={cn("percent-selector", { selected: percent === 50 })}
+            onClick={(e) => handleClickPercentage(50)}
+          >
+            50%
+          </Button>
+          <Button
+            className={cn("percent-selector", { selected: percent === 75 })}
+            onClick={(e) => handleClickPercentage(75)}
+          >
+            75%
+          </Button>
+          <Button
+            className={cn("percent-selector", { selected: percent === 100 })}
+            onClick={(e) => handleClickPercentage(100)}
+          >
+            MAX
+          </Button>
+        </div>
       </div>
     </div>
   );
