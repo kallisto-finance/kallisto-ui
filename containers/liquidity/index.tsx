@@ -6,6 +6,7 @@ import YourLiquidityPanel from "./YourLiquidityPanel";
 import DepositPool from "./DepositPool";
 import DepositConfirm from "./DepositConfirm";
 import WithdrawConfirm from "./WithdrawConfirm";
+import Ukraine from "components/Ukraine";
 
 import { useLCDClient } from "hooks";
 import { formatBalance } from "utils/wasm";
@@ -39,39 +40,42 @@ const Liquidity = () => {
   const [step, setStep] = useState(0);
 
   return (
-    <>
-      {step === 0 && (
-        <>
-          <YourLiquidityPanel
-            onDeposit={() => setStep(1)}
-            ustBalance={ustBalance}
-            balance={balance}
-            onWithdraw={() => setStep(2)}
-          />
-          <DepositPool
-            onDeposit={() => setStep(1)}
-            ustBalance={ustBalance}
-            balance={balance}
-            onChangeDepositInputAmount={(value) =>
-              handleChangeDepositInputAmount(value)
+    <div className="liquidity-container">
+      {step === 0 && <Ukraine />}
+      <div className="liquidity-wrapper">
+        {step === 0 && (
+          <>
+            <YourLiquidityPanel
+              onDeposit={() => setStep(1)}
+              ustBalance={ustBalance}
+              balance={balance}
+              onWithdraw={() => setStep(2)}
+            />
+            <DepositPool
+              onDeposit={() => setStep(1)}
+              ustBalance={ustBalance}
+              balance={balance}
+              onChangeDepositInputAmount={(value) =>
+                handleChangeDepositInputAmount(value)
+              }
+            />
+          </>
+        )}
+        {step === 1 && (
+          <DepositConfirm onBack={() => setStep(0)} balance={balance} />
+        )}
+        {step === 2 && (
+          <WithdrawConfirm
+            onBack={() => setStep(0)}
+            totalAvailableBalance={1000}
+            withdrawAmount={withdrawAmount}
+            onChangeWithdrawAmount={(value) =>
+              handleChangeWithdrawAmount(value)
             }
           />
-        </>
-      )}
-      {step === 1 && (
-        <DepositConfirm onBack={() => setStep(0)} balance={balance} />
-      )}
-      {step === 2 && (
-        <WithdrawConfirm
-          onBack={() => setStep(0)}
-          totalAvailableBalance={1000}
-          withdrawAmount={withdrawAmount}
-          onChangeWithdrawAmount={(value) =>
-            handleChangeWithdrawAmount(value)
-          }
-        />
-      )}
-    </>
+        )}
+      </div>
+    </div>
   );
 };
 

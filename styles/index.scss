@@ -19,9 +19,9 @@ body * {
   width: 100vw;
   max-width: 100%;
   // min-height: calc(100vh - #{$header-height});
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  // display: flex;
+  // justify-content: center;
+  // align-items: flex-start;
 
   @media screen and (max-width: 500px) {
     padding: 0px 15px 30px;

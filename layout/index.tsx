@@ -4,7 +4,6 @@ import Head from 'next/head'
 import LayoutHeader from './header'
 import Notice from './notice'
 import Banner from 'components/Banner'
-import Ukraine from 'components/Ukraine'
 
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -30,7 +29,6 @@ export default function Layout({
       <main className='layout-container'>
         <Banner />
         <LayoutHeader />
-        <Ukraine />
         {(
           React.cloneElement(children, {
             router,
