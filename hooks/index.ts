@@ -1,4 +1,4 @@
 import useLCDClient from './useLCDClient'
+import usePool from './usePool'
 
-export { useLCDClient }
-
+export { useLCDClient, usePool }

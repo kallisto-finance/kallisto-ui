@@ -8,12 +8,13 @@ import DepositConfirm from "./DepositConfirm";
 import WithdrawConfirm from "./WithdrawConfirm";
 import Ukraine from "components/Ukraine";
 
-import { useLCDClient } from "hooks";
+import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
 
 const Liquidity = () => {
   const lcd = useLCDClient();
   const connectedWallet = useConnectedWallet();
+  const { totalLiquidity, myLiquidity, poolShare, fetchPoolValues } = usePool()
 
   const [ustBalance, setUstBalance] = useState("0");
 
@@ -46,6 +47,9 @@ const Liquidity = () => {
         {step === 0 && (
           <>
             <YourLiquidityPanel
+              myBalance={myLiquidity}
+              totalLiquidity={totalLiquidity}
+              poolShare={poolShare}
               onDeposit={() => setStep(1)}
               ustBalance={ustBalance}
               balance={balance}
