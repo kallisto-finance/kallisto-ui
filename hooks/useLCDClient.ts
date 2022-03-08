@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { MsgSend, MnemonicKey, Coins, LCDClient, WasmAPI } from "@terra-money/terra.js";
+import { MsgSend, MnemonicKey, Coins, LCDClient, WasmAPI, Wallet } from "@terra-money/terra.js";
 import {
   useWallet,
   WalletStatus,

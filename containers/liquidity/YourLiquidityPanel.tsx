@@ -45,7 +45,7 @@ const YourLiquidityPanel = ({
         />
       </div>
       <div className="view-container-row">
-        <AmountView label="% of the Pool" value={`${poolShare.toString()} %`} vertical={true} />
+        <AmountView label="% of the Pool" value={`${poolShare.toFixed(2)} %`} vertical={true} />
       </div>
       <Button className="view-container-button" onClick={() => onWithdraw()}>Withdraw</Button>
     </ViewContainer>
