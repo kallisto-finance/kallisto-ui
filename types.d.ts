@@ -20,3 +20,13 @@ export interface LIQUIDITY_BALANCE_STATUS {
 }
 
 export type COLLECT_TYPE = "UST" | "bLUNA";
+
+export type TRANSACTION_STATUS =
+  | "Success"
+  | "User Denied"
+  | "Create Tx Failed"
+  | "Tx Failed"
+  | "Timeout"
+  | "Unspecified Error"
+  | "Unknown Error";
+

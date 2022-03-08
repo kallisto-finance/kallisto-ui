@@ -65,7 +65,7 @@ const DepositPool = ({ onDeposit, ustBalance, balance, onChangeDepositInputAmoun
       <div className="view-container-row">
         <AmountView
           icon="/assets/tokens/bLuna.png"
-          value="bLuna"
+          value="bLUNA"
         />
       </div>
       <div className="view-container-row">
