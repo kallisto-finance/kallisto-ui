@@ -30,7 +30,7 @@ const YourLiquidityPanel = ({
     >
       <div className="view-container-row">
         <AmountView
-          label="Earnings"
+          label="Balance"
           value={`${formatBalance(myBalance)} UST`}
           highlight={true}
           vertical={true}

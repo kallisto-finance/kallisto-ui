@@ -15,25 +15,27 @@ const WithdrawConfirm = ({
   totalAvailableBalance,
   withdrawAmount,
   onChangeWithdrawAmount,
+  onConfirmWithdraw,
+  loading
 }) => {
-  const [collectType, setCollectType] = useState<COLLECT_TYPE>("bLUNA");
+  const [collectType, setCollectType] = useState<COLLECT_TYPE>("UST");
 
   const liquidityButtonStatus = useMemo((): LIQUIDITY_BALANCE_STATUS => {
-    if (isNaN(withdrawAmount)) {
+    if (isNaN(withdrawAmount.value)) {
       return {
         status: "enter_amount",
         text: "Enter an amount",
       };
     }
 
-    if (compare(withdrawAmount, 0) === 0) {
+    if (compare(withdrawAmount.value, 0) === 0) {
       return {
         status: "enter_amount",
         text: "Enter an amount",
       };
     }
 
-    if (compare(withdrawAmount, totalAvailableBalance) === 1) {
+    if (compare(withdrawAmount.value, totalAvailableBalance) === 1) {
       return {
         status: "insufficient",
         text: "Insufficient Liquidity",
@@ -91,9 +93,12 @@ const WithdrawConfirm = ({
 
       <LiquidityButton
         className="view-container-button"
-        onClick={() => {}}
-        label={liquidityButtonStatus.text}
-        status={liquidityButtonStatus.status}
+        onClick={() => {
+          if (loading) return;
+          onConfirmWithdraw(collectType)
+        }}
+        label={loading ? "Withdrawing" : liquidityButtonStatus.text}
+        status={loading ? "enter_amount" : liquidityButtonStatus.status}
       />
     </ViewContainer>
   );

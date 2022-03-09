@@ -1,18 +1,6 @@
-import { useState, useEffect } from "react";
-import {
-  MsgSend,
-  MsgExecuteContract,
-  MnemonicKey,
-  Coins,
-  LCDClient,
-  WasmAPI,
-  Wallet,
-  Fee,
-} from "@terra-money/terra.js";
+import { MsgExecuteContract } from "@terra-money/terra.js";
 import {
   useWallet,
-  WalletStatus,
-  ConnectType,
   useConnectedWallet,
   CreateTxFailed,
   Timeout,
@@ -23,20 +11,18 @@ import {
 } from "@terra-money/wallet-provider";
 import BigNumber from "bignumber.js";
 
-import { formatBalance, getContractQuery, getBalance } from "utils/wasm";
+import { useLCDClient } from "hooks/";
+
+import { getContractQuery, getBalance, postMessage } from "utils/wasm";
 import { addresses } from "utils/constants";
 import { compare } from "utils/number";
 
 const usePool = () => {
   const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
-
-  // const [txResult, setTxResult] = useState<TxResult | null>(null);
-  // const [txError, setTxError] = useState<string | null>(null);
+  const lcd = useLCDClient();
 
   const fetchPoolValues = async () => {
-    console.log("******* fetching pool values ********");
-
     // Get User Balance
     let res = await getBalance(
       addresses[network.chainID].contracts.kallistoPool.address,
@@ -77,10 +63,7 @@ const usePool = () => {
     };
   };
 
-  const deposit = async (amount, callback) => {
-    // setTxResult(null);
-    // setTxError(null);
-
+  const deposit = (amount, callback) => {
     if (!connectedWallet || !network) {
       return;
     }
@@ -94,80 +77,36 @@ const usePool = () => {
       { uusd: amount }
     );
 
-    connectedWallet
-      .post({
-        // fee: new Fee(1000000, "200000uusd"),
-        msgs: [msg],
-      })
-      .then((nextTxResult: TxResult) => {
-        console.log(nextTxResult);
-        setTimeout(() => {
-          callback({
-            status: "Success",
-            msg: "Your transaction has been successfully completed",
-            data: nextTxResult,
-          });
-        }, 5000);
-
-        // setTxResult(nextTxResult);
-      })
-      .catch((error: unknown) => {
-        if (error instanceof UserDenied) {
-          // setTxError("User Denied");
-          callback({
-            status: "User Denied",
-            msg: "User Denied",
-            data: error,
-          });
-        } else if (error instanceof CreateTxFailed) {
-          // setTxError("Create Tx Failed: " + error.message);
-          callback({
-            status: "Create Tx Failed",
-            msg: "User Denied",
-            data: error,
-          });
-        } else if (error instanceof TxFailed) {
-          // setTxError("Tx Failed: " + error.message);
-          callback({
-            status: "Tx Failed",
-            msg: "Tx Failed: " + error.message,
-            data: error,
-          });
-        } else if (error instanceof Timeout) {
-          // setTxError("Timeout");
-          callback({
-            status: "Timeout",
-            msg: "Timeout",
-            data: error,
-          });
-        } else if (error instanceof TxUnspecifiedError) {
-          // setTxError("Unspecified Error: " + error.message);
-          callback({
-            status: "Unspecified Error",
-            msg: "Unspecified Error: " + error.message,
-            data: error,
-          });
-        } else {
-          // setTxError(
-          //   "Unknown Error: " +
-          //     (error instanceof Error ? error.message : String(error))
-          // );
-          callback({
-            status: "Unknown Error",
-            msg:
-              "Unknown Error: " +
-              (error instanceof Error ? error.message : String(error)),
-            data: error,
-          });
-        }
-      });
+    postMessage(connectedWallet, msg, callback);
   };
 
-  const withdrawUst = (share, callback) => {};
+  const withdrawUst = (amount, callback) => {
+    if (!connectedWallet || !network) {
+      return;
+    }
+
+    const msg = new MsgExecuteContract(
+      connectedWallet.walletAddress,
+      addresses[network.chainID].contracts.kallistoPool.address,
+      {
+        withdraw_ust: {
+          share: amount.toString(),
+        },
+      }
+    );
+
+    postMessage(connectedWallet, msg, callback);
+  };
+
+  const getVolumeHistory = () => {
+    
+  }
 
   return {
     fetchPoolValues,
     deposit,
+    withdrawUst,
+    getVolumeHistory,
   };
 };
 
