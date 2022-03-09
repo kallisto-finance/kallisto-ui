@@ -132,7 +132,7 @@ const Liquidity = () => {
       get7daysVolume();
     }, 1500)
 
-    // return () => clearInterval(interval)
+    return () => clearInterval(interval)
   }, [connectedWallet, lcd, network])
 
   const [step, setStep] = useState(0);
