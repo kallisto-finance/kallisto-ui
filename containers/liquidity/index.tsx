@@ -29,6 +29,8 @@ const Liquidity = () => {
   const [myLiquidity, setMyLiquidity] = useState(new BigNumber(0));
   const [poolShare, setPoolShare] = useState(new BigNumber(0));
 
+  const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
+
   /**
    * Deposit
    */
@@ -114,7 +116,8 @@ const Liquidity = () => {
   }
 
   const get7daysVolume = async () => {
-
+    const volume = await getVolumeHistory();
+    setVolume7Days(volume)
   }
 
   /**
@@ -129,7 +132,7 @@ const Liquidity = () => {
       get7daysVolume();
     }, 1500)
 
-    return () => clearInterval(interval)
+    // return () => clearInterval(interval)
   }, [connectedWallet, lcd, network])
 
   const [step, setStep] = useState(0);
@@ -153,6 +156,7 @@ const Liquidity = () => {
               onDeposit={() => setStep(1)}
               ustBalance={ustBalance}
               balance={balance}
+              volume={volume7Days}
               onChangeDepositInputAmount={(value) =>
                 handleChangeDepositInputAmount(value)
               }
