@@ -12,7 +12,8 @@ export type LIQUIDITY_BUTTON_TEXT =
   | "Enter an amount"
   | "Insufficient Balance"
   | "Confirm Withdraw"
-  | "Insufficient Liquidity";
+  | "Insufficient Liquidity"
+  | "Withdrawing";
 
 export interface LIQUIDITY_BALANCE_STATUS {
   text: LIQUIDITY_BUTTON_TEXT;

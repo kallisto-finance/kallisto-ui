@@ -3,6 +3,8 @@ import BigNumber from "bignumber.js";
 
 import Button from "components/Button";
 
+import { formatBalance } from 'utils/wasm';
+
 import cn from "classnames";
 
 const WithdrawAmountInput = ({
@@ -29,13 +31,14 @@ const WithdrawAmountInput = ({
           <input
             type="text"
             className="input"
-            value={withdrawAmount.toString()}
+            value={withdrawAmount.format}
             onChange={(e) => {
               setPercent(0);
-              onChangeWithdrawAmount(e.target.value);
+              onChangeWithdrawAmount(new BigNumber(e.target.value).multipliedBy(10 ** 6));
             }}
           />
-          <span className="collect-type">{collectType}</span>
+          {/* <span className="collect-type">{collectType}</span> */}
+          <span className="collect-type">{` / `}{formatBalance(maxBalance)} UST</span>
         </div>
         <div className="withdraw-percentage-selector">
           <Button

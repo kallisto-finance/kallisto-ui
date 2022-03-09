@@ -18,6 +18,8 @@ const Liquidity = () => {
   const {
     fetchPoolValues,
     deposit,
+    withdrawUst,
+    getVolumeHistory
   } = usePool();
 
   const [ustBalance, setUstBalance] = useState("0");
@@ -38,7 +40,7 @@ const Liquidity = () => {
 
   const handleConfirmDeposit = async () => {
     setDepositLoading(true)
-    deposit(new BigNumber(balance).multipliedBy(10 ** 6).toString(), async (result) => {
+    deposit(new BigNumber(balance).multipliedBy(10 ** 6).toString(), (result) => {
       console.log('*********** Deposit Transaction **************');
       // Update Balance and Pool data
       getPoolValues();
@@ -48,19 +50,48 @@ const Liquidity = () => {
       setDepositLoading(false);
       setBalance("");
       setStep(0);
-
-      
     })
   };
 
   /**
    * Withdraw
    */
-  const [withdrawAmount, setWithdrawAmount] = useState(new BigNumber(0));
+  const [withdrawAmount, setWithdrawAmount] = useState({
+    format: "0",
+    value: new BigNumber(0)
+  });
+  const [withdrawLoading, setWithdrawLoading] = useState(false)
   const handleChangeWithdrawAmount = (value) => {
-    setWithdrawAmount(value);
+    setWithdrawAmount({
+      format: formatBalance(value),
+      value: new BigNumber(value)
+    })
   };
+  const handleConfirmWithdraw = (collectType) => {
+    console.log(collectType)
+    if (collectType == "UST") {
+      setWithdrawLoading(true);
+      withdrawUst(withdrawAmount.value, (result) => {
+        console.log('*********** Withdraw UST Transaction **************');
+        console.log(result);
 
+        // Update Balance and Pool data
+        getPoolValues();
+        getUSTBalance();
+
+        setWithdrawLoading(false);
+        setWithdrawAmount({
+          format: "0",
+          value: new BigNumber(0)
+        })
+        setStep(0);
+      })
+    }
+  }
+
+  /**
+   * Fetch values
+   */
   const getUSTBalance = async () => {
     if (connectedWallet && lcd) {
       lcd.bank.balance(connectedWallet.walletAddress).then(([coins]) => {
@@ -82,10 +113,24 @@ const Liquidity = () => {
     }
   }
 
+  const get7daysVolume = async () => {
+
+  }
+
+  /**
+   * Init
+   */
   useEffect(() => {
-    getUSTBalance();
-    getPoolValues();
-  }, [connectedWallet, lcd, network]);
+    let interval = null;
+
+    interval = setInterval(() => {
+      getUSTBalance();
+      getPoolValues();
+      get7daysVolume();
+    }, 1500)
+
+    return () => clearInterval(interval)
+  }, [connectedWallet, lcd, network])
 
   const [step, setStep] = useState(0);
 
@@ -127,11 +172,13 @@ const Liquidity = () => {
         {step === 2 && (
           <WithdrawConfirm
             onBack={() => setStep(0)}
-            totalAvailableBalance={1000}
+            totalAvailableBalance={myLiquidity}
             withdrawAmount={withdrawAmount}
             onChangeWithdrawAmount={(value) =>
               handleChangeWithdrawAmount(value)
             }
+            onConfirmWithdraw={(collectType) => handleConfirmWithdraw(collectType)}
+            loading={withdrawLoading}
           />
         )}
       </div>
