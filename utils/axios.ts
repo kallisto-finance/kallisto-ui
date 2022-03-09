@@ -13,4 +13,7 @@ const axiosClient = () => {
 const getGasPrices = () =>
   axiosClient().get("https://bombay-fcd.terra.dev/v1/txs/gas_prices");
 
-export { getGasPrices };
+const getTxHistories = (address, offset = 0, limit = 100) => 
+  axiosClient().get(`https://fcd.terra.dev/v1/txs?offset=${offset}&limit=${limit}&account=${address}`)
+
+export { getGasPrices, getTxHistories };

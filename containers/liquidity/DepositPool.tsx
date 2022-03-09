@@ -8,8 +8,9 @@ import DepositAmountInput from 'components/DepositAmountInput'
 import LiquidityButton from 'components/LiquidityButton'
 
 import { isNaN, compare } from 'utils/number'
+import { formatBalance } from "utils/wasm";
 
-const DepositPool = ({ onDeposit, ustBalance, balance, onChangeDepositInputAmount }) => {
+const DepositPool = ({ onDeposit, ustBalance, balance, volume, onChangeDepositInputAmount }) => {
 
   const liquidityButtonStatus = useMemo((): LIQUIDITY_BALANCE_STATUS => {
 
@@ -56,7 +57,7 @@ const DepositPool = ({ onDeposit, ustBalance, balance, onChangeDepositInputAmoun
       <div className="view-container-row">
         <AmountView
           label="7 day Volume"
-          value="6,946,194 UST"
+          value={`${formatBalance(volume)} UST`}
         />
       </div>
       <div className="view-container-row">
