@@ -54,7 +54,7 @@ const WithdrawAmountInput = ({
           {/* <span className="collect-type">{collectType}</span> */}
           <span className="collect-type">
             {` / `}
-            {formatBalance(maxBalance)} UST
+            {formatBalance(maxBalance, 1)} UST
           </span>
         </div>
         <div className="withdraw-percentage-selector">
