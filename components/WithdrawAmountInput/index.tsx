@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import BigNumber from "bignumber.js";
 
 import Button from "components/Button";
 
-import { formatBalance } from 'utils/wasm';
+import { formatBalance } from "utils/wasm";
+import { isNaN } from "utils/number";
 
 import cn from "classnames";
 
@@ -13,15 +14,24 @@ const WithdrawAmountInput = ({
   onChangeWithdrawAmount,
   collectType,
 }) => {
-  const [isFocus, setIsFocus] = useState(false);
-
   const [percent, setPercent] = useState(0);
 
+  const inputEl = useRef(null);
+
+  useEffect(() => {
+    if (inputEl) {
+      setTimeout(() => {
+        inputEl.current.focus();
+      }, 500);
+    }
+  }, [inputEl]);
+
   const handleClickPercentage = (value) => {
-    setPercent(value)
+    setPercent(value);
     const balance = new BigNumber(maxBalance)
       .multipliedBy(value)
-      .dividedBy(100).dividedBy(10 ** 6);
+      .dividedBy(100)
+      .dividedBy(10 ** 6);
     onChangeWithdrawAmount(balance);
   };
 
@@ -29,24 +39,23 @@ const WithdrawAmountInput = ({
     <div className="withdraw-amount-input-container">
       <div className="withdraw-balance-section">
         <div className="balance-input">
-          <div className={cn("divider", { focus: !isFocus })}></div>
           <input
             type="text"
             className="input"
+            ref={inputEl}
+            autoFocus
             value={withdrawAmount.format}
             onChange={(e) => {
+              if (e.target.value !== "" && isNaN(e.target.value)) return;
               setPercent(0);
               onChangeWithdrawAmount(e.target.value);
             }}
-            onFocus={(e) => {
-              setIsFocus(true);
-            }}
-            onBlur={(e) => {
-              setIsFocus(false);
-            }}
           />
           {/* <span className="collect-type">{collectType}</span> */}
-          <span className="collect-type">{` / `}{formatBalance(maxBalance)} UST</span>
+          <span className="collect-type">
+            {` / `}
+            {formatBalance(maxBalance)} UST
+          </span>
         </div>
         <div className="withdraw-percentage-selector">
           <Button
