@@ -92,6 +92,11 @@
     justify-content: flex-start;
     background: #313650;
     margin-top: 32px;
+    border: 2px solid transparent;
+
+    &:hover {
+      border: 2px solid #B6B2EF;
+    }
 
     img {
       margin-right: 12px;
