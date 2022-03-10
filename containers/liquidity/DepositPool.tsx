@@ -57,7 +57,7 @@ const DepositPool = ({ onDeposit, ustBalance, balance, volume, onChangeDepositIn
       <div className="view-container-row">
         <AmountView
           label="7 day Volume"
-          value={`${formatBalance(volume)} UST`}
+          value={`${formatBalance(volume, 1)} UST`}
         />
       </div>
       <div className="view-container-row">
