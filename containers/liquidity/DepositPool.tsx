@@ -67,6 +67,10 @@ const DepositPool = ({ onDeposit, ustBalance, balance, volume, onChangeDepositIn
         <AmountView
           icon="/assets/tokens/bLuna.png"
           value="bLUNA"
+          style={{
+            fontSize: 20,
+            fontWeight: 500
+          }}
         />
       </div>
       <div className="view-container-row">
