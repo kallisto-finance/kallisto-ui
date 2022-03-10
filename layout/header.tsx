@@ -13,6 +13,7 @@ const LayoutHeader = () => (
       </a>
       <a href="https://t.me/kallistofinance" className="header-button" target="_blank">
         <span>Join our Community</span>
+        <img src="/assets/social/telegram.png" alt="Telegram" />
       </a>
       <ConnectWalletButton />
     </div>
