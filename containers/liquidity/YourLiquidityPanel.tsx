@@ -30,22 +30,22 @@ const YourLiquidityPanel = ({
     >
       <div className="view-container-row">
         <AmountView
-          label="Balance"
-          value={`${formatBalance(myBalance)} UST`}
+          label="Your Balance"
+          value={`${formatBalance(myBalance, 1)} UST`}
           highlight={true}
           vertical={true}
         />
       </div>
       <div className="view-container-row">
         <AmountView
-          label="Total Liquidity"
-          value={`${formatBalance(totalLiquidity)} UST`}
+          label="Total Pool Liquidity"
+          value={`${formatBalance(totalLiquidity, 1)} UST`}
           vertical={true}
           background={true}
         />
       </div>
       <div className="view-container-row">
-        <AmountView label="% of the Pool" value={`${poolShare.toFixed(2)} %`} vertical={true} />
+        <AmountView label="Your % of the Pool" value={`${poolShare.toFixed(0)}%`} vertical={true} />
       </div>
       <Button className="view-container-button" onClick={() => onWithdraw()}>Withdraw</Button>
     </ViewContainer>
