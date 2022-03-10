@@ -33,11 +33,15 @@
     display: flex;
     align-items: center;
 
-    .line {
+    .divider {
       width: 1px;
       height: 34.07px;
-      background: #fff;
+      background: transparent;
       margin-right: 6px;
+
+      &.focus {
+        background: #fff;
+      }
     }
 
     .input {

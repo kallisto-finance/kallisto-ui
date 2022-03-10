@@ -13,6 +13,8 @@ const WithdrawAmountInput = ({
   onChangeWithdrawAmount,
   collectType,
 }) => {
+  const [isFocus, setIsFocus] = useState(false);
+
   const [percent, setPercent] = useState(0);
 
   const handleClickPercentage = (value) => {
@@ -27,7 +29,7 @@ const WithdrawAmountInput = ({
     <div className="withdraw-amount-input-container">
       <div className="withdraw-balance-section">
         <div className="balance-input">
-          <div className="line"></div>
+          <div className={cn("divider", { focus: !isFocus })}></div>
           <input
             type="text"
             className="input"
@@ -35,6 +37,12 @@ const WithdrawAmountInput = ({
             onChange={(e) => {
               setPercent(0);
               onChangeWithdrawAmount(e.target.value);
+            }}
+            onFocus={(e) => {
+              setIsFocus(true);
+            }}
+            onBlur={(e) => {
+              setIsFocus(false);
             }}
           />
           {/* <span className="collect-type">{collectType}</span> */}
