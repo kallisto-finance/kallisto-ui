@@ -19,7 +19,7 @@ const WithdrawAmountInput = ({
     setPercent(value)
     const balance = new BigNumber(maxBalance)
       .multipliedBy(value)
-      .dividedBy(100);
+      .dividedBy(100).dividedBy(10 ** 6);
     onChangeWithdrawAmount(balance);
   };
 
@@ -34,7 +34,7 @@ const WithdrawAmountInput = ({
             value={withdrawAmount.format}
             onChange={(e) => {
               setPercent(0);
-              onChangeWithdrawAmount(new BigNumber(e.target.value).multipliedBy(10 ** 6));
+              onChangeWithdrawAmount(e.target.value);
             }}
           />
           {/* <span className="collect-type">{collectType}</span> */}

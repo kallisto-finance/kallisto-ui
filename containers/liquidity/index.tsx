@@ -10,6 +10,7 @@ import Ukraine from "components/Ukraine";
 
 import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
+import { isNaN } from 'utils/number'
 
 const Liquidity = () => {
   const lcd = useLCDClient();
@@ -65,8 +66,8 @@ const Liquidity = () => {
   const [withdrawLoading, setWithdrawLoading] = useState(false)
   const handleChangeWithdrawAmount = (value) => {
     setWithdrawAmount({
-      format: formatBalance(value),
-      value: new BigNumber(value)
+      format: value,
+      value: isNaN(value) ? new BigNumber(0) : new BigNumber(value).multipliedBy(10 ** 6)
     })
   };
   const handleConfirmWithdraw = (collectType) => {
