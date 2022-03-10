@@ -1,32 +1,38 @@
-import React, { useState } from "react";
+import React, { useRef, useEffect } from "react";
 
 import Button from "components/Button";
 
-import cn from "classnames";
+import { isNaN } from 'utils/number';
 
 const DepositAmountInput = ({
   maxBalance,
   balance,
   onChangeDepositInputAmount,
 }) => {
-  const [isFocus, setIsFocus] = useState(false);
+  const inputEl = useRef(null)
 
+  useEffect(() => {
+    if (inputEl) {
+      setTimeout(() => {
+        inputEl.current.focus();
+      }, 500)
+    }
+  }, [inputEl])
+  
   return (
     <div className="deposit-amount-input-container">
       <div className="label">Deposit amount</div>
-      <div className={cn("divider", { focus: !isFocus })}></div>
       <div className="input">
         <input
+          ref={inputEl}
+          autoFocus
           className="inputbox"
           type="text"
-          placeholder="1,000.000 UST"
+          placeholder=""
           value={balance}
-          onChange={(e) => onChangeDepositInputAmount(e.target.value)}
-          onFocus={(e) => {
-            setIsFocus(true);
-          }}
-          onBlur={(e) => {
-            setIsFocus(false);
+          onChange={(e) => {
+            if (e.target.value !== '' && isNaN(e.target.value)) return;
+            onChangeDepositInputAmount(e.target.value)
           }}
         />
       </div>
