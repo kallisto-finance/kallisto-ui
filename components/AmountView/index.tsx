@@ -9,6 +9,7 @@ const AmountView = ({
   icon = "",
   background = false,
   vertical = false,
+  ...props
 }) => (
   <div
     className={cn("amount-view-container", {
@@ -19,7 +20,10 @@ const AmountView = ({
   >
     {label !== "" && <span className="amount-view-label">{label}</span>}
     {icon !== "" && <img className="amount-view-icon" src={icon} />}
-    <span className={cn("amount-view-value", { highlight, vertical })}>
+    <span
+      className={cn("amount-view-value", { highlight, vertical })}
+      style={{ ...props.style }}
+    >
       {value}
     </span>
   </div>

@@ -42,6 +42,7 @@
       align-items: center;
       position: absolute;
       margin-left: 32px;
+      cursor: pointer;
 
       @media screen and (max-width: 500px) {
         margin-right: 20px;
@@ -117,15 +118,18 @@
     font-size: 24px;
     color: #20253b;
     margin-top: 25px;
+    cursor: pointer;
 
     &.enter-amount {
       background: #313650;
       color: #60699E;
+      cursor: default;
     }
 
     &.insufficient {
       background: #FF6230;
       color: #20253B;
+      cursor: default;
     }
     // &.deposit {
     //   background: #E58410;
@@ -150,6 +154,7 @@
       font-weight: 500;
       font-size: 20px;
       color: #60699e;
+      cursor: pointer;
 
       &.selected {
         background: #B6B2EF;

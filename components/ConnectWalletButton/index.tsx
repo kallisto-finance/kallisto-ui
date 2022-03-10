@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+import React, { useState, useEffect, useRef } from "react";
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile,
+} from "react-device-detect";
 import {
   useWallet,
   WalletStatus,
   ConnectType,
   useConnectedWallet,
 } from "@terra-money/wallet-provider";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import Button from "components/Button";
 import { ModalContainer, ModalSelectWallet } from "components/Modal";
 
 import { getWalletAddressEllipsis } from "utils/common";
-import { getBalance, formatBalance } from 'utils/wasm';
-import { addresses } from 'utils/constants';
-import { useLCDClient } from "hooks";
+import { getBalance, formatBalance } from "utils/wasm";
+import { addresses } from "utils/constants";
+import { useLCDClient, useOutsideAlerter } from "hooks";
 
-import cn from 'classnames'
+import cn from "classnames";
 
 const ConnectWalletButton = ({ className = "" }) => {
   const {
     status,
     network,
     wallets,
-    availableConnectTypes,
     availableInstallTypes,
-    availableConnections,
-    supportFeatures,
     connect,
-    install,
     disconnect,
   } = useWallet();
 
@@ -36,48 +36,63 @@ const ConnectWalletButton = ({ className = "" }) => {
   const connectedWallet = useConnectedWallet();
 
   const [balance, setBalance] = useState({
-    ust: '0.000',
-    aUST: '0.000',
-    bETH: '0.000',
-    bLUNA: '0.000'
-  })
+    ust: "0.000",
+    aUST: "0.000",
+    bETH: "0.000",
+    bLUNA: "0.000",
+  });
 
   useEffect(() => {
     if (connectedWallet && lcd && network) {
       lcd.bank.balance(connectedWallet.walletAddress).then(async ([coins]) => {
-        
-        const aUSTBalance = await getBalance(addresses[network.chainID].contracts.aUST.address, connectedWallet.walletAddress, network.chainID);
-        const bETHBalance = await getBalance(addresses[network.chainID].contracts.bETH.address, connectedWallet.walletAddress, network.chainID);
-        const bLunaBalance = await getBalance(addresses[network.chainID].contracts.bLuna.address, connectedWallet.walletAddress, network.chainID);
+        const aUSTBalance = await getBalance(
+          addresses[network.chainID].contracts.aUST.address,
+          connectedWallet.walletAddress,
+          network.chainID
+        );
+        const bETHBalance = await getBalance(
+          addresses[network.chainID].contracts.bETH.address,
+          connectedWallet.walletAddress,
+          network.chainID
+        );
+        const bLunaBalance = await getBalance(
+          addresses[network.chainID].contracts.bLuna.address,
+          connectedWallet.walletAddress,
+          network.chainID
+        );
 
         setBalance({
           ust: formatBalance(coins._coins.uusd.amount),
-          aUST: formatBalance(aUSTBalance['balance']),
-          bETH: formatBalance(bETHBalance['balance']),
-          bLUNA: formatBalance(bLunaBalance['balance'])
-        })
+          aUST: formatBalance(aUSTBalance["balance"]),
+          bETH: formatBalance(bETHBalance["balance"]),
+          bLUNA: formatBalance(bLunaBalance["balance"]),
+        });
       });
     } else {
       setBalance({
-        ust: '0.000',
-        aUST: '0.000',
-        bETH: '0.000',
-        bLUNA: '0.000'
-      })
+        ust: "0.000",
+        aUST: "0.000",
+        bETH: "0.000",
+        bLUNA: "0.000",
+      });
     }
-  }, [connectedWallet, lcd, network])
-
-  const [copied, setCopied] = useState(false);
+  }, [connectedWallet, lcd, network]);
 
   const [showChooseWalletModal, setShowChooseWalletModal] = useState(false);
   const [showWalletInfo, setShowWalletInfo] = useState(false);
 
-  const handleConnectTerraStationWallet = async () => {
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, () => {
+    setShowWalletInfo(false);
+  });
 
+  const handleConnectTerraStationWallet = async () => {
     if (availableInstallTypes.includes(ConnectType.EXTENSION)) {
-      window.open("https://chrome.google.com/webstore/detail/terra-station-wallet/aiifbnbfobpmeekipheeijimdpnlpgpp");
+      window.open(
+        "https://chrome.google.com/webstore/detail/terra-station-wallet/aiifbnbfobpmeekipheeijimdpnlpgpp"
+      );
     } else {
-      setShowWalletInfo(false)
+      setShowWalletInfo(false);
       setShowChooseWalletModal(false);
       connect(ConnectType.EXTENSION);
     }
@@ -87,18 +102,13 @@ const ConnectWalletButton = ({ className = "" }) => {
     setShowWalletInfo(false);
     setShowChooseWalletModal(false);
     connect(ConnectType.WALLETCONNECT);
-  }
-
-  useEffect(() => {
-    if (copied) {
-      setTimeout(() => {
-        setCopied(false);
-      }, 1000);
-    }
-  }, [copied]);
+  };
 
   return (
-    <div className={cn("connnect-wallet-button-container", className)}>
+    <div
+      className={cn("connnect-wallet-button-container", className)}
+      ref={wrapperRef}
+    >
       {status === WalletStatus.WALLET_NOT_CONNECTED && (
         <Button
           className="wallet-button not-connected"
@@ -131,15 +141,16 @@ const ConnectWalletButton = ({ className = "" }) => {
                 <div className="wallet-balance-token">{balance.ust} UST</div>
                 <div className="wallet-balance-token">{balance.aUST} aUST</div>
                 <div className="wallet-balance-token">{balance.bETH} bETH</div>
-                <div className="wallet-balance-token">{balance.bLUNA} bLUNA</div>
+                <div className="wallet-balance-token">
+                  {balance.bLUNA} bLUNA
+                </div>
               </div>
 
               <Button
                 className="wallet-disconnect-button"
                 onClick={(e) => {
                   disconnect();
-                  setCopied(false);
-                  setShowWalletInfo(false)
+                  setShowWalletInfo(false);
                 }}
               >
                 Disconnect Wallet
@@ -149,9 +160,7 @@ const ConnectWalletButton = ({ className = "" }) => {
         </>
       )}
       {showChooseWalletModal && (
-        <ModalContainer
-          onClose={() => setShowChooseWalletModal(false)}
-        >
+        <ModalContainer onClose={() => setShowChooseWalletModal(false)}>
           <ModalSelectWallet
             onChooseTerraWallet={() => handleConnectTerraStationWallet()}
             onChooseWalletConnect={() => handleConnectWalletConnect()}
