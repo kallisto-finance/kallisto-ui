@@ -66,6 +66,10 @@
   font-weight: bold;
   font-size: 24px;
   color: #ffffff;
+
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 .modal-select-wallet {
@@ -81,6 +85,11 @@
     flex-direction: column;
     margin-top: 51px;
     margin-bottom: 50px;
+
+    @media screen and (max-width: 768px) {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
   }
 
   .wallet-choose-item {
@@ -94,6 +103,10 @@
     margin-top: 32px;
     border: 2px solid transparent;
 
+    @media screen and (max-width: 768px) {
+      padding: 0px 16px;
+    }
+
     &:hover {
       border: 2px solid #B6B2EF;
     }
@@ -101,6 +114,10 @@
     img {
       margin-right: 12px;
       margin-left: 139px;
+
+      @media screen and (max-width: 768px) {
+        margin-left: 0px;
+      }
     }
 
     .wallet-choose-item-text {
@@ -112,6 +129,11 @@
       font-weight: 700;
       font-size: 26px;
       line-height: 31px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+        line-height: 21px;
+      }
     }
 
     .wallet-choose-item-sub {
@@ -119,6 +141,10 @@
       font-size: 14px;
       line-height: 100%;
       padding-top: 4px;
+
+       @media screen and (max-width: 768px) {
+        font-size: 12px;
+      }
     }
   }
 }
