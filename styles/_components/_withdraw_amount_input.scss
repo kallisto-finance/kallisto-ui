@@ -8,6 +8,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    height: 101px;
+  }
+
+  @media screen and (max-width: 425px) {
+    height: 150px;
+  }
 }
 
 .withdraw-balance-section {
@@ -22,6 +30,10 @@
     font-size: 34px;
     color: #ffffff;
 
+    @media screen and (max-width: 768px) {
+      font-size: 17.2px;
+    }
+
     span {
       padding-left: 5px;
       font-weight: normal;
@@ -32,6 +44,7 @@
   .balance-input {
     display: flex;
     align-items: center;
+    width: 100%;
 
     .divider {
       width: 1px;
@@ -52,6 +65,12 @@
       outline: none;
       background: transparent;
       width: 200px;
+      flex: 1;
+      width: 100%;
+
+      @media screen and (max-width: 768px) {
+        font-size: 17.2px;
+      }
     }
 
     .collect-type {
@@ -59,11 +78,23 @@
       font-size: 34px;
       color: #fff;
       padding-left: 16px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 17.2px;
+      }
     }
   }
 
   .withdraw-percentage-selector {
     margin-top: 20px;
+    width: 100%;
+
+    @media screen and (max-width: 768px) {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      flex-flow: row wrap;
+    }
 
     .percent-selector {
       width: 50px;
@@ -77,6 +108,12 @@
       outline: none;
       margin-left: 4px;
       cursor: pointer;
+
+      @media screen and (max-width: 768px) {
+        width: 45px;
+        height: 28px;
+        margin-bottom: 3px;
+      }
 
       &.selected {
         background: #b6b2ef;

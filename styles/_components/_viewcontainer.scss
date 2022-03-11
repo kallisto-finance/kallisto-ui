@@ -8,14 +8,20 @@
   align-items: center;
   margin-top: 50px;
 
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 17px;
+  }
+
   &.your-liquidity-panel {
     width: 415px;
     margin-right: 80px;
-  }
 
-  @media screen and (max-width: 500px) {
-    width: 100%;
-    padding: 30px 24px;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-right: 0px;
+    }
   }
 
   &-header {
@@ -28,8 +34,18 @@
     width: 100%;
     color: #efeeff;
 
+    @media screen and (max-width: 768px) {
+      height: fit-content;
+      margin-bottom: 16px;
+      margin-top: 32px;
+    }
+
     &.border {
       border-bottom: 1px solid #b6b2ef;
+
+      @media screen and (max-width: 768px) {
+        border-bottom: none;
+      }
     }
 
     .view-navigator-left {
@@ -44,13 +60,19 @@
       margin-left: 32px;
       cursor: pointer;
 
-      @media screen and (max-width: 500px) {
-        margin-right: 20px;
+      @media screen and (max-width: 768px) {
+        width: 20px;
+        height: 20px;
+        margin-left: 12px;
       }
 
       svg {
         color: #b6b2ef;
         height: 11px;
+
+        @media screen and (max-width: 768px) {
+          height: 8px;
+        }
       }
     }
 
@@ -58,6 +80,11 @@
       width: 100%;
       text-align: center;
       padding: 0px 32px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+        padding: 0px;
+      }
     }
   }
 
@@ -75,6 +102,10 @@
     font-size: 16px;
     line-height: 18px;
     padding: 6px 0px;
+
+    @media screen and (max-width: 768px) {
+      font-size: 13px;
+    }
   }
 
   &-noticetitle {
@@ -82,12 +113,22 @@
     font-weight: 400;
     font-size: 12px;
     line-height: 14px;
+
+    @media screen and (max-width: 768px) {
+      font-size: 12px;
+      display: none;
+    }
   }
 
   &-row {
     width: 100%;
     margin-bottom: 20px;
     padding: 0px 29px;
+
+    @media screen and (max-width: 768px) {
+      padding: 0px 12px;
+      margin-bottom: 10px;
+    }
 
     &.half {
       width: 50%;
@@ -113,32 +154,35 @@
     height: 90px;
     border: none;
     outline: none;
-    background: #37FAD3;
+    background: #37fad3;
     font-weight: 500;
     font-size: 24px;
     color: #20253b;
     margin-top: 25px;
     cursor: pointer;
 
+    @media screen and (max-width: 768px) {
+      font-size: 16px;
+      border-bottom-left-radius: 17px;
+      border-bottom-right-radius: 17px;
+      height: 50px;
+    }
+
     &.enter-amount {
       background: #313650;
-      color: #60699E;
+      color: #60699e;
       cursor: default;
     }
 
     &.insufficient {
-      background: #FF6230;
-      color: #20253B;
+      background: #ff6230;
+      color: #20253b;
       cursor: default;
     }
 
     &.withdraw {
-      background: #B6B2EF;
+      background: #b6b2ef;
     }
-    // &.deposit {
-    //   background: #E58410;
-    //   color: #FFFFFF;
-    // }
   }
 
   .collect-select {
@@ -160,15 +204,25 @@
       color: #60699e;
       cursor: pointer;
 
+      @media screen and (max-width: 768px) {
+        height: 47px;
+        border-radius: 26.9395px;
+        font-size: 13px;
+        width: calc(50% - 6px);
+      }
+
       &.selected {
-        background: #B6B2EF;
-        border: 1px solid #B6B2EF;
-        color: #20253B;
+        background: #b6b2ef;
+        border: 1px solid #b6b2ef;
+        color: #20253b;
       }
 
       img {
         height: 61px;
         margin-right: 11px;
+        @media screen and (max-width: 768px) {
+          height: 31px;
+        }
       }
     }
   }

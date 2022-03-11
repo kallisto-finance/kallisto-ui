@@ -6,28 +6,56 @@
   background: #313650;
   border-radius: 35px;
 
+  @media screen and (max-width: 768px) {
+    height: 38.81px;
+    border-radius: 29px;
+  }
+
   &.icon {
     height: 90px;
     border-radius: 45px;
+
+    @media screen and (max-width: 768px) {
+      height: 50px;
+      border-radius: 28.5976px;
+    }
   }
 
   &.vertical {
     flex-direction: column;
     height: 140px;
     border-radius: 70px;
+
+    @media screen and (max-width: 768px) {
+      height: 75.03px;
+      border-radius: 54.6874px;
+      margin-left: 44px;
+      margin-right: 44px;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   &.background {
-    background-image: url('/assets/wave.png');
+    background-image: url("/assets/wave.png");
     background-repeat: no-repeat;
     background-position: center bottom;
     background-size: contain;
+
+    @media screen and (max-width: 768px) {
+      background-position: center bottom;
+      background-size: 100% 50px;
+    }
   }
 
   .amount-view-label {
     color: #b6b2ef;
     font-weight: 500;
     font-size: 20px;
+
+    @media screen and (max-width: 768px) {
+      font-size: 10px;
+    }
   }
 
   .amount-view-value {
@@ -36,16 +64,29 @@
     color: #f7fcfb;
     padding-left: 14px;
 
+    @media screen and (max-width: 768px) {
+      font-size: 16px;
+       padding-left: 4px;
+    }
+
     &.highlight {
       color: #37fad3;
     }
 
     &.vertical {
-       padding-top: 20px;
+      padding-top: 20px;
+
+      @media screen and (max-width: 768px) {
+        padding-top: 5px;
+      }
     }
   }
 
   .amount-view-icon {
     height: 61px;
+
+    @media screen and (max-width: 768px) {
+      height: 31.07px;
+    }
   }
 }

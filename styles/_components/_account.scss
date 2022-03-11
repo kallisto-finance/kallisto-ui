@@ -1,6 +1,9 @@
 .connnect-wallet-button-container {
   display: block;
   width: 240px;
+  @media screen and (max-width: 768px) {
+    width: 200px;
+  }
 
   &.full-width {
     width: 100%;
@@ -16,18 +19,24 @@
     font-weight: 500;
     font-size: 20px;
     cursor: pointer;
+
+    @media screen and (max-width: 768px) {
+      font-size: 10px;
+      height: 45px;
+      height: 21.93px;
+    }
   }
 
   .not-connected {
-    background: #37FAD3;
-    color: #20253B;
+    background: #37fad3;
+    color: #20253b;
   }
 
   .connected {
-    background: #262B43;
-    border: 1px solid #37FAD3;
+    background: #262b43;
+    border: 1px solid #37fad3;
     box-shadow: 1px 1px 20px rgba(255, 134, 0, 0.1);
-    color: #37FAD3;
+    color: #37fad3;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,11 +44,20 @@
     position: absolute;
 
     z-index: 400;
+
+    @media screen and (max-width: 768px) {
+      width: 200px;
+    }
   }
 
   img {
     height: 34px;
     margin-left: 15px;
+
+    @media screen and (max-width: 768px) {
+      height: 14px;
+      margin-left: 8px;
+    }
   }
 
   .wallet-info {
@@ -53,8 +71,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #262B43;
+    background: #262b43;
     margin-top: 23px;
+
+    @media screen and (max-width: 768px) {
+      width: 200px;
+      padding: 0px;
+    }
 
     z-index: 300;
 
@@ -65,10 +88,14 @@
       padding: 0px 30px;
       justify-content: space-between;
 
+      @media screen and (max-width: 768px) {
+        padding: 0px 10px;
+      }
+
       .circle {
         width: 15px;
         height: 15px;
-        background: #37FAD3;
+        background: #37fad3;
         border: 3px solid #2f928b;
         border-radius: 7.5px;
       }
@@ -78,7 +105,11 @@
         font-size: 12px;
         color: #fff;
         padding-left: 12px;
-      }      
+
+        @media screen and (max-width: 768px) {
+          padding-left: 5px;
+        }
+      }
     }
 
     .copy-address {
@@ -92,7 +123,7 @@
       .copied {
         font-weight: 400;
         font-size: 12px;
-        color: #3B4A61;
+        color: #3b4a61;
         padding-left: 7px;
       }
     }
@@ -115,16 +146,20 @@
         justify-content: flex-end;
         align-items: center;
         padding: 0px 30px;
+
+        @media screen and (max-width: 768px) {
+          padding: 0px 12px;
+        }
       }
     }
 
     .wallet-disconnect-button {
-      background: #B6B2EF;
+      background: #b6b2ef;
       border-bottom-left-radius: 13px;
       border-bottom-right-radius: 13px;
       height: 38px;
       width: 100%;
-      color: #20253B;
+      color: #20253b;
       font-weight: 500;
       font-size: 12px;
       border: none;
