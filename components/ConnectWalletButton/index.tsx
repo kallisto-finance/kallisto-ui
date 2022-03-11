@@ -22,7 +22,7 @@ import { useLCDClient, useOutsideAlerter } from "hooks";
 
 import cn from "classnames";
 
-const ConnectWalletButton = ({ className = "" }) => {
+const ConnectWalletButton = ({ className = "", children = null }) => {
   const {
     status,
     network,
@@ -36,13 +36,13 @@ const ConnectWalletButton = ({ className = "" }) => {
   const connectedWallet = useConnectedWallet();
 
   const [balance, setBalance] = useState({
-    ust: "0.000",
-    aUST: "0.000",
-    bETH: "0.000",
-    bLUNA: "0.000",
+    ust: "0.0",
+    aUST: "0.0",
+    bETH: "0.0",
+    bLUNA: "0.0",
   });
 
-  useEffect(() => {
+  const fetchBalances = async () => {
     if (connectedWallet && lcd && network) {
       lcd.bank.balance(connectedWallet.walletAddress).then(async ([coins]) => {
         const aUSTBalance = await getBalance(
@@ -62,10 +62,10 @@ const ConnectWalletButton = ({ className = "" }) => {
         );
 
         setBalance({
-          ust: formatBalance(coins._coins.uusd.amount),
-          aUST: formatBalance(aUSTBalance["balance"]),
-          bETH: formatBalance(bETHBalance["balance"]),
-          bLUNA: formatBalance(bLunaBalance["balance"]),
+          ust: formatBalance(coins._coins.uusd.amount, 1),
+          aUST: formatBalance(aUSTBalance["balance"], 1),
+          bETH: formatBalance(bETHBalance["balance"], 1),
+          bLUNA: formatBalance(bLunaBalance["balance"], 1),
         });
       });
     } else {
@@ -76,6 +76,16 @@ const ConnectWalletButton = ({ className = "" }) => {
         bLUNA: "0.000",
       });
     }
+  };
+
+  useEffect(() => {
+    let interval = null;
+
+    interval = setInterval(() => {
+      fetchBalances();
+    }, 1500);
+
+    return () => clearInterval(interval);
   }, [connectedWallet, lcd, network]);
 
   const [showChooseWalletModal, setShowChooseWalletModal] = useState(false);
@@ -109,14 +119,24 @@ const ConnectWalletButton = ({ className = "" }) => {
       className={cn("connnect-wallet-button-container", className)}
       ref={wrapperRef}
     >
-      {status === WalletStatus.WALLET_NOT_CONNECTED && (
-        <Button
-          className="wallet-button not-connected"
-          onClick={(e) => setShowChooseWalletModal(true)}
-        >
-          Connect Wallet
-        </Button>
-      )}
+      {status === WalletStatus.WALLET_NOT_CONNECTED &&
+        (children ? (
+          <div
+            onClick={(e) => {
+              setShowChooseWalletModal(true);
+            }}
+            style={{ cursor: "pointer", width: "100%" }}
+          >
+            {children}
+          </div>
+        ) : (
+          <Button
+            className="wallet-button not-connected"
+            onClick={(e) => setShowChooseWalletModal(true)}
+          >
+            Connect Wallet
+          </Button>
+        ))}
       {status === WalletStatus.WALLET_CONNECTED && (
         <>
           <Button
