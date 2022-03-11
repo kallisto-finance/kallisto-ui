@@ -113,7 +113,7 @@
     height: 90px;
     border: none;
     outline: none;
-    background: #b6b2ef;
+    background: #37FAD3;
     font-weight: 500;
     font-size: 24px;
     color: #20253b;
@@ -130,6 +130,10 @@
       background: #FF6230;
       color: #20253B;
       cursor: default;
+    }
+
+    &.withdraw {
+      background: #B6B2EF;
     }
     // &.deposit {
     //   background: #E58410;

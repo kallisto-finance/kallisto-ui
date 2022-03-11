@@ -1,58 +1,58 @@
-import React, { useMemo } from "react"
+import React, { useMemo } from "react";
+import { useConnectedWallet } from "@terra-money/wallet-provider";
 
-import { LIQUIDITY_BALANCE_STATUS } from 'types'
-
-import ViewContainer from "components/ViewContainer"
+import ViewContainer from "components/ViewContainer";
 import AmountView from "components/AmountView";
-import DepositAmountInput from 'components/DepositAmountInput'
-import LiquidityButton from 'components/LiquidityButton'
+import DepositAmountInput from "components/DepositAmountInput";
+import LiquidityButton from "components/LiquidityButton";
+import ConnectWalletButton from "components/ConnectWalletButton";
 
-import { isNaN, compare } from 'utils/number'
+import { LIQUIDITY_BALANCE_STATUS } from "types";
+
+import { isNaN, compare } from "utils/number";
 import { formatBalance } from "utils/wasm";
 
-const DepositPool = ({ onDeposit, ustBalance, balance, volume, onChangeDepositInputAmount }) => {
+const DepositPool = ({
+  onDeposit,
+  ustBalance,
+  balance,
+  volume,
+  onChangeDepositInputAmount,
+}) => {
+  const connectedWallet = useConnectedWallet();
 
   const liquidityButtonStatus = useMemo((): LIQUIDITY_BALANCE_STATUS => {
-
     if (isNaN(balance)) {
       return {
         status: "enter_amount",
-        text: "Enter an amount"
-      }
+        text: "Enter an amount",
+      };
     }
 
     if (compare(balance, 0) === 0) {
       return {
         status: "enter_amount",
-        text: "Enter an amount"
-      }
+        text: "Enter an amount",
+      };
     }
 
     if (compare(balance, ustBalance) === 1) {
       return {
         status: "insufficient",
-        text: "Insufficient Balance"
-      }
+        text: "Insufficient Balance",
+      };
     }
 
     return {
       status: "success",
-      text: "Deposit UST"
-    }
-
+      text: "Deposit UST",
+    };
   }, [balance, ustBalance]);
 
   return (
-    <ViewContainer 
-      className="add-liquidity-panel"
-      title="Liquidation Pool "
-    >
+    <ViewContainer className="add-liquidity-panel" title="Liquidation Pool ">
       <div className="view-container-row">
-        <AmountView
-          label="APY"
-          value="100%"
-          highlight={true}
-        />
+        <AmountView label="APY" value="100%" highlight={true} />
       </div>
       <div className="view-container-row">
         <AmountView
@@ -69,7 +69,7 @@ const DepositPool = ({ onDeposit, ustBalance, balance, volume, onChangeDepositIn
           value="bLUNA"
           style={{
             fontSize: 20,
-            fontWeight: 500
+            fontWeight: 500,
           }}
         />
       </div>
@@ -77,9 +77,31 @@ const DepositPool = ({ onDeposit, ustBalance, balance, volume, onChangeDepositIn
         <div className="view-container-subtitle">Place a deposit</div>
       </div>
       <div className="view-container-row">
-        <DepositAmountInput maxBalance={ustBalance} balance={balance} onChangeDepositInputAmount={(value) => onChangeDepositInputAmount(value)} />
+        <DepositAmountInput
+          maxBalance={ustBalance}
+          balance={balance}
+          onChangeDepositInputAmount={(value) =>
+            onChangeDepositInputAmount(value)
+          }
+        />
       </div>
-      <LiquidityButton className="view-container-button" onClick={() => onDeposit()} label={liquidityButtonStatus.text} status={liquidityButtonStatus.status} />
+      {connectedWallet ? (
+        <LiquidityButton
+          className="view-container-button"
+          onClick={() => onDeposit()}
+          label={liquidityButtonStatus.text}
+          status={liquidityButtonStatus.status}
+        />
+      ) : (
+        <ConnectWalletButton className="full-width">
+          <LiquidityButton
+            className="view-container-button"
+            onClick={() => {}}
+            label={liquidityButtonStatus.text}
+            status={liquidityButtonStatus.status}
+          />
+        </ConnectWalletButton>
+      )}
     </ViewContainer>
   );
 };

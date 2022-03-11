@@ -148,9 +148,6 @@ const Liquidity = () => {
               myBalance={myLiquidity}
               totalLiquidity={totalLiquidity}
               poolShare={poolShare}
-              onDeposit={() => setStep(1)}
-              ustBalance={ustBalance}
-              balance={balance}
               onWithdraw={() => setStep(2)}
             />
             <DepositPool

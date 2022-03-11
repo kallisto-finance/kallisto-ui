@@ -1,12 +1,12 @@
-@import 'libraries/global';
+@import "libraries/global";
 
-@import 'components';
-@import 'pages';
+@import "components";
+@import "pages";
 
-@import 'layout';
+@import "layout";
 
 body {
-  background-color: #20253B;
+  background-color: #20253b;
   font-family: $font-family-default;
 }
 
@@ -26,6 +26,10 @@ body * {
   @media screen and (max-width: 500px) {
     padding: 0px 15px 30px;
   }
+}
+
+.full-width {
+  width: 100%;
 }
 
 .ml-2 {

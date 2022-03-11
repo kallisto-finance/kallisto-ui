@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useConnectedWallet } from "@terra-money/wallet-provider";
-import BigNumber from "bignumber.js";
 
 import ConnectWalletButton from "components/ConnectWalletButton";
 
 import ViewContainer from "components/ViewContainer";
 import Button from "components/Button";
 import AmountView from "components/AmountView";
-import DepositAmountInput from "components/DepositAmountInput";
 
-import { formatBalance, getContractQuery, getBalance } from "utils/wasm"
+import { formatBalance } from "utils/wasm";
+import { compare } from "utils/number";
+
+import cn from "classnames";
 
 const YourLiquidityPanel = ({
   myBalance,
   totalLiquidity,
   poolShare,
-  onDeposit,
-  ustBalance,
-  balance,
   onWithdraw,
 }) => {
   const connectedWallet = useConnectedWallet();
@@ -45,9 +43,35 @@ const YourLiquidityPanel = ({
         />
       </div>
       <div className="view-container-row">
-        <AmountView label="Your % of the Pool" value={`${poolShare.toFixed(0)}%`} vertical={true} />
+        <AmountView
+          label="Your % of the Pool"
+          value={`${poolShare.toFixed(0)}%`}
+          vertical={true}
+        />
       </div>
-      <Button className="view-container-button" onClick={() => onWithdraw()}>Withdraw</Button>
+      {connectedWallet ? (
+        <Button
+          className={cn("view-container-button", {
+            withdraw: compare(myBalance, 0) > 0,
+            "enter-amount": compare(myBalance, 0) <= 0,
+          })}
+          onClick={() => {
+            if (compare(myBalance, 0) <= 0) return;
+            onWithdraw();
+          }}
+        >
+          Withdraw
+        </Button>
+      ) : (
+        <ConnectWalletButton className="full-width">
+          <Button
+            className="view-container-button enter-amount"
+            onClick={() => {}}
+          >
+            Withdraw
+          </Button>
+        </ConnectWalletButton>
+      )}
     </ViewContainer>
   );
 };
