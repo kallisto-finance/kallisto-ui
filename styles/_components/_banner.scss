@@ -6,6 +6,7 @@
   justify-content: center;
   align-items: center;
   background: #caeb70;
+  padding: 10px;
 
   .banner-icon {
     height: 17px;
@@ -16,6 +17,10 @@
     font-weight: 500;
     font-size: 16px;
     color: #20253b;
+
+    @media screen and (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 
   .banner-close {
@@ -33,6 +38,14 @@
   align-items: center;
   margin-top: 30px;
 
+  @media screen and (max-width: 768px) {
+    padding: 0px;
+  }
+
+  @media screen and (max-width: 460px) {
+    margin-top: 60px;
+  }
+
   .ukraine-container {
     display: flex;
     width: 653px;
@@ -41,13 +54,32 @@
     height: 100px;
     margin-left: 495px;
     color: #fff;
-    height: 100px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-left: 0px;
+      height: 75.77px;
+    }
+
+    @media screen and (max-width: 425px) {
+      height: 130px;
+      padding-right: 10px;
+    }
   }
 
   .ukraine-icon {
     position: absolute;
     height: 184px;
     margin-top: -40px;
+
+    @media screen and (max-width: 768px) {
+      height: 131.58px;
+      margin-top: -27px;
+    }
+
+    @media screen and (max-width: 425px) {
+      height: 80px;
+    }
   }
 
   .banner-content {
@@ -58,10 +90,22 @@
     flex-direction: column;
     justify-content: center;
 
+    @media screen and (max-width: 768px) {
+      margin-left: 157px;
+    }
+
+    @media screen and (max-width: 425px) {
+      margin-left: 90px;
+    }
+
     .title {
       font-weight: bold;
       font-size: 24px;
       margin: 0px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+      }
     }
 
     .content {
@@ -70,6 +114,11 @@
       line-height: 21px;
       margin: 0;
       margin-top: 8px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 12px;
+        line-height: 15px;
+      }
     }
 
     .donate {

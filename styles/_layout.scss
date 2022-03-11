@@ -8,6 +8,12 @@
     align-items: center;
     margin-top: 78px;
 
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      margin-top: 24px;
+      padding: 0px 33px;
+    }
+
     &__logo {
       img {
         height: 107px;
@@ -16,6 +22,13 @@
 
     &__buttons {
       display: flex;
+
+      @media screen and (max-width: 768px) {
+        width: 100%;
+        justify-content: center;
+        margin-top: 30px;
+        flex-flow: row wrap;
+      }
     }
 
     .header-button {
@@ -34,9 +47,20 @@
       color: #b6b2ef;
       text-decoration: none;
 
+      @media screen and (max-width: 768px) {
+        font-size: 10px;
+        height: 21.93px;
+        margin-bottom: 10px;
+      }
+
       img {
         height: 20px;
         margin-left: 14px;
+
+        @media screen and (max-width: 768px) {
+          height: 14px;
+          margin-left: 8px;
+        }
       }
     }
   }
@@ -52,5 +76,10 @@
   font-size: 12px;
   line-height: 16px;
   padding: 24px 47px 17px;
-  color: #FFFFFF;
+  color: #ffffff;
+
+  @media screen and (max-width: 768px) {
+    padding: 20px 19px 7px;
+    width: calc(100vw - 66px);
+  }
 }
