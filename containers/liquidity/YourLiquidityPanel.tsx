@@ -24,7 +24,7 @@ const YourLiquidityPanel = ({
     <ViewContainer
       className="your-liquidity-panel"
       title="Your Liquidity"
-      border={true}
+      border={false}
     >
       <div className="view-container-row">
         <AmountView

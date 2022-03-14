@@ -34,6 +34,34 @@
     }
   }
 
+  .token-icon {
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 41px;
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+
+    margin-right: 30px;
+
+    @media screen and (max-width: 768px) {
+      font-size: 16px;
+      margin-right: 20px;
+    }
+
+    img {
+      width: 31px;
+      height: 31px;
+      margin-left: 5px;
+
+      @media screen and (max-width: 768px) {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
   .inputbox {
     width: 100%;
     background: transparent;

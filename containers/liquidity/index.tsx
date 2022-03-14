@@ -6,22 +6,17 @@ import YourLiquidityPanel from "./YourLiquidityPanel";
 import DepositPool from "./DepositPool";
 import DepositConfirm from "./DepositConfirm";
 import WithdrawConfirm from "./WithdrawConfirm";
-import Ukraine from "components/Ukraine";
+import { UkraineBanner, DeFiBanner } from "components/Banner";
 
 import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
-import { isNaN } from 'utils/number'
+import { isNaN } from "utils/number";
 
 const Liquidity = () => {
   const lcd = useLCDClient();
   const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
-  const {
-    fetchPoolValues,
-    deposit,
-    withdrawUst,
-    getVolumeHistory
-  } = usePool();
+  const { fetchPoolValues, deposit, withdrawUst, getVolumeHistory } = usePool();
 
   const [ustBalance, setUstBalance] = useState("0");
 
@@ -36,24 +31,27 @@ const Liquidity = () => {
    * Deposit
    */
   const [balance, setBalance] = useState("");
-  const [depositLoading, setDepositLoading] = useState(false)
+  const [depositLoading, setDepositLoading] = useState(false);
   const handleChangeDepositInputAmount = (value) => {
     setBalance(value);
   };
 
   const handleConfirmDeposit = async () => {
-    setDepositLoading(true)
-    deposit(new BigNumber(balance).multipliedBy(10 ** 6).toString(), (result) => {
-      console.log('*********** Deposit Transaction **************');
-      // Update Balance and Pool data
-      getPoolValues();
-      getUSTBalance();
+    setDepositLoading(true);
+    deposit(
+      new BigNumber(balance).multipliedBy(10 ** 6).toString(),
+      (result) => {
+        console.log("*********** Deposit Transaction **************");
+        // Update Balance and Pool data
+        getPoolValues();
+        getUSTBalance();
 
-      console.log(result);
-      setDepositLoading(false);
-      setBalance("");
-      setStep(0);
-    })
+        console.log(result);
+        setDepositLoading(false);
+        setBalance("");
+        setStep(0);
+      }
+    );
   };
 
   /**
@@ -61,21 +59,23 @@ const Liquidity = () => {
    */
   const [withdrawAmount, setWithdrawAmount] = useState({
     format: "0",
-    value: new BigNumber(0)
+    value: new BigNumber(0),
   });
-  const [withdrawLoading, setWithdrawLoading] = useState(false)
+  const [withdrawLoading, setWithdrawLoading] = useState(false);
   const handleChangeWithdrawAmount = (value) => {
     setWithdrawAmount({
       format: value,
-      value: isNaN(value) ? new BigNumber(0) : new BigNumber(value).multipliedBy(10 ** 6)
-    })
+      value: isNaN(value)
+        ? new BigNumber(0)
+        : new BigNumber(value).multipliedBy(10 ** 6),
+    });
   };
   const handleConfirmWithdraw = (collectType) => {
-    console.log(collectType)
+    console.log(collectType);
     if (collectType == "UST") {
       setWithdrawLoading(true);
       withdrawUst(withdrawAmount.value, (result) => {
-        console.log('*********** Withdraw UST Transaction **************');
+        console.log("*********** Withdraw UST Transaction **************");
         console.log(result);
 
         // Update Balance and Pool data
@@ -85,12 +85,12 @@ const Liquidity = () => {
         setWithdrawLoading(false);
         setWithdrawAmount({
           format: "0",
-          value: new BigNumber(0)
-        })
+          value: new BigNumber(0),
+        });
         setStep(0);
-      })
+      });
     }
-  }
+  };
 
   /**
    * Fetch values
@@ -103,23 +103,23 @@ const Liquidity = () => {
     } else {
       setUstBalance("0");
     }
-  }
+  };
 
   const getPoolValues = async () => {
     if (connectedWallet && network) {
       const result = await fetchPoolValues();
 
-      setTotalLiquidity(result.totalLiquidity)
-      setMyLiquidity(result.myLiquidity)
+      setTotalLiquidity(result.totalLiquidity);
+      setMyLiquidity(result.myLiquidity);
       setPoolShare(result.poolShare);
       setTotalSupply(result.totalSupply);
     }
-  }
+  };
 
   const get7daysVolume = async () => {
     const volume = await getVolumeHistory();
-    setVolume7Days(volume)
-  }
+    setVolume7Days(volume);
+  };
 
   /**
    * Init
@@ -131,16 +131,22 @@ const Liquidity = () => {
       getUSTBalance();
       getPoolValues();
       get7daysVolume();
-    }, 1500)
+    }, 1500);
 
-    return () => clearInterval(interval)
-  }, [connectedWallet, lcd, network])
+    return () => clearInterval(interval);
+  }, [connectedWallet, lcd, network]);
 
   const [step, setStep] = useState(0);
 
   return (
     <div className="liquidity-container">
-      {step === 0 && <Ukraine />}
+      {step === 0 && ( 
+        <div className="banner-wrapper">
+          <DeFiBanner />
+          <UkraineBanner />
+        </div>
+      )}
+
       <div className="liquidity-wrapper">
         {step === 0 && (
           <>
@@ -179,7 +185,9 @@ const Liquidity = () => {
             onChangeWithdrawAmount={(value) =>
               handleChangeWithdrawAmount(value)
             }
-            onConfirmWithdraw={(collectType) => handleConfirmWithdraw(collectType)}
+            onConfirmWithdraw={(collectType) =>
+              handleConfirmWithdraw(collectType)
+            }
             loading={withdrawLoading}
           />
         )}

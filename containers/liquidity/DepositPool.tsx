@@ -52,25 +52,22 @@ const DepositPool = ({
   return (
     <ViewContainer className="add-liquidity-panel" title="Liquidation Pool ">
       <div className="view-container-row">
-        <AmountView label="APY" value="100%" highlight={true} />
+        <AmountView
+          icon="/assets/tokens/anchor-bluna.png"
+          value="Anchor-bLUNA"
+          style={{
+            fontSize: 20,
+            fontWeight: 500,
+          }}
+        />
+      </div>
+      <div className="view-container-row">
+        <AmountView label="APY" value="25.54%" highlight={true} />
       </div>
       <div className="view-container-row">
         <AmountView
           label="7 day Volume"
           value={`${formatBalance(volume, 1)} UST`}
-        />
-      </div>
-      <div className="view-container-row">
-        <div className="view-container-subtitle">Collateral Market</div>
-      </div>
-      <div className="view-container-row">
-        <AmountView
-          icon="/assets/tokens/bLuna.png"
-          value="bLUNA"
-          style={{
-            fontSize: 20,
-            fontWeight: 500,
-          }}
         />
       </div>
       <div className="view-container-row">
