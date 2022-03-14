@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import LayoutHeader from './header'
 import Notice from './notice'
-import Banner from 'components/Banner'
+import { AttentionBanner } from 'components/Banner'
 
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -27,7 +27,7 @@ export default function Layout({
       </Head>
 
       <main className='layout-container'>
-        <Banner />
+        <AttentionBanner />
         <LayoutHeader />
         {(
           React.cloneElement(children, {

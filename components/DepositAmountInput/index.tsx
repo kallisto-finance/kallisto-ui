@@ -36,6 +36,9 @@ const DepositAmountInput = ({
           }}
         />
       </div>
+      <div className="token-icon">
+        UST <img src="/assets/tokens/ust.png"/>
+      </div>
       <Button
         className="max-button"
         onClick={(e) => onChangeDepositInputAmount(maxBalance)}
