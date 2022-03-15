@@ -46,4 +46,11 @@ function App({
   );
 }
 
+App.getInitialProps = async () => {
+  const chainOptions = await getChainOptions();
+  return {
+    ...chainOptions,
+  };
+};
+
 export default App;
