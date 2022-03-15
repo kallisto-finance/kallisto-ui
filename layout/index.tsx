@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react'
+import React from 'react'
 import Head from 'next/head'
 
 import LayoutHeader from './header'
@@ -14,7 +14,6 @@ export default function Layout({
   defaultNetwork,
   walletConnectChainIds,
 }) {
-
   return (
     <>
       <Head>

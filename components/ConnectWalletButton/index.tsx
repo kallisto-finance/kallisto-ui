@@ -61,8 +61,11 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
           network.chainID
         );
 
+
+        const ustBalance = "uusd" in coins._coins ? coins._coins.uusd.amount : 0;
+
         setBalance({
-          ust: formatBalance(coins._coins.uusd.amount, 1),
+          ust: formatBalance(ustBalance, 1),
           aUST: formatBalance(aUSTBalance["balance"], 1),
           bETH: formatBalance(bETHBalance["balance"], 1),
           bLUNA: formatBalance(bLunaBalance["balance"], 1),

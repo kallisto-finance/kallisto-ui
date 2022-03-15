@@ -98,7 +98,8 @@ const Liquidity = () => {
   const getUSTBalance = async () => {
     if (connectedWallet && lcd) {
       lcd.bank.balance(connectedWallet.walletAddress).then(([coins]) => {
-        setUstBalance(formatBalance(coins._coins.uusd.amount, 6));
+        const ustBalance = "uusd" in coins._coins ? coins._coins.uusd.amount : 0;
+        setUstBalance(formatBalance(ustBalance, 6));
       });
     } else {
       setUstBalance("0");
