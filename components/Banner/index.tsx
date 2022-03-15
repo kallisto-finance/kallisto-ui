@@ -1,4 +1,5 @@
 import React from "react";
+import Link from 'next/link'
 
 const AttentionBanner = () => (
   <div className="attention-banner-container">
@@ -12,16 +13,18 @@ const AttentionBanner = () => (
 
 const UkraineBanner = () => (
   <div className="ukraine-container-wrapper">
-    <div className="ukraine-container">
-      <img className="ukraine-icon" src="/assets/ukraine.png" />
-      <div className="banner-content">
-        <p className="title">Let’s support Ukraine!</p>
-        <p className="content">
-          Kallisto donates <span className="donate">$50</span> to Ukraine for
+    <Link href="/ukraine">
+      <div className="ukraine-container">
+        <img className="ukraine-icon" src="/assets/ukraine.png" />
+        <div className="banner-content">
+          <p className="title">Let’s support Ukraine!</p>
+          <p className="content">
+            Kallisto donates <span className="donate">$50</span> to Ukraine for
           every $10.000 deposited into the Liquidation Pool.
         </p>
+        </div>
       </div>
-    </div>
+    </Link>
   </div>
 );
 
