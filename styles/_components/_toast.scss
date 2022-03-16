@@ -1,0 +1,23 @@
+// react-toastify customize
+.Toastify__toast {
+  border-radius: 11px !important;
+}
+
+.transaction-toast-container {
+  display: flex;
+  align-items: flex-start;
+  padding: 21px 27px;
+
+  .transaction-toast-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .transaction-toast-text {
+    color: #20253b;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 21px;
+    margin-left: 12px;
+  }
+}

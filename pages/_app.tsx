@@ -8,11 +8,7 @@ import {
 import { AppProps } from "next/app";
 import Layout from "layout";
 
-import { DEFAULT_NETWORK } from "../utils/constants";
-
 import "../styles/index.scss";
-
-const allowedNetworks = [DEFAULT_NETWORK];
 
 function App({
   Component,
