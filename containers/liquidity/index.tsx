@@ -7,10 +7,12 @@ import DepositPool from "./DepositPool";
 import DepositConfirm from "./DepositConfirm";
 import WithdrawConfirm from "./WithdrawConfirm";
 import { UkraineBanner, DeFiBanner } from "components/Banner";
+import TransactionFeedbackToast from "components/TransactionFeedbackToast";
 
 import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
 import { isNaN } from "utils/number";
+import { toast } from "react-toastify";
 
 const Liquidity = () => {
   const lcd = useLCDClient();
@@ -41,15 +43,32 @@ const Liquidity = () => {
     deposit(
       new BigNumber(balance).multipliedBy(10 ** 6).toString(),
       (result) => {
-        console.log("*********** Deposit Transaction **************");
-        // Update Balance and Pool data
-        getPoolValues();
-        getUSTBalance();
-
-        console.log(result);
         setDepositLoading(false);
-        setBalance("");
-        setStep(0);
+
+        if (result.status === "Success") {
+          console.log("*********** Deposit Transaction **************");
+          // Update Balance and Pool data
+          getPoolValues();
+          getUSTBalance();
+          
+          setBalance("");
+          setStep(0);
+
+          toast(
+            <TransactionFeedbackToast
+              status="success"
+              msg={`Succesfully Deposited ${balance} UST `}
+            />
+          );
+        } else {
+          toast(
+            <TransactionFeedbackToast
+              status="error"
+              msg={result.msg}
+            />
+          );
+        }
+        
       }
     );
   };
@@ -76,18 +95,35 @@ const Liquidity = () => {
       setWithdrawLoading(true);
       withdrawUst(withdrawAmount.value, (result) => {
         console.log("*********** Withdraw UST Transaction **************");
-        console.log(result);
-
-        // Update Balance and Pool data
-        getPoolValues();
-        getUSTBalance();
-
         setWithdrawLoading(false);
-        setWithdrawAmount({
-          format: "0",
-          value: new BigNumber(0),
-        });
-        setStep(0);
+
+        if (result.status === "Success") {
+          // Update Balance and Pool data
+          getPoolValues();
+          getUSTBalance();
+
+
+          setWithdrawAmount({
+            format: "0",
+            value: new BigNumber(0),
+          });
+          setStep(0);
+
+          toast(
+            <TransactionFeedbackToast
+              status="success"
+              msg={`Succesfully Withdrawn ${withdrawAmount.format} UST `}
+            />
+          );
+        } else {
+          toast(
+            <TransactionFeedbackToast
+              status="error"
+              msg={result.msg}
+            />
+          );
+        }
+        
       });
     }
   };
@@ -98,7 +134,8 @@ const Liquidity = () => {
   const getUSTBalance = async () => {
     if (connectedWallet && lcd) {
       lcd.bank.balance(connectedWallet.walletAddress).then(([coins]) => {
-        const ustBalance = "uusd" in coins._coins ? coins._coins.uusd.amount : 0;
+        const ustBalance =
+          "uusd" in coins._coins ? coins._coins.uusd.amount : 0;
         setUstBalance(formatBalance(ustBalance, 6));
       });
     } else {
@@ -141,13 +178,12 @@ const Liquidity = () => {
 
   return (
     <div className="liquidity-container">
-      {step === 0 && ( 
+      {step === 0 && (
         <div className="banner-wrapper">
           <DeFiBanner />
           <UkraineBanner />
         </div>
       )}
-
       <div className="liquidity-wrapper">
         {step === 0 && (
           <>

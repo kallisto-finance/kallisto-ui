@@ -5,8 +5,8 @@ import LayoutHeader from './header'
 import Notice from './notice'
 import { AttentionBanner } from 'components/Banner'
 
-import { NotificationContainer } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Layout({
   children,
@@ -37,7 +37,7 @@ export default function Layout({
         )}
         <Notice />
       </main>
-      <NotificationContainer />
+      <ToastContainer autoClose={10000} />
     </>
   )
 }
