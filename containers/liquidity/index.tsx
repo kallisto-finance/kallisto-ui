@@ -178,12 +178,11 @@ const Liquidity = () => {
 
   return (
     <div className="liquidity-container">
-      {step === 0 && (
+      {/* {step === 0 && (
         <div className="banner-wrapper">
           <DeFiBanner />
-          <UkraineBanner />
         </div>
-      )}
+      )} */}
       <div className="liquidity-wrapper">
         {step === 0 && (
           <>

@@ -5,6 +5,8 @@ import LayoutHeader from './header'
 import Notice from './notice'
 import { AttentionBanner } from 'components/Banner'
 
+import { UkraineBanner } from "components/Banner";
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -35,6 +37,7 @@ export default function Layout({
             walletConnectChainIds,
           })
         )}
+        <UkraineBanner />
         <Notice />
       </main>
       <ToastContainer autoClose={10000} />
