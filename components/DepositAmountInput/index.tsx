@@ -21,7 +21,7 @@ const DepositAmountInput = ({
   
   return (
     <div className="deposit-amount-input-container">
-      <div className="label">Deposit amount</div>
+      {/* <div className="label">Deposit amount</div> */}
       <div className="input">
         <input
           ref={inputEl}
