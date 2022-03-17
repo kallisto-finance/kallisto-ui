@@ -13,13 +13,14 @@ import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
 import { isNaN } from "utils/number";
 import { moveScrollToTop } from "utils/document";
+import { delay } from "utils/date"
 import { toast } from "react-toastify";
 
 const Liquidity = () => {
   const lcd = useLCDClient();
   const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
-  const { fetchPoolValues, deposit, withdrawUst, getVolumeHistory } = usePool();
+  const { fetchPoolValues, deposit, withdrawUst, getVolumeHistory, getTxInfo } = usePool();
 
   const [ustBalance, setUstBalance] = useState("0");
 
@@ -43,11 +44,16 @@ const Liquidity = () => {
     setDepositLoading(true);
     deposit(
       new BigNumber(balance).multipliedBy(10 ** 6).toString(),
-      (result) => {
+      async (result) => {
         setDepositLoading(false);
 
         if (result.status === "Success") {
           console.log("*********** Deposit Transaction **************");
+          console.log(result);
+
+          const txInfo = await getTxInfo(result.data.result.txhash);
+          console.log(txInfo);
+
           // Update Balance and Pool data
           getPoolValues();
           getUSTBalance();
