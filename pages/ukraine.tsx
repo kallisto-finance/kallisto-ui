@@ -5,6 +5,12 @@ const Ukraine = () => {
   return (
     <div className="page-container">
       <div className="ukraine-page-container">
+        <Link href="/">
+          <div className="ukraine-page-back">
+            <img src="/assets/left-arrow-white.png" />
+            Go Back
+          </div>
+        </Link>
         <div className="ukraine-page-banner">
           <div className="ukraine-container">
             <img className="ukraine-icon" src="/assets/ukraine.png" />

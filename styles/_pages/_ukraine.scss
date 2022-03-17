@@ -6,6 +6,24 @@
   border-bottom-left-radius: 9.60578px;
   border-bottom-right-radius: 9.60578px;
 
+  .ukraine-page-back {
+    background: #20253b;
+    display: flex;
+    align-items: center;
+    text-decoration: underline;
+    color: #fff;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 29px;
+    padding-bottom: 40px;
+    cursor: pointer;
+
+    img {
+      height: 30px;
+      margin-right: 13px;
+    }
+  }
+
   .ukraine-page-banner {
     display: flex;
     justify-content: center;
