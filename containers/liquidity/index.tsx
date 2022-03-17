@@ -12,6 +12,7 @@ import TransactionFeedbackToast from "components/TransactionFeedbackToast";
 import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
 import { isNaN } from "utils/number";
+import { moveScrollToTop } from "utils/document";
 import { toast } from "react-toastify";
 
 const Liquidity = () => {
@@ -50,7 +51,7 @@ const Liquidity = () => {
           // Update Balance and Pool data
           getPoolValues();
           getUSTBalance();
-          
+
           setBalance("");
           setStep(0);
 
@@ -61,14 +62,8 @@ const Liquidity = () => {
             />
           );
         } else {
-          toast(
-            <TransactionFeedbackToast
-              status="error"
-              msg={result.msg}
-            />
-          );
+          toast(<TransactionFeedbackToast status="error" msg={result.msg} />);
         }
-        
       }
     );
   };
@@ -102,7 +97,6 @@ const Liquidity = () => {
           getPoolValues();
           getUSTBalance();
 
-
           setWithdrawAmount({
             format: "0",
             value: new BigNumber(0),
@@ -116,14 +110,8 @@ const Liquidity = () => {
             />
           );
         } else {
-          toast(
-            <TransactionFeedbackToast
-              status="error"
-              msg={result.msg}
-            />
-          );
+          toast(<TransactionFeedbackToast status="error" msg={result.msg} />);
         }
-        
       });
     }
   };
@@ -190,10 +178,16 @@ const Liquidity = () => {
               myBalance={myLiquidity}
               totalLiquidity={totalLiquidity}
               poolShare={poolShare}
-              onWithdraw={() => setStep(2)}
+              onWithdraw={() => {
+                moveScrollToTop();
+                setStep(2);
+              }}
             />
             <DepositPool
-              onDeposit={() => setStep(1)}
+              onDeposit={() => {
+                moveScrollToTop();
+                setStep(1);
+              }}
               ustBalance={ustBalance}
               balance={balance}
               volume={volume7Days}

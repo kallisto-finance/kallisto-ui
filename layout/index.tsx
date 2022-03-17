@@ -28,6 +28,7 @@ export default function Layout({
       </Head>
 
       <main className='layout-container'>
+        <a id="back-to-top-anchor" href="/" />
         <AttentionBanner />
         <LayoutHeader />
         {(
