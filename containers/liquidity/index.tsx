@@ -55,6 +55,8 @@ const Liquidity = () => {
           setBalance("");
           setStep(0);
 
+          moveScrollToTop("#your-liquidity-panel");
+
           toast(
             <TransactionFeedbackToast
               status="success"
@@ -102,6 +104,8 @@ const Liquidity = () => {
             value: new BigNumber(0),
           });
           setStep(0);
+
+          moveScrollToTop("#your-liquidity-panel");
 
           toast(
             <TransactionFeedbackToast
