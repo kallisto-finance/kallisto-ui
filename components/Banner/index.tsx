@@ -1,5 +1,11 @@
-import React from "react";
-import Link from 'next/link'
+import React, { useState } from "react";
+import Link from "next/link";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
+const faPropIcon = faTimes as IconProp;
 
 const AttentionBanner = () => (
   <div className="attention-banner-container">
@@ -11,27 +17,38 @@ const AttentionBanner = () => (
   </div>
 );
 
-const UkraineBanner = () => (
-  <div className="ukraine-container-wrapper">
-    <Link href="/ukraine">
-      <div className="ukraine-container">
-        <img className="ukraine-icon" src="/assets/ukraine.png" />
-        <div className="banner-content">
-          <p className="title">Let’s support Ukraine!</p>
-          <p className="content">
-            Kallisto donates <span className="donate">$50</span> to Ukraine for
-          every $10.000 deposited into the Liquidation Pool.
-        </p>
-        </div>
+const UkraineBanner = () => {
+  const [show, setShow] = useState(true);
+  return show ? (
+    <div className="ukraine-container-wrapper">
+      <div className="ukraine-banner-close" onClick={(e) => setShow(false)}>
+        <FontAwesomeIcon icon={faPropIcon} />
       </div>
-    </Link>
-  </div>
-);
+      <Link href="/ukraine">
+        <div className="ukraine-container">
+          <img className="ukraine-icon" src="/assets/ukraine.png" />
+          <div className="banner-content">
+            <p className="title">Let’s support Ukraine!</p>
+            <p className="content">
+              Kallisto donates <span className="donate">$50</span> to Ukraine
+              for every $10.000 deposited into the Liquidation Pool.<br/>
+              <span style={{ textDecoration: 'underline' }}>Learn more</span>
+            </p>
+          </div>
+        </div>
+      </Link>
+    </div>
+  ) : null;
+};
 
 const DeFiBanner = () => (
   <div className="defi-banner-container">
     <img className="defi-banner-defi" src="/assets/defi.png" />
-    <span className="defi-banner-text"><b>Liquidation Pools</b><br />for <b>Collateral Markets</b></span>
+    <span className="defi-banner-text">
+      <b>Liquidation Pools</b>
+      <br />
+      for <b>Collateral Markets</b>
+    </span>
     <img className="defi-banner-bear" src="/assets/logo-fish.png" />
   </div>
 );

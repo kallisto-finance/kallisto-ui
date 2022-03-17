@@ -18,10 +18,10 @@ const DepositAmountInput = ({
       }, 500)
     }
   }, [inputEl])
-  
+
   return (
     <div className="deposit-amount-input-container">
-      <div className="label">Deposit amount</div>
+      {/* <div className="label">Deposit amount</div> */}
       <div className="input">
         <input
           ref={inputEl}
@@ -34,10 +34,11 @@ const DepositAmountInput = ({
             if (e.target.value !== '' && isNaN(e.target.value)) return;
             onChangeDepositInputAmount(e.target.value)
           }}
+          inputMode='numeric'
         />
       </div>
       <div className="token-icon">
-        UST <img src="/assets/tokens/ust.png"/>
+        UST <img src="/assets/tokens/ust.png" />
       </div>
       <Button
         className="max-button"

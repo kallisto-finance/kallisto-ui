@@ -26,6 +26,7 @@ const YourLiquidityPanel = ({
       title="Your Liquidity"
       border={false}
     >
+      <a href="/" id="your-liquidity-panel" />
       <div className="view-container-row">
         <AmountView
           label="Your Balance"
