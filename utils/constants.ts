@@ -19,7 +19,7 @@ export const addresses = {
       },
       kallistoPool: {
         // address: "terra1hqtsau586tmzwl6apmf5u6u0avlafeef6w0qpp",
-        address: "terra15t5m83md54j2fhzvmkf64ct8ujjll4j8ujhcme",
+        address: "terra1cqcj3g02xusurrr44uzrrsp3n6qwq2d8wav3e9",
       },
     },
   },
