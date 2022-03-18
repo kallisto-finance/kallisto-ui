@@ -46,7 +46,7 @@ const YourLiquidityPanel = ({
       <div className="view-container-row">
         <AmountView
           label="Your % of the Pool"
-          value={`${poolShare.toFixed(0)}%`}
+          value={`${poolShare.toFixed(2)}%`}
           vertical={true}
         />
       </div>

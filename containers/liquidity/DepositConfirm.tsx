@@ -39,7 +39,7 @@ const DepositConfirm = ({
       </div>
 
       <div className="view-container-row half">
-        <AmountView value="bLuna" icon="/assets/tokens/bLuna.png" />
+        <AmountView value="bLUNA" icon="/assets/tokens/bLuna.png" />
       </div>
 
       <div className="view-container-row">

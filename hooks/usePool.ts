@@ -159,12 +159,21 @@ const usePool = () => {
     return txInfo
   }
 
+  const isTxSuccess = (txInfo) => {
+    if (txInfo.logs.length === 0) {
+      return txInfo.raw_log.toString();
+    }
+
+    return "success";
+  }
+
   return {
     fetchPoolValues,
     deposit,
     withdrawUst,
     getVolumeHistory,
-    getTxInfo
+    getTxInfo,
+    isTxSuccess,
   };
 };
 

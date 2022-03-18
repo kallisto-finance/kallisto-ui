@@ -20,7 +20,7 @@ const Liquidity = () => {
   const lcd = useLCDClient();
   const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
-  const { fetchPoolValues, deposit, withdrawUst, getVolumeHistory, getTxInfo } = usePool();
+  const { fetchPoolValues, deposit, withdrawUst, getVolumeHistory, getTxInfo, isTxSuccess } = usePool();
 
   const [ustBalance, setUstBalance] = useState("0");
 
@@ -51,22 +51,45 @@ const Liquidity = () => {
           console.log("*********** Deposit Transaction **************");
           console.log(result);
 
-          const txInfo = await getTxInfo(result.data.result.txhash);
-          console.log(txInfo);
+          let txInfo = null;
+          let msg = "";
+          let txState = "";
 
-          // Update Balance and Pool data
-          getPoolValues();
-          getUSTBalance();
+          while (true) {
+            try {
+              await delay(200);
 
-          setBalance("");
-          setStep(0);
+              txInfo = await getTxInfo(result.data.result.txhash);
+              txState = isTxSuccess(txInfo);
+              if (txState === "success") {
+                msg = `Succesfully Deposited ${balance} UST.`;
+              } else {
+                if (txState.includes("insufficient funds"))  {
+                  msg = "Error submitting the deposit. Insufficient funds for gas fees.";
+                } else {
+                  msg = txState;
+                }
+              }
+              break;
+            } catch (e) {
+            }
+          }
 
-          moveScrollToTop("#your-liquidity-panel");
+          if (txState === "success") {
+            // Update Balance and Pool data
+            getPoolValues();
+            getUSTBalance();
+
+            setBalance("");
+            setStep(0);
+
+            moveScrollToTop("#your-liquidity-panel");
+          }
 
           toast(
             <TransactionFeedbackToast
-              status="success"
-              msg={`Succesfully Deposited ${balance} UST `}
+              status={txState === "success" ? "success" : "error"}
+              msg={msg}
             />
           );
         } else {
