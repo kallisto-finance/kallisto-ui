@@ -9,6 +9,8 @@ const AmountView = ({
   icon = "",
   background = false,
   vertical = false,
+  iconBack = false,
+  containerStyle = {},
   ...props
 }) => (
   <div
@@ -17,15 +19,17 @@ const AmountView = ({
       background,
       icon: icon !== "",
     })}
+    style={{ ...containerStyle }}
   >
     {label !== "" && <span className="amount-view-label">{label}</span>}
-    {icon !== "" && <img className="amount-view-icon" src={icon} />}
+    {(icon !== "" && !iconBack) && <img className="amount-view-icon" src={icon} />}
     <span
       className={cn("amount-view-value", { highlight, vertical })}
       style={{ ...props.style }}
     >
       {value}
     </span>
+    {(icon !== "" && iconBack) && <img className="amount-view-icon" src={icon} style={{ width: 31, height: 31, marginLeft: 5 }}/>}
   </div>
 );
 
