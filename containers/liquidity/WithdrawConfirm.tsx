@@ -2,9 +2,11 @@ import React, { useState, useEffect, useMemo } from "react";
 import BigNumber from "bignumber.js";
 
 import ViewContainer from "components/ViewContainer";
+import AmountView from "components/AmountView";
 import WithdrawAmountInput from "components/WithdrawAmountInput";
 import LiquidityButton from "components/LiquidityButton";
 
+import { formatBalance } from "utils/wasm";
 import { isNaN, compare } from "utils/number";
 import { COLLECT_TYPE, LIQUIDITY_BALANCE_STATUS } from "types";
 
@@ -55,9 +57,20 @@ const WithdrawConfirm = ({
       onLeft={() => onBack()}
     >
       <div className="view-container-row">
-        <div className="view-container-subtitle">Collect as</div>
+        <div className="view-container-subtitle">Available balance<img src="/assets/question.png" style={{ marginLeft: 5, height: 16, cursor: 'pointer' }} /></div>
       </div>
       <div className="view-container-row">
+        <AmountView
+          icon="/assets/tokens/ust.png"
+          value={`${formatBalance(totalAvailableBalance, 2)} UST`}
+          iconBack={true}
+          containerStyle={{
+            height: 91,
+            borderRadius: 100
+          }}
+        />
+      </div>
+      {/* <div className="view-container-row">
         <div className="collect-select">
           <div
             className={cn("collect-item", {
@@ -76,7 +89,7 @@ const WithdrawConfirm = ({
             <span>UST</span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="view-container-row">
         <div className="view-container-subtitle">Amount to withdraw</div>

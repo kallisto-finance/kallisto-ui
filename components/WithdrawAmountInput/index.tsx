@@ -53,9 +53,9 @@ const WithdrawAmountInput = ({
           />
           {/* <span className="collect-type">{collectType}</span> */}
           <span className="collect-type">
-            {` / `}
-            {formatBalance(maxBalance, 1)} UST
+            UST
           </span>
+          <img src="/assets/tokens/ust.png" style={{ width: 31, height: 31, marginLeft: 8 }}/>
         </div>
         <div className="withdraw-percentage-selector">
           <Button
