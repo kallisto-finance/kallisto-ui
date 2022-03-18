@@ -2,16 +2,10 @@ import { MsgExecuteContract, TxAPI } from "@terra-money/terra.js";
 import {
   useWallet,
   useConnectedWallet,
-  CreateTxFailed,
-  Timeout,
-  TxFailed,
-  TxResult,
-  TxUnspecifiedError,
-  UserDenied,
 } from "@terra-money/wallet-provider";
 import BigNumber from "bignumber.js";
 
-import { useLCDClient } from "hooks/";
+import { useLCDClient } from "hooks";
 
 import { getContractQuery, getBalance, postMessage } from "utils/wasm";
 import { addresses } from "utils/constants";
@@ -159,11 +153,27 @@ const usePool = () => {
     return volume;
   };
 
+  const getTxInfo = async (txHash) => {
+    const txAPI = new TxAPI(lcd);
+    const txInfo  = await txAPI.txInfo(txHash);
+    return txInfo
+  }
+
+  const isTxSuccess = (txInfo) => {
+    if (txInfo.logs.length === 0) {
+      return txInfo.raw_log.toString();
+    }
+
+    return "success";
+  }
+
   return {
     fetchPoolValues,
     deposit,
     withdrawUst,
     getVolumeHistory,
+    getTxInfo,
+    isTxSuccess,
   };
 };
 

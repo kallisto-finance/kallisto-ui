@@ -41,7 +41,7 @@ export default function Layout({
         <UkraineBanner />
         <Notice />
       </main>
-      <ToastContainer autoClose={10000} />
+      <ToastContainer autoClose={10000} pauseOnFocusLoss={false}/>
     </>
   )
 }

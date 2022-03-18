@@ -13,13 +13,14 @@ import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
 import { isNaN } from "utils/number";
 import { moveScrollToTop } from "utils/document";
+import { delay } from "utils/date"
 import { toast } from "react-toastify";
 
 const Liquidity = () => {
   const lcd = useLCDClient();
   const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
-  const { fetchPoolValues, deposit, withdrawUst, getVolumeHistory } = usePool();
+  const { fetchPoolValues, deposit, withdrawUst, getVolumeHistory, getTxInfo, isTxSuccess } = usePool();
 
   const [ustBalance, setUstBalance] = useState("0");
 
@@ -43,24 +44,52 @@ const Liquidity = () => {
     setDepositLoading(true);
     deposit(
       new BigNumber(balance).multipliedBy(10 ** 6).toString(),
-      (result) => {
+      async (result) => {
         setDepositLoading(false);
 
         if (result.status === "Success") {
           console.log("*********** Deposit Transaction **************");
-          // Update Balance and Pool data
-          getPoolValues();
-          getUSTBalance();
+          console.log(result);
 
-          setBalance("");
-          setStep(0);
+          let txInfo = null;
+          let msg = "";
+          let txState = "";
 
-          moveScrollToTop("#your-liquidity-panel");
+          while (true) {
+            try {
+              await delay(200);
+
+              txInfo = await getTxInfo(result.data.result.txhash);
+              txState = isTxSuccess(txInfo);
+              if (txState === "success") {
+                msg = `Succesfully Deposited ${balance} UST.`;
+              } else {
+                if (txState.includes("insufficient funds"))  {
+                  msg = "Error submitting the deposit. Insufficient funds for gas fees.";
+                } else {
+                  msg = txState;
+                }
+              }
+              break;
+            } catch (e) {
+            }
+          }
+
+          if (txState === "success") {
+            // Update Balance and Pool data
+            getPoolValues();
+            getUSTBalance();
+
+            setBalance("");
+            setStep(0);
+
+            moveScrollToTop("#your-liquidity-panel");
+          }
 
           toast(
             <TransactionFeedbackToast
-              status="success"
-              msg={`Succesfully Deposited ${balance} UST `}
+              status={txState === "success" ? "success" : "error"}
+              msg={msg}
             />
           );
         } else {
