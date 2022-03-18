@@ -24,18 +24,20 @@ const UkraineBanner = () => {
       <div className="ukraine-banner-close" onClick={(e) => setShow(false)}>
         <FontAwesomeIcon icon={faPropIcon} />
       </div>
-      <Link href="/ukraine">
-        <div className="ukraine-container">
-          <img className="ukraine-icon" src="/assets/ukraine.png" />
-          <div className="banner-content">
-            <p className="title">Let’s support Ukraine!</p>
-            <p className="content">
-              Kallisto donates <span className="donate">$50</span> to Ukraine
-              for every $10.000 deposited into the Liquidation Pool.<br/>
-              <span style={{ textDecoration: 'underline' }}>Learn more</span>
-            </p>
+      <Link href="/ukraine" passHref>
+        <a target="_blank" rel="noreferrer">
+          <div className="ukraine-container">
+            <img className="ukraine-icon" src="/assets/ukraine.png" />
+            <div className="banner-content">
+              <p className="title">Let’s support Ukraine!</p>
+              <p className="content">
+                Kallisto donates <span className="donate">$50</span> to Ukraine
+                for every $10.000 deposited into the Liquidation Pool.<br/>
+                <span style={{ textDecoration: 'underline' }}>Learn more</span>
+              </p>
+            </div>
           </div>
-        </div>
+        </a>
       </Link>
     </div>
   ) : null;
