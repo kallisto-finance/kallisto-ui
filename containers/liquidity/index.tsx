@@ -90,7 +90,7 @@ const Liquidity = () => {
             />
           );
         } else {
-          toast(<TransactionFeedbackToast status="error" msg={result.msg} />);
+          toast(<TransactionFeedbackToast status="error" msg={result.data.message} />);
         }
 
         setDepositLoading(false);
@@ -121,6 +121,7 @@ const Liquidity = () => {
       setWithdrawLoading(true);
       withdrawUst(withdrawAmount.value, async (result) => {
         console.log("*********** Withdraw UST Transaction **************");
+        console.log(result);
 
         if (result.status === "Success") {
           let txInfo = null;
@@ -168,7 +169,7 @@ const Liquidity = () => {
             />
           );
         } else {
-          toast(<TransactionFeedbackToast status="error" msg={result.msg} />);
+          toast(<TransactionFeedbackToast status="error" msg={result.data.message} />);
         }
 
         setWithdrawLoading(false);
@@ -211,6 +212,11 @@ const Liquidity = () => {
    * Init
    */
   useEffect(() => {
+    // Initial
+    getUSTBalance();
+    getPoolValues();
+    get7daysVolume();
+
     let interval = null;
 
     interval = setInterval(() => {
