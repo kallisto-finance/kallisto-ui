@@ -1,4 +1,6 @@
 module.exports = {
   trailingSlash: true,
-  env: { },
+  env: {
+    STORYBLOK_ACCESS_TOKEN: process.env.STORYBLOK_ACCESS_TOKEN,
+  },
 }

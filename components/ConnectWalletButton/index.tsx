@@ -82,11 +82,13 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
   };
 
   useEffect(() => {
+    fetchBalances();
+
     let interval = null;
 
     interval = setInterval(() => {
       fetchBalances();
-    }, 1500);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [connectedWallet, lcd, network]);

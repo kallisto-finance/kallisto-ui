@@ -19,6 +19,8 @@
     }
 
     &__logo {
+      cursor: pointer;
+
       img {
         height: 107px;
       }
@@ -57,6 +59,12 @@
       margin-right: 7px;
       color: #b6b2ef;
       text-decoration: none;
+      cursor: pointer;
+
+      &.active {
+        background: #B6B2EF;
+        color: #20253B;
+      }
 
       @media screen and (max-width: 768px) {
         font-size: 10px;

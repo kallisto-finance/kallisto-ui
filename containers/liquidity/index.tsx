@@ -45,11 +45,8 @@ const Liquidity = () => {
     deposit(
       new BigNumber(balance).multipliedBy(10 ** 6).toString(),
       async (result) => {
-        setDepositLoading(false);
-
         if (result.status === "Success") {
           console.log("*********** Deposit Transaction **************");
-          console.log(result);
 
           let txInfo = null;
           let msg = "";
@@ -93,8 +90,10 @@ const Liquidity = () => {
             />
           );
         } else {
-          toast(<TransactionFeedbackToast status="error" msg={result.msg} />);
+          toast(<TransactionFeedbackToast status="error" msg={result.data.message} />);
         }
+
+        setDepositLoading(false);
       }
     );
   };
@@ -115,26 +114,53 @@ const Liquidity = () => {
         : new BigNumber(value).multipliedBy(10 ** 6),
     });
   };
+
   const handleConfirmWithdraw = (collectType) => {
     console.log(collectType);
     if (collectType == "UST") {
       setWithdrawLoading(true);
-      withdrawUst(withdrawAmount.value, (result) => {
+      withdrawUst(withdrawAmount.value, async (result) => {
         console.log("*********** Withdraw UST Transaction **************");
-        setWithdrawLoading(false);
+        console.log(result);
 
         if (result.status === "Success") {
-          // Update Balance and Pool data
-          getPoolValues();
-          getUSTBalance();
+          let txInfo = null;
+          let msg = "";
+          let txState = "";
 
-          setWithdrawAmount({
-            format: "0",
-            value: new BigNumber(0),
-          });
-          setStep(0);
+          while (true) {
+            try {
+              await delay(200);
 
-          moveScrollToTop("#your-liquidity-panel");
+              txInfo = await getTxInfo(result.data.result.txhash);
+              txState = isTxSuccess(txInfo);
+              if (txState === "success") {
+                msg = `Succesfully Deposited ${balance} UST.`;
+              } else {
+                if (txState.includes("insufficient funds")) {
+                  msg = "Error submitting the deposit. Insufficient funds for gas fees.";
+                } else {
+                  msg = txState;
+                }
+              }
+              break;
+            } catch (e) {
+            }
+          }
+
+          if (txState === "success") {
+            // Update Balance and Pool data
+            getPoolValues();
+            getUSTBalance();
+
+            setWithdrawAmount({
+              format: "0",
+              value: new BigNumber(0),
+            });
+            setStep(0);
+
+            moveScrollToTop("#your-liquidity-panel");
+          }
 
           toast(
             <TransactionFeedbackToast
@@ -143,8 +169,10 @@ const Liquidity = () => {
             />
           );
         } else {
-          toast(<TransactionFeedbackToast status="error" msg={result.msg} />);
+          toast(<TransactionFeedbackToast status="error" msg={result.data.message} />);
         }
+
+        setWithdrawLoading(false);
       });
     }
   };
@@ -184,13 +212,18 @@ const Liquidity = () => {
    * Init
    */
   useEffect(() => {
+    // Initial
+    getUSTBalance();
+    getPoolValues();
+    get7daysVolume();
+
     let interval = null;
 
     interval = setInterval(() => {
       getUSTBalance();
       getPoolValues();
       get7daysVolume();
-    }, 1500);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [connectedWallet, lcd, network]);

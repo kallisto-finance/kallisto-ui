@@ -60,7 +60,7 @@ const DepositConfirm = ({
         </div>
       </div>
       <div className="view-container-row">
-        <AmountView value={`${expectedPoolShare.toFixed(0)} %`} />
+        <AmountView value={`${expectedPoolShare.toFixed(2)} %`} />
       </div>
 
       <Button

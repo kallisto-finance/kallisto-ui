@@ -28,7 +28,7 @@ export default function Layout({
       <main className='layout-container'>
         <a id="back-to-top-anchor" href="/" />
         <AttentionBanner />
-        <LayoutHeader />
+        <LayoutHeader router={router} />
         {(
           React.cloneElement(children, {
             router,
