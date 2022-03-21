@@ -21,3 +21,16 @@ export function GetRemainDays(currentTime, endTime) {
 export const delay = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+export const convertDateString = (dateStr) => {
+  const stamp = Date.parse(dateStr);
+  const date = new Date(stamp);
+  var options = {
+    // weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  return date.toLocaleDateString("en-US", options);
+};
