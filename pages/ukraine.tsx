@@ -95,7 +95,7 @@ const Ukraine = () => {
           </div>
         </div>
         <Link href="/">
-          <div className="ukraine-page-button">Suport Ukraine</div>
+          <div className="ukraine-page-button">Support Ukraine</div>
         </Link>
       </div>
     </div>
