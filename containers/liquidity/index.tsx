@@ -6,7 +6,6 @@ import YourLiquidityPanel from "./YourLiquidityPanel";
 import DepositPool from "./DepositPool";
 import DepositConfirm from "./DepositConfirm";
 import WithdrawConfirm from "./WithdrawConfirm";
-import { UkraineBanner, DeFiBanner } from "components/Banner";
 import TransactionFeedbackToast from "components/TransactionFeedbackToast";
 
 import { useLCDClient, usePool } from "hooks";
@@ -215,18 +214,26 @@ const Liquidity = () => {
     // Initial
     getUSTBalance();
     getPoolValues();
-    get7daysVolume();
 
     let interval = null;
 
     interval = setInterval(() => {
       getUSTBalance();
       getPoolValues();
-      get7daysVolume();
     }, 10000);
 
     return () => clearInterval(interval);
   }, [connectedWallet, lcd, network]);
+
+  useEffect(() => {
+    let interval = null;
+
+    interval = setInterval(() => {
+      get7daysVolume();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const [step, setStep] = useState(0);
 

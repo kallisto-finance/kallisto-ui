@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import BigNumber from "bignumber.js";
+
+import { usePool } from "hooks";
+import { formatBalance } from "utils/wasm";
 
 const Ukraine = () => {
+  const { getUkraineDepositHistory } = usePool();
+
+  const [week, setWeek] = useState(new BigNumber(0));
+  const [total, setTotal] = useState(new BigNumber(0));
+
+  useEffect(() => {
+    const getValues = async () => {
+      const { weeklyRaised, totalRaised } = await getUkraineDepositHistory();
+      setWeek(weeklyRaised);
+      setTotal(totalRaised);
+    }
+    getValues();
+  }, []);
+
   return (
     <div className="page-container">
       <div className="ukraine-page-container">
@@ -18,7 +36,7 @@ const Ukraine = () => {
               <h1 className="title">Let’s support Ukraine!</h1>
               <p className="content">
                 Kallisto donates <span className="donate">$50</span> to Ukraine
-                for every $10,000 deposited into the Liquidation Pool.
+                for every $10.000 deposited into the Liquidation Pool.
               </p>
             </div>
           </div>
@@ -33,45 +51,45 @@ const Ukraine = () => {
             </li>
             <li>
               <p>
-                Kallisto for every <b>$10,000</b> UST deposited will donate{" "}
-                <span style={{ color: "#efce2b", fontWeight: 500 }}>$50</span>{" "}
-                UST to{` `}
+                Kallisto will donate{" "}
+                <span style={{ color: "#efce2b", fontWeight: 500 }}>$50 UST</span>{" "}
+                for every <b>$10.000 UST</b> deposited to{` `}
                 <a
-                  href="https://unchain.fund/"
+                  href="https://ukraine.angelprotocol.io/"
                   target="_blank"
                   style={{ color: "#fff" }}
                 >
-                  https://unchain.fund/
-                </a>
-                {` `}. Unchain is a charity project created by blockchain
-                activists to support Ukraine with humanitarian aid.
+                  https://ukraine.angelprotocol.io/
+                </a><br/>
+                Angel Protocol is a charity project that supports displaced
+                Ukrainians.
               </p>
             </li>
             <li>
               <p>
                 <b>Every Wednesday</b> the Kallisto team will deposit the
-                collected to Unchain Fund Ethereum wallet adress{` `}
+                collected to Angel Protocol in UST from the wallet address{` `}
                 <a
-                  href="https://etherscan.io/address/0x10E1439455BD2624878b243819E31CfEE9eb721C"
+                  href="https://finder.terra.money/mainnet/address/terra16d52wwt6t79x3sd35rargp3y5es90m64t0fkzk"
                   target="_blank"
                   style={{ color: "#efce2b" }}
                 >
-                  0x10E1439455BD2624878b243819E31CfEE9eb721C
+                  terra16d52wwt6t79x3sd35rargp3y5es90m64t0fkzk
                 </a>
               </p>
             </li>
           </ol>
           <div className="ukraine-amount-view">
             <div className="ukraine-amount-value">
-              <span>50 UST</span>
+              <span>{`${formatBalance(week, 0)} UST`}</span>
               <img src="/assets/tokens/ust.png" />
             </div>
             <span>Raised this week</span>
           </div>
           <div className="ukraine-amount-view">
             <div className="ukraine-amount-value">
-              <span>100 ETH</span>
-              <img src="/assets/tokens/eth.png" />
+              <span>{`${formatBalance(total, 0)} UST`}</span>
+              <img src="/assets/tokens/ust.png" />
             </div>
             <span>Total Raised</span>
           </div>
