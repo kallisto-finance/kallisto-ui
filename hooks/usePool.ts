@@ -8,9 +8,10 @@ import BigNumber from "bignumber.js";
 import { useLCDClient } from "hooks";
 
 import { getContractQuery, getBalance, postMessage } from "utils/wasm";
-import { addresses } from "utils/constants";
+import { addresses, UKRAINE_WALLET } from "utils/constants";
 import { compare } from "utils/number";
 import { getTxHistories } from "utils/axios";
+import { delay } from "utils/date";
 
 const usePool = () => {
   const { network } = useWallet();
@@ -108,49 +109,167 @@ const usePool = () => {
     const searchDateStartTime =
       searchDateTime - (searchDateTime % (86400 * 1000)); // 7 days ago 12:00:00 am
 
-    const response = await getTxHistories(contractAddress);
-    if (response.status === 200) {
-      const txHistories = response.data;
+    const historyData = [];
 
-      for (let i = 0; i < txHistories.txs.length; i++) {
-        const tx = txHistories.txs[i];
+    let offset = 0;
+    let limit = 100;
 
-        const txTimestamp = new Date(tx.timestamp).getTime();
-        if (txTimestamp < searchDateStartTime) {
-          continue;
-        }
+    try {
+      while(true) {
+        const response = await getTxHistories(contractAddress, offset, limit);
 
-        if (tx.logs.length === 0) {
-          continue;
-        }
+        if (response.status === 200) {
+          const txHistories = response.data;
 
-        const msgs = tx.tx.value.msg;
-
-        for (let j = 0; j < msgs.length; j++) {
-          const type = msgs[j].type;
-          if (type !== "wasm/MsgExecuteContract") {
-            continue;
+          if (txHistories.txs.length === 0) {
+            break;
           }
 
-          const coins = msgs[j].value.coins;
-          const msgValue = msgs[j].value.execute_msg;
+          for (let i = 0; i < txHistories.txs.length; i++) {
+            const tx = txHistories.txs[i];
+            
+            const txTimestamp = new Date(tx.timestamp).getTime();
 
-          if ("deposit" in msgValue) {
-            for (let k = 0; k < coins.length; k++) {
-              if (coins[k].denom === "uusd") {
-                volume = volume.plus(coins[k].amount);
-              }
+            if (txTimestamp < searchDateStartTime) {
+              break;
+            }
+
+            historyData.push(tx);
+          }
+
+          if (!txHistories.next || txHistories.next === undefined) {
+            break;
+          }
+
+          offset = txHistories.next;
+
+          await delay(1000);
+
+        } else {
+          break;
+        }
+      }
+    } catch (e) {
+    }
+
+    for (let i = 0; i < historyData.length; i++) {
+      const tx = historyData[i];
+
+      const txTimestamp = new Date(tx.timestamp).getTime();
+      if (txTimestamp < searchDateStartTime) {
+        continue;
+      }
+
+      if (tx.logs.length === 0) {
+        continue;
+      }
+
+      const msgs = tx.tx.value.msg;
+
+      for (let j = 0; j < msgs.length; j++) {
+        const type = msgs[j].type;
+        if (type !== "wasm/MsgExecuteContract") {
+          continue;
+        }
+
+        const coins = msgs[j].value.coins;
+        const msgValue = msgs[j].value.execute_msg;
+
+        if ("deposit" in msgValue) {
+          for (let k = 0; k < coins.length; k++) {
+            if (coins[k].denom === "uusd") {
+              volume = volume.plus(coins[k].amount);
             }
           }
+        }
 
-          if ("withdraw_ust" in msgValue) {
-            volume = volume.plus(msgValue["withdraw_ust"].share);
+        if ("withdraw_ust" in msgValue) {
+          volume = volume.plus(msgValue["withdraw_ust"].share);
+        }
+      }
+    }
+    
+    return volume;
+  };
+
+  const getUkraineDepositHistory = async () => {
+    let weeklyRaised = new BigNumber(0);
+    let totalRaised = new BigNumber(0);
+
+    const historyData = [];
+
+    let offset = 0;
+    let limit = 100;
+
+    let isWeekly = true
+
+    try {
+      while (true) {
+        const response = await getTxHistories(UKRAINE_WALLET, offset, limit);
+
+        if (response.status === 200) {
+          const txHistories = response.data;
+
+          if (txHistories.txs.length === 0) {
+            break;
+          }
+
+          for (let i = 0; i < txHistories.txs.length; i++) {
+            historyData.push(txHistories.txs[i]);
+          }
+
+          if (!txHistories.next || txHistories.next === undefined) {
+            break;
+          }
+
+          offset = txHistories.next;
+
+          await delay(1000);
+        } else {
+          break;
+        }
+      }
+    } catch (e) {}
+
+    for (let i = 0; i < historyData.length; i++) {
+      const tx = historyData[i];
+
+      if (tx.logs.length === 0) {
+        continue;
+      }
+
+      const msgs = tx.tx.value.msg;
+
+      for (let j = 0; j < msgs.length; j++) {
+        const type = msgs[j].type;
+        if (type !== "bank/MsgSend") {
+          continue;
+        }
+
+        const toAddress = msgs[j].value.to_address;
+        if (toAddress.toString() !== UKRAINE_WALLET.toString()) {
+          continue;
+        }
+
+        const amounts = msgs[j].value.amount;
+
+        for (let k = 0; k <amounts.length; k++) {
+          if (amounts[k].denom === "uusd") {
+            totalRaised = totalRaised.plus(amounts[k].amount);
+
+            if (isWeekly) {
+              weeklyRaised = weeklyRaised.plus(amounts[k].amount);
+              isWeekly = false;
+            }
           }
         }
       }
     }
 
-    return volume;
+    return {
+      weeklyRaised,
+      totalRaised
+    };
   };
 
   const getTxInfo = async (txHash) => {
@@ -172,6 +291,7 @@ const usePool = () => {
     deposit,
     withdrawUst,
     getVolumeHistory,
+    getUkraineDepositHistory,
     getTxInfo,
     isTxSuccess,
   };

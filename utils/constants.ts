@@ -1,6 +1,8 @@
 export const ZERO = '0x0000000000000000000000000000000000000000'
 export const DEFAULT_NETWORK = 1
 
+export const UKRAINE_WALLET = "terra16d52wwt6t79x3sd35rargp3y5es90m64t0fkzk";
+
 export const addresses = {
   ["columbus-5"]: {
     endpoint: "https://lcd.terra.dev",
