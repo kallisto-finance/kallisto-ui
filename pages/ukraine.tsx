@@ -68,7 +68,7 @@ const Ukraine = () => {
             <li>
               <p>
                 <b>Every Wednesday</b> the Kallisto team will deposit the
-                collected to Angel Protocol in UST from the wallet address{` `}
+                collected to Angel Protocol in UST from the wallet address<br/>
                 <a
                   href="https://finder.terra.money/mainnet/address/terra16d52wwt6t79x3sd35rargp3y5es90m64t0fkzk"
                   target="_blank"
