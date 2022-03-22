@@ -46,7 +46,7 @@ const WithdrawConfirm = ({
 
     return {
       status: "success",
-      text: "Confirm Withdraw",
+      text: "Confirm Withdrawal",
     };
   }, [withdrawAmount, totalAvailableBalance]);
 
