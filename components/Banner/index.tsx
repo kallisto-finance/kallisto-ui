@@ -11,7 +11,7 @@ const AttentionBanner = () => (
   <div className="attention-banner-container">
     <img className="attention-banner-icon" src="/assets/danger.png" />
     <span className="attention-banner-text">
-      Atention! Kallisto’s smart contracts are not audited. Use at your own
+      Attention! Kallisto’s smart contracts are not audited. Use at your own
       risk.
     </span>
   </div>

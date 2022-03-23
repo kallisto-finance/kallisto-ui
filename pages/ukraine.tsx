@@ -43,7 +43,7 @@ const Ukraine = () => {
         </div>
         <div className="ukraine-page-content">
           <h2 className="ukraine-page-title">
-            How I support Ukraine with Kallisto?
+            How do I support Ukraine with Kallisto?
           </h2>
           <ol className="ukraine-page-description">
             <li>
@@ -67,8 +67,8 @@ const Ukraine = () => {
             </li>
             <li>
               <p>
-                <b>Every Wednesday</b> the Kallisto team will deposit the
-                collected to Angel Protocol in UST from the wallet address<br/>
+                <b>Every Wednesday</b> the Kallisto team will transfer the
+                donation amount in UST to Angel Protocol from the wallet address<br/>
                 <a
                   href="https://finder.terra.money/mainnet/address/terra16d52wwt6t79x3sd35rargp3y5es90m64t0fkzk"
                   target="_blank"
