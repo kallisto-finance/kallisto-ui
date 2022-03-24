@@ -11,6 +11,7 @@ const AmountView = ({
   vertical = false,
   iconBack = false,
   containerStyle = {},
+  button = null,
   ...props
 }) => (
   <div
@@ -30,6 +31,7 @@ const AmountView = ({
       {value}
     </span>
     {(icon !== "" && iconBack) && <img className="amount-view-icon" src={icon} style={{ width: 31, height: 31, marginLeft: 5 }}/>}
+    {button}
   </div>
 );
 

@@ -8,6 +8,10 @@
   align-items: flex-start;
   padding: 21px 27px;
 
+  @media screen and (max-width: 480px) {
+    padding: 11px 17px;
+  }
+
   .transaction-toast-icon {
     width: 30px;
     height: 30px;

@@ -5,7 +5,8 @@ export type TMap = {
 export type LIQUIDITY_BUTTON_STATUS =
   | "success"
   | "enter_amount"
-  | "insufficient";
+  | "insufficient"
+  | "loading";
 
 export type LIQUIDITY_BUTTON_TEXT =
   | "Deposit UST"
@@ -13,7 +14,7 @@ export type LIQUIDITY_BUTTON_TEXT =
   | "Insufficient Balance"
   | "Confirm Withdraw"
   | "Insufficient Liquidity"
-  | "Withdrawing";
+  | "Withdrawing UST";
 
 export interface LIQUIDITY_BALANCE_STATUS {
   text: LIQUIDITY_BUTTON_TEXT;

@@ -10,7 +10,7 @@ const LiquidityButton = ({
   className = "",
   onClick,
 }: {
-  label: LIQUIDITY_BUTTON_TEXT;
+  label: any;
   status?: LIQUIDITY_BUTTON_STATUS;
   className: string;
   onClick: () => void;
@@ -20,6 +20,7 @@ const LiquidityButton = ({
       success: status === "success",
       "enter-amount": status === "enter_amount",
       insufficient: status === "insufficient",
+      loading: status === "loading"
     })}
     onClick={(e) => {
       if (status === "success") {

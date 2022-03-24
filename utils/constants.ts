@@ -20,8 +20,8 @@ export const addresses = {
         icon: "https://whitelist.anchorprotocol.com/logo/bETH.png",
       },
       kallistoPool: {
-        // address: "terra1hqtsau586tmzwl6apmf5u6u0avlafeef6w0qpp",
-        address: "terra1vfr2pfdvvtrvhzqwn0z09krxl6383vm8pkv9va",
+        address: "terra1hqtsau586tmzwl6apmf5u6u0avlafeef6w0qpp",
+        // address: "terra1vfr2pfdvvtrvhzqwn0z09krxl6383vm8pkv9va",
       },
     },
   },
