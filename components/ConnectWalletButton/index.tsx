@@ -21,6 +21,9 @@ import { addresses } from "utils/constants";
 import { useLCDClient, useOutsideAlerter } from "hooks";
 
 import cn from "classnames";
+import mixpanel from 'mixpanel-browser';
+
+mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
 
 const ConnectWalletButton = ({ className = "", children = null }) => {
   const {
