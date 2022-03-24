@@ -1,5 +1,5 @@
 .blog-page-container {
-  width: 90vw;
+  width: 100%;
   max-width: 955px;
   margin: 200px auto 0px;
 
@@ -85,10 +85,12 @@
       font-weight: 400;
       font-size: 20px;
       color: #b6b2ef;
+       margin-bottom: 10px;
 
       @media screen and (max-width: 425px) {
         font-size: 10px;
         line-height: 21px;
+         margin-bottom: 7px;
       }
     }
   }
@@ -149,7 +151,7 @@
     padding: 30px 40px;
 
      @media screen and (max-width: 425px) {
-       padding: 20px 30px;
+       padding: 20px 0px;
      }
     a {
       color: #fff;

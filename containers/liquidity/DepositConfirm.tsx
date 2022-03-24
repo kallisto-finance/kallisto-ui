@@ -49,28 +49,41 @@ const DepositConfirm = ({
         <AmountView
           value={`${
             balance === "" ? 0 : new BigNumber(balance).toFormat()
-          } UST`}
+            } UST`}
+          icon="/assets/tokens/ust.png"
+          iconBack={true}
+          button={<Button className="amount-edit-button" onClick={(e) => onBack()}>EDIT</Button>}
         />
       </div>
 
       <div className="view-container-row">
         <div className="view-container-subtitle">Your % of the Pool* </div>
-        <div className="view-container-noticetitle">
-          *This rate is dynamic.{" "}
-        </div>
+
       </div>
       <div className="view-container-row">
         <AmountView value={`${expectedPoolShare.toFixed(2)} %`} />
       </div>
+      <div className="view-container-row" style={{ marginTop: -7 }}>
+        <div className="view-container-noticetitle">
+          *This rate is dynamic.{" "}
+        </div>
+      </div>
 
       <Button
-        className={cn("view-container-button", { "enter-amount": loading })}
+        className={cn("view-container-button", { loading })}
         onClick={(e) => {
           if (loading) return;
           onConfirmDeposit();
         }}
       >
-        {loading ? "Depositing" : "Confirm Deposit"}
+        {loading ? (
+          <>
+            {/* <img src="/assets/loader.gif" /> */}
+            {`Depositing UST`}
+          </>
+        ) : (
+            "Confirm Deposit"
+          )}
       </Button>
     </ViewContainer>
   );

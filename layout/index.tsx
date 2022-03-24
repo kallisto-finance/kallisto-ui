@@ -1,8 +1,10 @@
 import React from 'react'
 import Head from 'next/head'
+import { isMobile } from 'react-device-detect'
 
 import LayoutHeader from './header'
 import Notice from './notice'
+import VolumeLogo from 'components/VolumeLogo'
 import { AttentionBanner } from 'components/Banner'
 
 import { ToastContainer } from 'react-toastify';
@@ -36,9 +38,10 @@ export default function Layout({
             walletConnectChainIds,
           })
         )}
+        <VolumeLogo />
         <Notice />
       </main>
-      <ToastContainer autoClose={10000} pauseOnFocusLoss={false}/>
+      <ToastContainer autoClose={10000} pauseOnFocusLoss={false} position={isMobile ? 'bottom-center' : 'top-right'} />
     </>
   )
 }
