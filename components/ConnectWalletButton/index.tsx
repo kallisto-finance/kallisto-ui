@@ -16,6 +16,9 @@ import { addresses } from "utils/constants";
 import { useLCDClient, useOutsideAlerter } from "hooks";
 
 import cn from "classnames";
+import mixpanel from 'mixpanel-browser';
+
+mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
 
 const ConnectWalletButton = ({ className = "", children = null }) => {
   const {
@@ -104,6 +107,7 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
     } else {
       setShowWalletInfo(false);
       setShowChooseWalletModal(false);
+      mixpanel.track('WALLET_CONNECT');
       connect(ConnectType.EXTENSION);
     }
   };
@@ -184,6 +188,7 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
                 className="wallet-disconnect-button"
                 onClick={(e) => {
                   disconnect();
+                  mixpanel.track('WALLET_DISCONNECT');
                   setShowWalletInfo(false);
                 }}
               >

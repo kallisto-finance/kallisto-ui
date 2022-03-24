@@ -9,6 +9,9 @@ import LiquidityButton from "components/LiquidityButton";
 import { formatBalance } from "utils/wasm";
 import { isNaN, compare } from "utils/number";
 import { COLLECT_TYPE, LIQUIDITY_BALANCE_STATUS } from "types";
+import mixpanel from 'mixpanel-browser';
+
+mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
 
 import cn from "classnames";
 
@@ -114,7 +117,8 @@ const WithdrawConfirm = ({
         className="view-container-button"
         onClick={() => {
           if (loading) return;
-          onConfirmWithdraw(collectType);
+          mixpanel.track('CONFIRM_WITHDRAWAL', { 'amount': withdrawAmount});
+          onConfirmWithdraw(collectType)
         }}
         label={
           loading ? (
