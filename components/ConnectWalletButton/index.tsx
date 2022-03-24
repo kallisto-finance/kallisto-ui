@@ -1,16 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect";
-import {
   useWallet,
   WalletStatus,
   ConnectType,
   useConnectedWallet,
 } from "@terra-money/wallet-provider";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import Button from "components/Button";
 import { ModalContainer, ModalSelectWallet } from "components/Modal";
@@ -38,47 +33,39 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
   const lcd = useLCDClient();
   const connectedWallet = useConnectedWallet();
 
+  const [copied, setCopied] = useState(false);
+
   const [balance, setBalance] = useState({
     ust: "0.0",
-    aUST: "0.0",
-    bETH: "0.0",
+    luna: "0.0",
     bLUNA: "0.0",
   });
 
   const fetchBalances = async () => {
     if (connectedWallet && lcd && network) {
       lcd.bank.balance(connectedWallet.walletAddress).then(async ([coins]) => {
-        const aUSTBalance = await getBalance(
-          addresses[network.chainID].contracts.aUST.address,
-          connectedWallet.walletAddress,
-          network.chainID
-        );
-        const bETHBalance = await getBalance(
-          addresses[network.chainID].contracts.bETH.address,
-          connectedWallet.walletAddress,
-          network.chainID
-        );
         const bLunaBalance = await getBalance(
           addresses[network.chainID].contracts.bLuna.address,
           connectedWallet.walletAddress,
           network.chainID
         );
 
+        const ustBalance =
+          "uusd" in coins._coins ? coins._coins.uusd.amount : 0;
 
-        const ustBalance = "uusd" in coins._coins ? coins._coins.uusd.amount : 0;
+        const lunaBalance =
+          "uluna" in coins._coins ? coins._coins.uluna.amount : 0;
 
         setBalance({
           ust: formatBalance(ustBalance, 1),
-          aUST: formatBalance(aUSTBalance["balance"], 1),
-          bETH: formatBalance(bETHBalance["balance"], 1),
+          luna: formatBalance(lunaBalance, 1),
           bLUNA: formatBalance(bLunaBalance["balance"], 1),
         });
       });
     } else {
       setBalance({
         ust: "0.000",
-        aUST: "0.000",
-        bETH: "0.000",
+        luna: "0.000",
         bLUNA: "0.000",
       });
     }
@@ -95,6 +82,14 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
 
     return () => clearInterval(interval);
   }, [connectedWallet, lcd, network]);
+
+  useEffect(() => {
+    if (copied) {
+      setTimeout(() => {
+        setCopied(false);
+      }, 1000);
+    }
+  }, [copied]);
 
   const [showChooseWalletModal, setShowChooseWalletModal] = useState(false);
   const [showWalletInfo, setShowWalletInfo] = useState(false);
@@ -162,16 +157,30 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
               <div className="wallet-info-address">
                 <div className="circle"></div>
                 <span className="address">
-                  {getWalletAddressEllipsis(wallets[0].terraAddress, 15, 10)}
+                  {copied ? 'Copied' : getWalletAddressEllipsis(wallets[0].terraAddress, 5, 10)}
                 </span>
+                <CopyToClipboard
+                  text={wallets[0].terraAddress}
+                  onCopy={() => setCopied(true)}
+                >
+                  <img className="copy-icon" src="/assets/copy.png" />
+                </CopyToClipboard>
               </div>
 
+              <div className="wallet-info-divider">{` `}</div>
+
               <div className="wallet-balance">
-                <div className="wallet-balance-token">{balance.ust} UST</div>
-                <div className="wallet-balance-token">{balance.aUST} aUST</div>
-                <div className="wallet-balance-token">{balance.bETH} bETH</div>
                 <div className="wallet-balance-token">
-                  {balance.bLUNA} bLUNA
+                  <span className="token-name">UST</span>
+                  <span className="token-value">{balance.ust}</span>
+                </div>
+                <div className="wallet-balance-token">
+                  <span className="token-name">LUNA</span>
+                  <span className="token-value">{balance.luna}</span>
+                </div>
+                <div className="wallet-balance-token">
+                  <span className="token-name">bLUNA</span>
+                  <span className="token-value">{balance.bLUNA}</span>
                 </div>
               </div>
 

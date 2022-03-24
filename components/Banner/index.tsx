@@ -20,19 +20,19 @@ const AttentionBanner = () => (
 const UkraineBanner = () => {
   const [show, setShow] = useState(true);
   return show ? (
-    <div className="ukraine-container-wrapper">
+    <div className="ukraine-banner-container-wrapper">
       <div className="ukraine-banner-close" onClick={(e) => setShow(false)}>
         <FontAwesomeIcon icon={faPropIcon} />
       </div>
       <Link href="/ukraine" passHref>
         <a target="_blank" rel="noreferrer">
-          <div className="ukraine-container">
+          <div className="ukraine-banner-container">
             <img className="ukraine-icon" src="/assets/ukraine.png" />
             <div className="banner-content">
               <p className="title">Let’s support Ukraine!</p>
               <p className="content">
                 Kallisto donates <span className="donate">$50</span> to Ukraine
-                for every $10.000 deposited into the Liquidation Pool.<br/>
+                for every $10.000 deposited into the Liquidation Pool.{` `}
                 <span style={{ textDecoration: 'underline' }}>Learn more</span>
               </p>
             </div>

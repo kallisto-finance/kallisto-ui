@@ -75,6 +75,7 @@ const Liquidity = () => {
             // Update Balance and Pool data
             getPoolValues();
             getUSTBalance();
+            get7daysVolume();
 
             setBalance("");
             setStep(0);
@@ -151,6 +152,7 @@ const Liquidity = () => {
             // Update Balance and Pool data
             getPoolValues();
             getUSTBalance();
+            get7daysVolume();
 
             setWithdrawAmount({
               format: "0",
@@ -214,6 +216,7 @@ const Liquidity = () => {
     // Initial
     getUSTBalance();
     getPoolValues();
+    get7daysVolume();
 
     let interval = null;
 
@@ -225,15 +228,15 @@ const Liquidity = () => {
     return () => clearInterval(interval);
   }, [connectedWallet, lcd, network]);
 
-  useEffect(() => {
-    let interval = null;
+  // useEffect(() => {
+  //   let interval = null;
 
-    interval = setInterval(() => {
-      get7daysVolume();
-    }, 10000);
+  //   interval = setInterval(() => {
+  //     get7daysVolume();
+  //   }, 10000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const [step, setStep] = useState(0);
 

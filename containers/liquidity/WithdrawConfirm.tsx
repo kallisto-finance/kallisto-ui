@@ -21,7 +21,7 @@ const WithdrawConfirm = ({
   withdrawAmount,
   onChangeWithdrawAmount,
   onConfirmWithdraw,
-  loading
+  loading,
 }) => {
   const [collectType, setCollectType] = useState<COLLECT_TYPE>("UST");
 
@@ -60,7 +60,13 @@ const WithdrawConfirm = ({
       onLeft={() => onBack()}
     >
       <div className="view-container-row">
-        <div className="view-container-subtitle">Available balance<img src="/assets/question.png" style={{ marginLeft: 5, height: 16, cursor: 'pointer' }} /></div>
+        <div className="view-container-subtitle">
+          Available balance
+          <img
+            src="/assets/question.png"
+            style={{ marginLeft: 5, height: 16, cursor: "pointer" }}
+          />
+        </div>
       </div>
       <div className="view-container-row">
         <AmountView
@@ -69,7 +75,7 @@ const WithdrawConfirm = ({
           iconBack={true}
           containerStyle={{
             height: 91,
-            borderRadius: 100
+            borderRadius: 100,
           }}
         />
       </div>
@@ -114,8 +120,17 @@ const WithdrawConfirm = ({
           mixpanel.track('CONFIRM_WITHDRAWAL', { 'amount': withdrawAmount});
           onConfirmWithdraw(collectType)
         }}
-        label={loading ? "Withdrawing" : liquidityButtonStatus.text}
-        status={loading ? "enter_amount" : liquidityButtonStatus.status}
+        label={
+          loading ? (
+            <>
+              {/* <img src="/assets/loader.gif" /> */}
+              Withdrawing UST
+            </>
+          ) : (
+            liquidityButtonStatus.text
+          )
+        }
+        status={loading ? "loading" : liquidityButtonStatus.status}
       />
     </ViewContainer>
   );
