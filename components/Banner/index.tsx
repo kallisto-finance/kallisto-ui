@@ -20,7 +20,7 @@ const AttentionBanner = () => (
 const UkraineBanner = () => {
   const [show, setShow] = useState(true);
   return show ? (
-    <div className="ukraine-bannercontainer-wrapper">
+    <div className="ukraine-banner-container-wrapper">
       <div className="ukraine-banner-close" onClick={(e) => setShow(false)}>
         <FontAwesomeIcon icon={faPropIcon} />
       </div>
