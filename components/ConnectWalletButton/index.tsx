@@ -109,6 +109,7 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
     } else {
       setShowWalletInfo(false);
       setShowChooseWalletModal(false);
+      mixpanel.track('WALLET_CONNECT');
       connect(ConnectType.EXTENSION);
     }
   };
@@ -175,6 +176,7 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
                 className="wallet-disconnect-button"
                 onClick={(e) => {
                   disconnect();
+                  mixpanel.track('WALLET_DISCONNECT');
                   setShowWalletInfo(false);
                 }}
               >

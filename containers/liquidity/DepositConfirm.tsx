@@ -8,6 +8,9 @@ import AmountView from "components/AmountView";
 import { isNaN } from "utils/number";
 
 import cn from "classnames";
+import mixpanel from 'mixpanel-browser';
+
+mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
 
 const DepositConfirm = ({
   myBalance,
@@ -67,6 +70,7 @@ const DepositConfirm = ({
         className={cn("view-container-button", { "enter-amount": loading })}
         onClick={(e) => {
           if (loading) return;
+          mixpanel.track('CONFIRM_DEPOSIT', { 'balance': balance});
           onConfirmDeposit();
         }}
       >
