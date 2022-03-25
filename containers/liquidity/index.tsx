@@ -7,6 +7,7 @@ import DepositPool from "./DepositPool";
 import DepositConfirm from "./DepositConfirm";
 import WithdrawConfirm from "./WithdrawConfirm";
 import TransactionFeedbackToast from "components/TransactionFeedbackToast";
+import { UkraineBanner } from "components/Banner";
 
 import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
@@ -102,7 +103,7 @@ const Liquidity = () => {
    * Withdraw
    */
   const [withdrawAmount, setWithdrawAmount] = useState({
-    format: "0",
+    format: "",
     value: new BigNumber(0),
   });
   const [withdrawLoading, setWithdrawLoading] = useState(false);
@@ -298,6 +299,7 @@ const Liquidity = () => {
           />
         )}
       </div>
+      <UkraineBanner />
     </div>
   );
 };

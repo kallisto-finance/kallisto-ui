@@ -39,18 +39,19 @@
   height: 155px;
 
   position: fixed;
-  right: 31px;
-  bottom: 71px;
+  right: 32px;
+  bottom: 32px;
 
   cursor: pointer;
 
   a {
     display: inline-block;
     width: 100%;
+    color: #fff;
   }
 
   @media screen and (max-width: 768px) {
-    width: calc(100vw - 40px);
+    width: calc(100% - 40px);
     height: 105px;
     right: 20px;
     bottom: 20px;
@@ -58,9 +59,12 @@
 
   .ukraine-banner-close {
     position: absolute;
-    margin-right: 15px;
-    margin-top: 15px;
+    margin-right: 10px;
+    margin-top: 10px;
     color: #fff;
+    width: 25px;
+    height: 25px;
+    z-index: 500;
 
     svg {
       width: 25px;
@@ -74,7 +78,7 @@
     width: 100%;
     height: 100%;
     
-    background: #053c8a;
+    background: #4B72AC;
     border-radius: 11px;
     color: #fff;
 
@@ -86,6 +90,8 @@
 
   .ukraine-icon {
     height: 100%;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
 
     @media screen and (max-width: 425px) {
       height: 80%;
@@ -98,7 +104,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-right: 36px;
+    margin-left: 36px;
 
     .title {
       font-weight: bold;
