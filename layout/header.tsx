@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 import ConnectWalletButton from "components/ConnectWalletButton";
-import { UkraineBanner } from "components/Banner";
 
 import cn from "classnames";
 
@@ -40,7 +39,6 @@ const LayoutHeader = ({ router }) => {
         </a>
         <ConnectWalletButton />
       </div>
-      {!curLink.startsWith("/ukraine") && <UkraineBanner />}
     </header>
   );
 };

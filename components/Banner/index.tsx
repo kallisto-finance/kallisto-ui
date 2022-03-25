@@ -24,10 +24,10 @@ const UkraineBanner = () => {
       <div className="ukraine-banner-close" onClick={(e) => setShow(false)}>
         <FontAwesomeIcon icon={faPropIcon} />
       </div>
-      <Link href="/ukraine" passHref>
-        <a target="_blank" rel="noreferrer">
-          <div className="ukraine-banner-container">
-            <img className="ukraine-icon" src="/assets/ukraine.png" />
+
+      <div className="ukraine-banner-container">
+        <Link href="/ukraine" passHref>
+          <a target="_blank" rel="noreferrer">
             <div className="banner-content">
               <p className="title">Let’s support Ukraine!</p>
               <p className="content">
@@ -36,9 +36,11 @@ const UkraineBanner = () => {
                 <span style={{ textDecoration: 'underline' }}>Learn more</span>
               </p>
             </div>
-          </div>
-        </a>
-      </Link>
+          </a>
+        </Link>
+        <img className="ukraine-icon" src="/assets/ukraine.png" />
+      </div>
+
     </div>
   ) : null;
 };
