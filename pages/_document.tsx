@@ -1,5 +1,9 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
+import mixpanel from 'mixpanel-browser';
+
+mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
+mixpanel.track('DOCUMENT_LOAD');
 
 class MyDocument extends Document {
   static async getInitialProps({ renderPage }) {
@@ -22,7 +26,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          
+
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://necolas.github.io/normalize.css/latest/normalize.css"

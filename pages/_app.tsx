@@ -10,6 +10,7 @@ import Layout from "layout";
 
 import "../styles/index.scss";
 
+
 function App({
   Component,
   defaultNetwork,
