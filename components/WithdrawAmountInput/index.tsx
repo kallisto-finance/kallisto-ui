@@ -7,6 +7,9 @@ import { formatBalance } from "utils/wasm";
 import { isNaN } from "utils/number";
 
 import cn from "classnames";
+import mixpanel from 'mixpanel-browser';
+
+mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
 
 const WithdrawAmountInput = ({
   maxBalance,
@@ -32,6 +35,7 @@ const WithdrawAmountInput = ({
       .multipliedBy(value)
       .dividedBy(100)
       .dividedBy(10 ** 6);
+    mixpanel.track('WITHDRAW', {'balance': balance });
     onChangeWithdrawAmount(balance);
   };
 
