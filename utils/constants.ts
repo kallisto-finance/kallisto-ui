@@ -23,7 +23,7 @@ export const addresses = {
         // address: "terra1hqtsau586tmzwl6apmf5u6u0avlafeef6w0qpp",
         // address: "terra1xqwqt9q54lr89wm6dpt0gxrsy5pewhdh2yjnjg",
         //testing only contract:
-        address: "terra1g6entpwz0h2tu70numhye223v6n6uvq0kqg27z"
+        address: "terra1g6entpwz0h2tu70numhye223v6n6uvq0kqg27z",
       },
     },
   },
