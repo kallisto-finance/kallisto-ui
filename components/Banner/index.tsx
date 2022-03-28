@@ -32,7 +32,7 @@ const UkraineBanner = () => {
               <p className="title">Let’s support Ukraine!</p>
               <p className="content">
                 Kallisto donates <span className="donate">$50</span> to Ukraine
-                for every $10.000 deposited into the Liquidation Pool.{` `}
+                for every $10,000 deposited into the Liquidation Pool.{` `}
                 <span style={{ textDecoration: 'underline' }}>Learn more</span>
               </p>
             </div>
