@@ -29,6 +29,15 @@ const LayoutHeader = ({ router }) => {
             <span>Blog</span>
           </div>
         </Link>
+        <Link href="/event">
+          <div
+            className={cn("header-button", {
+              active: curLink.startsWith("/event"),
+            })}
+          >
+            <span>Events</span>
+          </div>
+        </Link>
         <a
           href="https://t.me/kallistofinance"
           className="header-button"

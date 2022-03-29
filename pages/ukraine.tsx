@@ -53,7 +53,7 @@ const Ukraine = () => {
               <p>
                 Kallisto will donate{" "}
                 <span style={{ color: "#efce2b", fontWeight: 500 }}>$50 UST</span>{" "}
-                for every <b>$10,000.00 UST</b> deposited to{` `}
+                for every <b>$10,000 UST</b> deposited to{` `}
                 <a
                   href="https://ukraine.angelprotocol.io/"
                   target="_blank"
