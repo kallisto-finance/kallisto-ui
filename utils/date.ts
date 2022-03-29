@@ -28,9 +28,36 @@ const dateOptions = {
   day: "numeric",
 } as const;
 
+const dateOptionsWithWeekDay = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  weekday: "long" 
+} as const;
+
+const timeOptions = {
+  hour12: true,
+  hour: "2-digit",
+  minute: "2-digit",
+} as const;
+
 export const convertDateString = (dateStr) => {
   const stamp = Date.parse(dateStr);
   const date = new Date(stamp);
 
   return date.toLocaleDateString("en-US", dateOptions);
+};
+
+export const convertDateStringWithWeekDay = (dateStr) => {
+  const stamp = Date.parse(dateStr);
+  const date = new Date(stamp);
+
+  return date.toLocaleDateString("en-US", dateOptionsWithWeekDay);
+};
+
+export const convertTimeString = (dateStr) => {
+  const stamp = Date.parse(dateStr);
+  const date = new Date(stamp);
+
+  return date.toLocaleDateString("en-US", timeOptions).split(",")[1].trim();
 };

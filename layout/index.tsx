@@ -38,7 +38,6 @@ export default function Layout({
             walletConnectChainIds,
           })
         )}
-        <VolumeLogo />
         <Notice />
       </main>
       <ToastContainer autoClose={10000} pauseOnFocusLoss={false} position={isMobile ? 'bottom-center' : 'top-right'} />

@@ -18,3 +18,18 @@ export const fetchBlogs = async () => {
   console.log(blogs);
   return blogs;
 }
+
+export const fetchEvents = async () => {
+  const events = [];
+  var response = await Storyblok.get("cdn/stories/");
+
+  for (const story of response.data.stories) {
+    if (story.published_at != null) {
+      if (story.full_slug.startsWith("events/") && !story.full_slug.endsWith("events/")) {
+        events.push(story);
+      }
+    }
+  }
+  console.log(events);
+  return events;
+}

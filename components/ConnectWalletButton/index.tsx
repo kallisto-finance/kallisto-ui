@@ -72,8 +72,6 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
   };
 
   useEffect(() => {
-    fetchBalances();
-
     let interval = null;
 
     interval = setInterval(() => {
