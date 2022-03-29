@@ -27,7 +27,6 @@ const BlogPost = () => {
     getData();
   }, []);
 
-  console.log(blog);
   return (
     <div className="page-container">
       {blog !== null && (
