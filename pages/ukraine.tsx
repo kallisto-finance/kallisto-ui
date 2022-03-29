@@ -36,7 +36,7 @@ const Ukraine = () => {
               <h1 className="title">Let’s support Ukraine!</h1>
               <p className="content">
                 Kallisto donates <span className="donate">$50</span> to Ukraine
-                for every $10.000 deposited into the Liquidation Pool.
+                for every $10,000.00 UST deposited into the Liquidation Pool.
               </p>
             </div>
           </div>
