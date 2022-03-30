@@ -64,6 +64,7 @@ const usePool = () => {
       return;
     }
 
+    console.log(addresses[network.chainID].contracts.kallistoPool.address)
     const msg = new MsgExecuteContract(
       connectedWallet.walletAddress,
       addresses[network.chainID].contracts.kallistoPool.address,
