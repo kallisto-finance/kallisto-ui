@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useConnectedWallet } from "@terra-money/wallet-provider";
 
 import ViewContainer from "components/ViewContainer";
@@ -24,6 +24,7 @@ const DepositPool = ({
   onChangeDepositInputAmount,
 }) => {
   const connectedWallet = useConnectedWallet();
+  const [depositChecked, setDepositChecked] = useState(false);
 
   const liquidityButtonStatus = useMemo((): LIQUIDITY_BALANCE_STATUS => {
     if (isNaN(balance)) {
@@ -47,11 +48,18 @@ const DepositPool = ({
       };
     }
 
+    if (!depositChecked) {
+      return {
+        status: "enter_amount",
+        text: "Deposit UST",
+      };
+    }
+
     return {
       status: "success",
       text: "Deposit UST",
     };
-  }, [balance, ustBalance]);
+  }, [balance, ustBalance, depositChecked]);
 
   return (
     <ViewContainer className="add-liquidity-panel" title="Liquidation Pool ">
@@ -88,7 +96,11 @@ const DepositPool = ({
       </div>
       <div className="view-container-row">
         <div className="cooldown-notice">
-          <div className="cooldown-notice-circle"></div>
+          <img
+            onClick={(e) => setDepositChecked(!depositChecked)}
+            src={depositChecked ? "/assets/deposit-checked-on.png" : "/assets/deposit-checked-off.png"}
+            className="cooldown-notice-circle"
+          />
           <div className="cooldown-notice-text">
             Deposits can be withdrawn one hour after the last successful
             deposit.
