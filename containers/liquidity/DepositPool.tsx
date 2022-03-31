@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useConnectedWallet } from "@terra-money/wallet-provider";
 
 import ViewContainer from "components/ViewContainer";
@@ -11,10 +11,10 @@ import { LIQUIDITY_BALANCE_STATUS } from "types";
 
 import { isNaN, compare } from "utils/number";
 import { formatBalance } from "utils/wasm";
-import mixpanel from 'mixpanel-browser';
+import mixpanel from "mixpanel-browser";
 
-mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
-mixpanel.track('DEPOSIT');
+mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
+mixpanel.track("DEPOSIT");
 
 const DepositPool = ({
   onDeposit,
@@ -24,6 +24,7 @@ const DepositPool = ({
   onChangeDepositInputAmount,
 }) => {
   const connectedWallet = useConnectedWallet();
+  const [depositChecked, setDepositChecked] = useState(false);
 
   const liquidityButtonStatus = useMemo((): LIQUIDITY_BALANCE_STATUS => {
     if (isNaN(balance)) {
@@ -47,11 +48,18 @@ const DepositPool = ({
       };
     }
 
+    if (!depositChecked) {
+      return {
+        status: "enter_amount",
+        text: "Deposit UST",
+      };
+    }
+
     return {
       status: "success",
       text: "Deposit UST",
     };
-  }, [balance, ustBalance]);
+  }, [balance, ustBalance, depositChecked]);
 
   return (
     <ViewContainer className="add-liquidity-panel" title="Liquidation Pool ">
@@ -85,6 +93,19 @@ const DepositPool = ({
             onChangeDepositInputAmount(value)
           }
         />
+      </div>
+      <div className="view-container-row">
+        <div className="cooldown-notice">
+          <img
+            onClick={(e) => setDepositChecked(!depositChecked)}
+            src={depositChecked ? "/assets/deposit-checked-on.png" : "/assets/deposit-checked-off.png"}
+            className="cooldown-notice-circle"
+          />
+          <div className="cooldown-notice-text">
+            Deposits can be withdrawn one hour after the last successful
+            deposit.
+          </div>
+        </div>
       </div>
       {connectedWallet ? (
         <LiquidityButton

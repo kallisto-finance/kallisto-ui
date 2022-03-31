@@ -1,8 +1,5 @@
 import { MsgExecuteContract, TxAPI } from "@terra-money/terra.js";
-import {
-  useWallet,
-  useConnectedWallet,
-} from "@terra-money/wallet-provider";
+import { useWallet, useConnectedWallet } from "@terra-money/wallet-provider";
 import BigNumber from "bignumber.js";
 
 import { useLCDClient } from "hooks";
@@ -51,11 +48,27 @@ const usePool = () => {
         ? new BigNumber(0)
         : myLiquidity.dividedBy(totalSupply).multipliedBy(100);
 
+    // Get Last Deposit Time
+    res = await getContractQuery(
+      addresses[network.chainID].contracts.kallistoPool.address,
+      network.chainID,
+      {
+        last_deposit_timestamp: {
+          address: connectedWallet.walletAddress,
+        },
+      }
+    );
+    const lastDepositTime = res["timestamp"];
+
     return {
-      myLiquidity,
+      myLiquidity: myLiquidity,
+      myDeposited: myLiquidity
+        .dividedBy(totalSupply)
+        .multipliedBy(totalLiquidity),
       totalLiquidity,
       totalSupply,
       poolShare,
+      lastDepositTime,
     };
   };
 
@@ -64,7 +77,7 @@ const usePool = () => {
       return;
     }
 
-    console.log(addresses[network.chainID].contracts.kallistoPool.address)
+    console.log(addresses[network.chainID].contracts.kallistoPool.address);
     const msg = new MsgExecuteContract(
       connectedWallet.walletAddress,
       addresses[network.chainID].contracts.kallistoPool.address,
@@ -116,42 +129,38 @@ const usePool = () => {
     let limit = 100;
 
     try {
-      while(true) {
-        const response = await getTxHistories(contractAddress, offset, limit);
+      while (true) {
+        const txHistories = await getTxHistories(
+          contractAddress,
+          offset,
+          limit
+        );
 
-        if (response.status === 200) {
-          const txHistories = response.data;
-
-          if (txHistories.txs.length === 0) {
-            break;
-          }
-
-          for (let i = 0; i < txHistories.txs.length; i++) {
-            const tx = txHistories.txs[i];
-            
-            const txTimestamp = new Date(tx.timestamp).getTime();
-
-            if (txTimestamp < searchDateStartTime) {
-              break;
-            }
-
-            historyData.push(tx);
-          }
-
-          if (!txHistories.next || txHistories.next === undefined) {
-            break;
-          }
-
-          offset = txHistories.next;
-
-          await delay(1000);
-
-        } else {
+        if (txHistories.txs.length === 0) {
           break;
         }
+
+        for (let i = 0; i < txHistories.txs.length; i++) {
+          const tx = txHistories.txs[i];
+
+          const txTimestamp = new Date(tx.timestamp).getTime();
+
+          if (txTimestamp < searchDateStartTime) {
+            break;
+          }
+
+          historyData.push(tx);
+        }
+
+        if (!txHistories.next || txHistories.next === undefined) {
+          break;
+        }
+
+        offset = txHistories.next;
+
+        await delay(1000);
       }
-    } catch (e) {
-    }
+    } catch (e) {}
 
     for (let i = 0; i < historyData.length; i++) {
       const tx = historyData[i];
@@ -189,7 +198,7 @@ const usePool = () => {
         }
       }
     }
-    
+
     return volume;
   };
 
@@ -202,33 +211,27 @@ const usePool = () => {
     let offset = 0;
     let limit = 100;
 
-    let isWeekly = true
+    let isWeekly = true;
 
     try {
       while (true) {
-        const response = await getTxHistories(UKRAINE_WALLET, offset, limit);
+        const txHistories = await getTxHistories(UKRAINE_WALLET, offset, limit);
 
-        if (response.status === 200) {
-          const txHistories = response.data;
-
-          if (txHistories.txs.length === 0) {
-            break;
-          }
-
-          for (let i = 0; i < txHistories.txs.length; i++) {
-            historyData.push(txHistories.txs[i]);
-          }
-
-          if (!txHistories.next || txHistories.next === undefined) {
-            break;
-          }
-
-          offset = txHistories.next;
-
-          await delay(1000);
-        } else {
+        if (txHistories.txs.length === 0) {
           break;
         }
+
+        for (let i = 0; i < txHistories.txs.length; i++) {
+          historyData.push(txHistories.txs[i]);
+        }
+
+        if (!txHistories.next || txHistories.next === undefined) {
+          break;
+        }
+
+        offset = txHistories.next;
+
+        await delay(1000);
       }
     } catch (e) {}
 
@@ -254,7 +257,7 @@ const usePool = () => {
 
         const amounts = msgs[j].value.amount;
 
-        for (let k = 0; k <amounts.length; k++) {
+        for (let k = 0; k < amounts.length; k++) {
           if (amounts[k].denom === "uusd") {
             totalRaised = totalRaised.plus(amounts[k].amount);
 
@@ -269,15 +272,15 @@ const usePool = () => {
 
     return {
       weeklyRaised,
-      totalRaised
+      totalRaised,
     };
   };
 
   const getTxInfo = async (txHash) => {
     const txAPI = new TxAPI(lcd);
-    const txInfo  = await txAPI.txInfo(txHash);
-    return txInfo
-  }
+    const txInfo = await txAPI.txInfo(txHash);
+    return txInfo;
+  };
 
   const isTxSuccess = (txInfo) => {
     if (txInfo.logs.length === 0) {
@@ -285,7 +288,7 @@ const usePool = () => {
     }
 
     return "success";
-  }
+  };
 
   return {
     fetchPoolValues,

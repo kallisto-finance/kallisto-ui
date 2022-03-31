@@ -3,6 +3,8 @@ export const DEFAULT_NETWORK = 1
 
 export const UKRAINE_WALLET = "terra16d52wwt6t79x3sd35rargp3y5es90m64t0fkzk";
 
+export const WITHDRAW_LOCK_TIME = 3600 * 1000 * 1000 * 1000;    // NANO SECONDS
+
 export const addresses = {
   ["columbus-5"]: {
     endpoint: "https://lcd.terra.dev",

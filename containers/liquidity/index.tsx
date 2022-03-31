@@ -27,7 +27,9 @@ const Liquidity = () => {
   const [totalLiquidity, setTotalLiquidity] = useState(new BigNumber(0));
   const [totalSupply, setTotalSupply] = useState(new BigNumber(0));
   const [myLiquidity, setMyLiquidity] = useState(new BigNumber(0));
+  const [myCap, setMyCap] = useState(new BigNumber(0));
   const [poolShare, setPoolShare] = useState(new BigNumber(0));
+  const [lastDepositTime, setLastDepositTime] = useState(0);
 
   const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
 
@@ -202,6 +204,8 @@ const Liquidity = () => {
       setMyLiquidity(result.myLiquidity);
       setPoolShare(result.poolShare);
       setTotalSupply(result.totalSupply);
+      setLastDepositTime(result.lastDepositTime);
+      setMyCap(result.myDeposited);
     }
   };
 
@@ -229,15 +233,15 @@ const Liquidity = () => {
     return () => clearInterval(interval);
   }, [connectedWallet, lcd, network]);
 
-  // useEffect(() => {
-  //   let interval = null;
+  useEffect(() => {
+    let interval = null;
 
-  //   interval = setInterval(() => {
-  //     get7daysVolume();
-  //   }, 10000);
+    interval = setInterval(() => {
+      get7daysVolume();
+    }, 10000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
   const [step, setStep] = useState(0);
 
@@ -253,8 +257,10 @@ const Liquidity = () => {
           <>
             <YourLiquidityPanel
               myBalance={myLiquidity}
+              myCap={myCap}
               totalLiquidity={totalLiquidity}
               poolShare={poolShare}
+              lastDepositTime={lastDepositTime}
               onWithdraw={() => {
                 moveScrollToTop();
                 setStep(2);

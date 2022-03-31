@@ -8,6 +8,10 @@
   background: #caeb70;
   padding: 10px;
 
+  @media screen and (max-width: 600px) {
+    height: fit-content
+  }
+
   .attention-banner-icon {
     height: 17px;
     margin-right: 12px;
@@ -35,8 +39,8 @@
   // padding: 0px 67px;
   display: flex;
   justify-content: flex-end;
-  width: 516px;
-  height: 155px;
+  width: 400px;
+  height: 129px;
 
   position: fixed;
   right: 32px;
@@ -82,29 +86,42 @@
     border-radius: 11px;
     color: #fff;
 
+    background-image: url('/assets/ukraine.png');
+    background-position: right center;
+    background-size: contain;
+    background-repeat: no-repeat;
+
     @media screen and (max-width: 768px) {
       width: 100%;
       border-radius: 7px;
     }
   }
 
-  .ukraine-icon {
-    height: 100%;
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
+  // .ukraine-icon {
+  //   height: 80%;
+  //   -webkit-transform: scaleX(-1);
+  //   transform: scaleX(-1);
 
-    @media screen and (max-width: 425px) {
-      height: 80%;
-    }
-  }
+  //   @media screen and (max-width: 425px) {
+  //     height: 80%;
+  //   }
+  // }
 
   .banner-content {
-    flex: 1;
+    width: 253px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-left: 36px;
+    margin-left: 24px;
+
+    @media screen and (max-width: 375px) {
+      width: 220px;
+    }
+
+    @media screen and (max-width: 350px) {
+      width: 190px;
+    }
 
     .title {
       font-weight: bold;

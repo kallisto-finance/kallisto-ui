@@ -9,14 +9,17 @@ import AmountView from "components/AmountView";
 
 import { formatBalance } from "utils/wasm";
 import { compare } from "utils/number";
+import { WITHDRAW_LOCK_TIME } from "utils/constants";
 
 import cn from "classnames";
 
 const YourLiquidityPanel = ({
   myBalance,
+  myCap,
   totalLiquidity,
   poolShare,
   onWithdraw,
+  lastDepositTime,
 }) => {
   const connectedWallet = useConnectedWallet();
 
@@ -29,8 +32,8 @@ const YourLiquidityPanel = ({
       <a href="/" id="your-liquidity-panel" />
       <div className="view-container-row">
         <AmountView
-          label="Your Balance"
-          value={`${formatBalance(myBalance, 1)} UST`}
+          label="Your Liquidity"
+          value={`${formatBalance(myCap, 1)} UST`}
           highlight={true}
           vertical={true}
         />
@@ -50,14 +53,30 @@ const YourLiquidityPanel = ({
           vertical={true}
         />
       </div>
+      <div className="view-container-row" style={{ color: "#60699E" }}>
+        Deposits can be withdrawn one hour after your last successful deposit.
+      </div>
       {connectedWallet ? (
         <Button
           className={cn("view-container-button", {
-            withdraw: compare(myBalance, 0) > 0,
-            "enter-amount": compare(myBalance, 0) <= 0,
+            withdraw:
+              compare(myBalance, 0) > 0 &&
+              new Date().getTime() * 1000 * 1000 >
+                Number(lastDepositTime) + WITHDRAW_LOCK_TIME,
+            "enter-amount":
+              compare(myBalance, 0) <= 0 ||
+              new Date().getTime() * 1000 * 1000 <=
+                Number(lastDepositTime) + WITHDRAW_LOCK_TIME,
           })}
           onClick={() => {
+            console.log(new Date().getTime() * 1000 * 1000);
+            console.log(Number(lastDepositTime) + WITHDRAW_LOCK_TIME);
             if (compare(myBalance, 0) <= 0) return;
+            if (
+              new Date().getTime() * 1000 * 1000 <=
+              Number(lastDepositTime) + WITHDRAW_LOCK_TIME
+            )
+              return;
             onWithdraw();
           }}
         >
