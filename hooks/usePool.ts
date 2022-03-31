@@ -51,11 +51,25 @@ const usePool = () => {
         ? new BigNumber(0)
         : myLiquidity.dividedBy(totalSupply).multipliedBy(100);
 
+    // Get Last Deposit Time
+    res = await getContractQuery(
+      addresses[network.chainID].contracts.kallistoPool.address,
+      network.chainID,
+      {
+        last_deposit_timestamp: {
+          address: connectedWallet.walletAddress
+        },
+      }
+    );
+    const lastDepositTime = res["timestamp"];
+
     return {
-      myLiquidity,
+      myLiquidity: myLiquidity,
+      myDeposited: myLiquidity.dividedBy(totalSupply).multipliedBy(totalLiquidity),
       totalLiquidity,
       totalSupply,
       poolShare,
+      lastDepositTime
     };
   };
 

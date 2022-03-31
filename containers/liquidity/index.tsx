@@ -28,6 +28,7 @@ const Liquidity = () => {
   const [totalSupply, setTotalSupply] = useState(new BigNumber(0));
   const [myLiquidity, setMyLiquidity] = useState(new BigNumber(0));
   const [poolShare, setPoolShare] = useState(new BigNumber(0));
+  const [lastDepositTime, setLastDepositTime] = useState(0);
 
   const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
 
@@ -202,6 +203,7 @@ const Liquidity = () => {
       setMyLiquidity(result.myLiquidity);
       setPoolShare(result.poolShare);
       setTotalSupply(result.totalSupply);
+      setLastDepositTime(result.lastDepositTime);
     }
   };
 
@@ -255,6 +257,7 @@ const Liquidity = () => {
               myBalance={myLiquidity}
               totalLiquidity={totalLiquidity}
               poolShare={poolShare}
+              lastDepositTime={lastDepositTime}
               onWithdraw={() => {
                 moveScrollToTop();
                 setStep(2);

@@ -11,10 +11,10 @@ import { LIQUIDITY_BALANCE_STATUS } from "types";
 
 import { isNaN, compare } from "utils/number";
 import { formatBalance } from "utils/wasm";
-import mixpanel from 'mixpanel-browser';
+import mixpanel from "mixpanel-browser";
 
-mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
-mixpanel.track('DEPOSIT');
+mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
+mixpanel.track("DEPOSIT");
 
 const DepositPool = ({
   onDeposit,
@@ -85,6 +85,15 @@ const DepositPool = ({
             onChangeDepositInputAmount(value)
           }
         />
+      </div>
+      <div className="view-container-row">
+        <div className="cooldown-notice">
+          <div className="cooldown-notice-circle"></div>
+          <div className="cooldown-notice-text">
+            Deposits can be withdrawn one hour after the last successful
+            deposit.
+          </div>
+        </div>
       </div>
       {connectedWallet ? (
         <LiquidityButton
