@@ -15,6 +15,7 @@ import cn from "classnames";
 
 const YourLiquidityPanel = ({
   myBalance,
+  myCap,
   totalLiquidity,
   poolShare,
   onWithdraw,
@@ -31,8 +32,8 @@ const YourLiquidityPanel = ({
       <a href="/" id="your-liquidity-panel" />
       <div className="view-container-row">
         <AmountView
-          label="Your Balance"
-          value={`${formatBalance(myBalance, 1)} UST`}
+          label="Your Liquidity"
+          value={`${formatBalance(myCap, 1)} UST`}
           highlight={true}
           vertical={true}
         />
