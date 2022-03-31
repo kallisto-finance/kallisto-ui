@@ -62,10 +62,6 @@ const WithdrawConfirm = ({
       <div className="view-container-row">
         <div className="view-container-subtitle">
           Available balance
-          <img
-            src="/assets/question.png"
-            style={{ marginLeft: 5, height: 16, cursor: "pointer" }}
-          />
         </div>
       </div>
       <div className="view-container-row">

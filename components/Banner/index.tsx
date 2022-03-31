@@ -11,8 +11,9 @@ const AttentionBanner = () => (
   <div className="attention-banner-container">
     <img className="attention-banner-icon" src="/assets/danger.png" />
     <span className="attention-banner-text">
-      Attention! Kallisto’s smart contracts are not audited. Use at your own
-      risk.
+      Attention! Kallisto smart contracts are not yet audited and are regularly
+      updated for improvements. Withdrawals from deprecated contracts are always
+      allowed. Use at your own risk
     </span>
   </div>
 );
@@ -33,14 +34,13 @@ const UkraineBanner = () => {
               <p className="content">
                 Kallisto donates <span className="donate">$50</span> to Ukraine
                 for every $10,000 deposited into the Liquidation Pool.{` `}
-                <span style={{ textDecoration: 'underline' }}>Learn more</span>
+                <span style={{ textDecoration: "underline" }}>Learn more</span>
               </p>
             </div>
           </a>
         </Link>
-        <img className="ukraine-icon" src="/assets/ukraine.png" />
+        {/* <img className="ukraine-icon" src="/assets/ukraine.png" /> */}
       </div>
-
     </div>
   ) : null;
 };
