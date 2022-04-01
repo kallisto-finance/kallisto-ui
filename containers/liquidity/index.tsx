@@ -233,15 +233,15 @@ const Liquidity = () => {
     return () => clearInterval(interval);
   }, [connectedWallet, lcd, network]);
 
-  useEffect(() => {
-    let interval = null;
+  // useEffect(() => {
+  //   let interval = null;
 
-    interval = setInterval(() => {
-      get7daysVolume();
-    }, 10000);
+  //   interval = setInterval(() => {
+  //     get7daysVolume();
+  //   }, 10000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const [step, setStep] = useState(0);
 
