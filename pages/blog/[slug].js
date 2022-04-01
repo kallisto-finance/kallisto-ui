@@ -83,9 +83,3 @@ const BlogPost = () => {
 };
 
 export default BlogPost;
-
-export async function getServerSideProps(context) {
-  return {
-      props: {},
-  };
-}
