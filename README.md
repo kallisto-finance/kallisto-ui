@@ -24,6 +24,7 @@ LIQUIDITY_CONTRACT=VAULT_CONTRACT_ADDRESS
 
 ## Run
 ```
+npm install
 npm run dev
 ```
 
