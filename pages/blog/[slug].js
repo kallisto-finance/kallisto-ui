@@ -6,7 +6,27 @@ import { render, NODE_IMAGE } from "storyblok-rich-text-react-renderer";
 import { fetchBlogs } from "utils/storyblok";
 import { convertDateString } from "utils/date";
 
-function Blog({ post }) {
+function Blog() {
+  const router = useRouter();
+  const { slug } = router.query;
+
+  const [post, setPost] = useState(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await fetchBlogs();
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].full_slug.includes(slug)) {
+          setPost(data[i]);
+          break;
+        }
+      }
+    };
+
+    getData();
+  }, []);
+
   return (
     <div className="page-container">
       {post !== null && post !== undefined && (
