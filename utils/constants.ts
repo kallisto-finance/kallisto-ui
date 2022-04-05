@@ -27,6 +27,9 @@ export const addresses = {
         //testing only contract:
         address: process.env.LIQUIDITY_CONTRACT,
       },
+      oracle: {
+        address: "terra1cgg6yef7qcdm070qftghfulaxmllgmvk77nc7t"
+      }
     },
   },
   ["bombay-12"]: {

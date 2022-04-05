@@ -30,6 +30,7 @@ const Liquidity = () => {
   const [myCap, setMyCap] = useState(new BigNumber(0));
   const [poolShare, setPoolShare] = useState(new BigNumber(0));
   const [lastDepositTime, setLastDepositTime] = useState(0);
+  const [donutValues, setDonutValues ] = useState(null);
 
   const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
 
@@ -206,6 +207,7 @@ const Liquidity = () => {
       setTotalSupply(result.totalSupply);
       setLastDepositTime(result.lastDepositTime);
       setMyCap(result.myDeposited);
+      setDonutValues(result.donutData)
     }
   };
 
@@ -218,6 +220,10 @@ const Liquidity = () => {
    * Init
    */
   useEffect(() => {
+    if (lcd === null) {
+      return;
+    }
+
     // Initial
     getUSTBalance();
     getPoolValues();
@@ -261,6 +267,7 @@ const Liquidity = () => {
               totalLiquidity={totalLiquidity}
               poolShare={poolShare}
               lastDepositTime={lastDepositTime}
+              donutValues={donutValues}
               onWithdraw={() => {
                 moveScrollToTop();
                 setStep(2);

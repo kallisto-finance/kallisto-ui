@@ -21,6 +21,15 @@ const formatBalance = (value, fixed = 3, decimals = 6) => {
   return balance;
 };
 
+const toBalance = (value, fixed = 3, decimals = 6) => {
+  const balance = new BigNumber(value)
+    .div(10 ** decimals)
+    .toFixed(fixed)
+    .toString();
+
+  return balance;
+};
+
 const getBalance = async (contractAddress, userAddress, chainId) => {
   const wasm = new WasmAPI(new APIRequester(addresses[chainId].endpoint));
 
@@ -102,4 +111,4 @@ const postMessage = (connectedWallet, msg, callback) => {
     });
 };
 
-export { formatBalance, getBalance, getContractQuery, postMessage };
+export { formatBalance, toBalance, getBalance, getContractQuery, postMessage };
