@@ -10,9 +10,9 @@ import Layout from "layout";
 
 import "../styles/index.scss";
 
-
 function App({
   Component,
+  pageProps,
   defaultNetwork,
   walletConnectChainIds,
   router,
@@ -27,7 +27,7 @@ function App({
         defaultNetwork={defaultNetwork}
         walletConnectChainIds={walletConnectChainIds}
       >
-        <Component />
+        <Component { ...pageProps }/>
       </Layout>
     </WalletProvider>
   ) : (
@@ -37,7 +37,7 @@ function App({
         defaultNetwork={defaultNetwork}
         walletConnectChainIds={walletConnectChainIds}
       >
-        <Component />
+        <Component { ...pageProps }/>
       </Layout>
     </StaticWalletProvider>
   );

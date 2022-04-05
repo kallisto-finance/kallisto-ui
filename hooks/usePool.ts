@@ -24,6 +24,14 @@ const usePool = () => {
     );
     const myLiquidity = new BigNumber(res["balance"]);
 
+    // Get bLuna balance
+    res = await getBalance(
+      addresses[network.chainID].contracts.bLuna.address,
+      addresses[network.chainID].contracts.kallistoPool.address,
+      network.chainID
+    );
+    const bLunaBalance = new BigNumber(res["balance"]);
+
     // Get Total Liquidity
     res = await getContractQuery(
       addresses[network.chainID].contracts.kallistoPool.address,
@@ -68,6 +76,7 @@ const usePool = () => {
       totalLiquidity,
       totalSupply,
       poolShare,
+      bLunaBalance,
       lastDepositTime,
     };
   };

@@ -30,6 +30,7 @@ const Liquidity = () => {
   const [myCap, setMyCap] = useState(new BigNumber(0));
   const [poolShare, setPoolShare] = useState(new BigNumber(0));
   const [lastDepositTime, setLastDepositTime] = useState(0);
+  const [bLunaBalance, setBLunaBalance ] = useState(new BigNumber(0));
 
   const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
 
@@ -206,6 +207,7 @@ const Liquidity = () => {
       setTotalSupply(result.totalSupply);
       setLastDepositTime(result.lastDepositTime);
       setMyCap(result.myDeposited);
+      setBLunaBalance(result.bLunaBalance)
     }
   };
 
@@ -261,6 +263,7 @@ const Liquidity = () => {
               totalLiquidity={totalLiquidity}
               poolShare={poolShare}
               lastDepositTime={lastDepositTime}
+              bLunaBalance={bLunaBalance}
               onWithdraw={() => {
                 moveScrollToTop();
                 setStep(2);
