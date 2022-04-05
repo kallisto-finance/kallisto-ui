@@ -22,7 +22,7 @@ const YourLiquidityPanel = ({
   poolShare,
   onWithdraw,
   lastDepositTime,
-  bLunaBalance
+  donutValues,
 }) => {
   const connectedWallet = useConnectedWallet();
 
@@ -42,27 +42,29 @@ const YourLiquidityPanel = ({
       </div>
       <div className="view-container-chart">
         <div className="chart-section">
-          <DonutChart
-            data={{
-              labels: ["Liquid UST Balance", "UST in Bids", "bLUNA Balance"],
-              datasets: [
-                {
-                  data: [
-                    // formatBalance(bLunaBalance, 6),        // bluna balance
-                    toBalance(totalLiquidity, 6),   //  ust in bids
-                    toBalance(totalLiquidity, 6),   //  ust in bids
-                    toBalance(totalLiquidity, 6),   //  ust in liquidity
-                  ],
-                  backgroundColor: ["#37FAD3", "#FFFFFF", "#B6B2EF"],
-                  hoverBackgroundColor: ["#37FAD3", "#FFFFFF", "#B6B2EF"],
-                  hoverOffset: 0,
-                  cutout: "70%",
-                  borderWidth: 0,
-                  rotate: 360
-                },
-              ],
-            }}
-          />
+          {donutValues && (
+            <DonutChart
+              donutValues={donutValues}
+              data={{
+                labels: ["Liquid UST Balance", "UST in Bids", "bLUNA Balance"],
+                datasets: [
+                  {
+                    data: [
+                      toBalance(donutValues.blunaUST, 6), //  bluna balance
+                      toBalance(donutValues.ustBid, 6), //  ust in bids
+                      toBalance(donutValues.ust, 6), //  ust in liquidity
+                    ],
+                    backgroundColor: ["#37FAD3", "#FFFFFF", "#B6B2EF"],
+                    hoverBackgroundColor: ["#37FAD3", "#FFFFFF", "#B6B2EF"],
+                    hoverOffset: 0,
+                    cutout: "70%",
+                    borderWidth: 0,
+                    rotate: 360,
+                  },
+                ],
+              }}
+            />
+          )}
         </div>
       </div>
       <div className="view-container-row">

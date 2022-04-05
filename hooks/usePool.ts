@@ -24,14 +24,6 @@ const usePool = () => {
     );
     const myLiquidity = new BigNumber(res["balance"]);
 
-    // Get bLuna balance
-    res = await getBalance(
-      addresses[network.chainID].contracts.bLuna.address,
-      addresses[network.chainID].contracts.kallistoPool.address,
-      network.chainID
-    );
-    const bLunaBalance = new BigNumber(res["balance"]);
-
     // Get Total Liquidity
     res = await getContractQuery(
       addresses[network.chainID].contracts.kallistoPool.address,
@@ -68,15 +60,72 @@ const usePool = () => {
     );
     const lastDepositTime = res["timestamp"];
 
+    // My Cap in UST
+    const myDeposited = myLiquidity
+      .dividedBy(totalSupply)
+      .multipliedBy(totalLiquidity);
+
+    /**
+     * Get donut values: [UST in Liquidity], [UST in Bids], [UST in bLuna]
+     * [Total Cap] = [UST in Liquidity] + [UST in Bids] + [UST in bLuna]
+     */
+    // Get bLuna balance
+    res = await getBalance(
+      addresses[network.chainID].contracts.bLuna.address,
+      addresses[network.chainID].contracts.kallistoPool.address,
+      network.chainID
+    );
+    const bLunaBalance = new BigNumber(res["balance"]);
+
+    // get bLuna Price
+    res = await getContractQuery(
+      addresses[network.chainID].contracts.oracle.address,
+      network.chainID,
+      {
+        price: {
+          base: addresses[network.chainID].contracts.bLuna.address,
+          quote: "uusd",
+        },
+      }
+    );
+    const price = new BigNumber(res["rate"]);
+    const bLunaBalanceForUST = bLunaBalance.multipliedBy(price);
+
+    // get Vault UST price
+    const vaultBank =
+      lcd !== null
+        ? await lcd.bank.balance(
+            addresses[network.chainID].contracts.kallistoPool.address
+          )
+        : [{ _coins: {} }];
+
+    const ustBalance =
+      "uusd" in vaultBank[0]._coins ? vaultBank[0]._coins.uusd.amount : 0;
+
+    const donutUST = new BigNumber(ustBalance)
+      .multipliedBy(poolShare)
+      .dividedBy(100);
+    const donutBLuna = bLunaBalance.multipliedBy(poolShare).dividedBy(100);
+    const donutBLunaForUST = bLunaBalanceForUST
+      .multipliedBy(poolShare)
+      .dividedBy(100);
+    const donutUSTBid = myDeposited.minus(donutUST).minus(donutBLunaForUST);
+
+    const donutData = {
+      ust: donutUST,
+      bluna: donutBLuna,
+      blunaUST: donutBLunaForUST,
+      ustBid: donutUSTBid,
+    };
+    /** ------------------------------------------------------------------------------------- */
+
     return {
       myLiquidity: myLiquidity,
-      myDeposited: myLiquidity
-        .dividedBy(totalSupply)
-        .multipliedBy(totalLiquidity),
+      myDeposited,
       totalLiquidity,
       totalSupply,
       poolShare,
-      bLunaBalance,
+      donutData,
       lastDepositTime,
     };
   };

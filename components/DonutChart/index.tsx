@@ -1,7 +1,8 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
+import { formatBalance } from "utils/wasm";
 
-const DonutChart = ({ data }) => {
+const DonutChart = ({ donutValues, data }) => {
   return (
     <div className="donut-chart-container">
       <div className="donut-chart-section">
@@ -17,7 +18,7 @@ const DonutChart = ({ data }) => {
             <div className="title" style={{ color: "#B6B2EF" }}>
               Liquid UST Balance
             </div>
-            <div className="value">{data.datasets[0].data[2]}</div>
+            <div className="value">{`${formatBalance(donutValues.ust, 6)} UST`}</div>
           </div>
         </div>
         <div className="donut-chart-row">
@@ -29,7 +30,7 @@ const DonutChart = ({ data }) => {
             <div className="title" style={{ color: "#fff" }}>
               UST in Bids
             </div>
-            <div className="value">{data.datasets[0].data[1]}</div>
+            <div className="value">{`${formatBalance(donutValues.ustBid, 6)} UST`}</div>
           </div>
         </div>
         <div className="donut-chart-row">
@@ -41,7 +42,8 @@ const DonutChart = ({ data }) => {
             <div className="title" style={{ color: "#37FAD3" }}>
               bLUNA Balance
             </div>
-            <div className="value">{data.datasets[0].data[0]}</div>
+            <div className="value">{`${formatBalance(donutValues.blunaUST, 6)} UST`}</div>
+						<div className="value">{`${formatBalance(donutValues.bluna, 6)} bLUNA`}</div>
           </div>
         </div>
       </div>
