@@ -30,8 +30,8 @@ const toBalance = (value, fixed = 3, decimals = 6) => {
   return balance;
 };
 
-const getBalance = async (contractAddress, userAddress, chainId) => {
-  const wasm = new WasmAPI(new APIRequester(addresses[chainId].endpoint));
+const getBalance = async (contractAddress, userAddress) => {
+  const wasm = new WasmAPI(new APIRequester(addresses.endpoint));
 
   const balance = await wasm.contractQuery(contractAddress, {
     balance: {
@@ -42,8 +42,8 @@ const getBalance = async (contractAddress, userAddress, chainId) => {
   return balance;
 };
 
-const getContractQuery = async (contractAddress, chainId, query) => {
-  const wasm = new WasmAPI(new APIRequester(addresses[chainId].endpoint));
+const getContractQuery = async (contractAddress, query) => {
+  const wasm = new WasmAPI(new APIRequester(addresses.endpoint));
 
   const result = await wasm.contractQuery(contractAddress, {
     ...query,

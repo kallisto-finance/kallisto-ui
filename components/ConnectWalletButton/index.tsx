@@ -45,9 +45,8 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
     if (connectedWallet && lcd && network) {
       lcd.bank.balance(connectedWallet.walletAddress).then(async ([coins]) => {
         const bLunaBalance = await getBalance(
-          addresses[network.chainID].contracts.bLuna.address,
+          addresses.contracts.bLuna.address,
           connectedWallet.walletAddress,
-          network.chainID
         );
 
         const ustBalance =

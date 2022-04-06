@@ -33,7 +33,7 @@ const YourLiquidityPanel = ({
         <div className="your-liquidity-value">
           <div className="your-liquidity-value-title">Your Total Liquidity</div>
           <div className="your-liquidity-value-value">
-            {`${formatBalance(myCap, 6)} UST`}
+            {`${formatBalance(myCap, 1)} UST`}
           </div>
         </div>
         <div className="your-liquidity-header-border">
