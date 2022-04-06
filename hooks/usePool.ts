@@ -17,31 +17,24 @@ const usePool = () => {
 
   const fetchPoolValues = async () => {
     // Get User Balance
-    let res = await getBalance(
-      addresses[network.chainID].contracts.kallistoPool.address,
-      connectedWallet.walletAddress,
-      network.chainID
-    );
+    let res = connectedWallet
+      ? await getBalance(
+          addresses.contracts.kallistoPool.address,
+          connectedWallet.walletAddress
+        )
+      : { balance: 0 };
     const myLiquidity = new BigNumber(res["balance"]);
 
     // Get Total Liquidity
-    res = await getContractQuery(
-      addresses[network.chainID].contracts.kallistoPool.address,
-      network.chainID,
-      {
-        total_cap: {},
-      }
-    );
+    res = await getContractQuery(addresses.contracts.kallistoPool.address, {
+      total_cap: {},
+    });
     const totalLiquidity = new BigNumber(res["total_cap"]);
 
     // Get PoolInfo
-    res = await getContractQuery(
-      addresses[network.chainID].contracts.kallistoPool.address,
-      network.chainID,
-      {
-        get_info: {},
-      }
-    );
+    res = await getContractQuery(addresses.contracts.kallistoPool.address, {
+      get_info: {},
+    });
     const totalSupply = new BigNumber(res["total_supply"]);
     const poolShare =
       compare(totalSupply, 0) === 0
@@ -49,15 +42,13 @@ const usePool = () => {
         : myLiquidity.dividedBy(totalSupply).multipliedBy(100);
 
     // Get Last Deposit Time
-    res = await getContractQuery(
-      addresses[network.chainID].contracts.kallistoPool.address,
-      network.chainID,
-      {
-        last_deposit_timestamp: {
-          address: connectedWallet.walletAddress,
-        },
-      }
-    );
+    res = connectedWallet
+      ? await getContractQuery(addresses.contracts.kallistoPool.address, {
+          last_deposit_timestamp: {
+            address: connectedWallet.walletAddress,
+          },
+        })
+      : { timestamp: 0 };
     const lastDepositTime = res["timestamp"];
 
     // My Cap in UST
@@ -71,32 +62,25 @@ const usePool = () => {
      */
     // Get bLuna balance
     res = await getBalance(
-      addresses[network.chainID].contracts.bLuna.address,
-      addresses[network.chainID].contracts.kallistoPool.address,
-      network.chainID
+      addresses.contracts.bLuna.address,
+      addresses.contracts.kallistoPool.address
     );
     const bLunaBalance = new BigNumber(res["balance"]);
 
     // get bLuna Price
-    res = await getContractQuery(
-      addresses[network.chainID].contracts.oracle.address,
-      network.chainID,
-      {
-        price: {
-          base: addresses[network.chainID].contracts.bLuna.address,
-          quote: "uusd",
-        },
-      }
-    );
+    res = await getContractQuery(addresses.contracts.oracle.address, {
+      price: {
+        base: addresses.contracts.bLuna.address,
+        quote: "uusd",
+      },
+    });
     const price = new BigNumber(res["rate"]);
     const bLunaBalanceForUST = bLunaBalance.multipliedBy(price);
 
     // get Vault UST price
     const vaultBank =
       lcd !== null
-        ? await lcd.bank.balance(
-            addresses[network.chainID].contracts.kallistoPool.address
-          )
+        ? await lcd.bank.balance(addresses.contracts.kallistoPool.address)
         : [{ _coins: {} }];
 
     const ustBalance =
@@ -135,10 +119,10 @@ const usePool = () => {
       return;
     }
 
-    console.log(addresses[network.chainID].contracts.kallistoPool.address);
+    console.log(addresses.contracts.kallistoPool.address);
     const msg = new MsgExecuteContract(
       connectedWallet.walletAddress,
-      addresses[network.chainID].contracts.kallistoPool.address,
+      addresses.contracts.kallistoPool.address,
       {
         deposit: {},
       },
@@ -155,7 +139,7 @@ const usePool = () => {
 
     const msg = new MsgExecuteContract(
       connectedWallet.walletAddress,
-      addresses[network.chainID].contracts.kallistoPool.address,
+      addresses.contracts.kallistoPool.address,
       {
         withdraw_ust: {
           share: amount.toString(),
@@ -173,8 +157,7 @@ const usePool = () => {
       return volume;
     }
 
-    const contractAddress =
-      addresses[network.chainID].contracts.kallistoPool.address;
+    const contractAddress = addresses.contracts.kallistoPool.address;
 
     const currentTime = new Date().getTime();
     const searchDateTime = currentTime - days * 86400 * 1000;

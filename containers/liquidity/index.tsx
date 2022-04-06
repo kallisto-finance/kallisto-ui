@@ -198,17 +198,15 @@ const Liquidity = () => {
   };
 
   const getPoolValues = async () => {
-    if (connectedWallet && network) {
-      const result = await fetchPoolValues();
+    const result = await fetchPoolValues();
 
-      setTotalLiquidity(result.totalLiquidity);
-      setMyLiquidity(result.myLiquidity);
-      setPoolShare(result.poolShare);
-      setTotalSupply(result.totalSupply);
-      setLastDepositTime(result.lastDepositTime);
-      setMyCap(result.myDeposited);
-      setDonutValues(result.donutData)
-    }
+    setTotalLiquidity(result.totalLiquidity);
+    setMyLiquidity(result.myLiquidity);
+    setPoolShare(result.poolShare);
+    setTotalSupply(result.totalSupply);
+    setLastDepositTime(result.lastDepositTime);
+    setMyCap(result.myDeposited);
+    setDonutValues(result.donutData)
   };
 
   const get7daysVolume = async () => {
@@ -220,10 +218,6 @@ const Liquidity = () => {
    * Init
    */
   useEffect(() => {
-    if (lcd === null) {
-      return;
-    }
-
     // Initial
     getUSTBalance();
     getPoolValues();

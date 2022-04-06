@@ -31,7 +31,6 @@ const Ukraine = () => {
         </Link>
         <div className="ukraine-page-banner">
           <div className="ukraine-container">
-            <img className="ukraine-icon" src="/assets/ukraine.png" />
             <div className="banner-content">
               <h1 className="title">Let’s support Ukraine!</h1>
               <p className="content">
@@ -39,6 +38,7 @@ const Ukraine = () => {
                 for every $10.000 deposited into the Liquidation Pool.
               </p>
             </div>
+            <img className="ukraine-icon" src="/assets/ukraine.png" />
           </div>
         </div>
         <div className="ukraine-page-content">
@@ -53,7 +53,7 @@ const Ukraine = () => {
               <p>
                 Kallisto will donate{" "}
                 <span style={{ color: "#efce2b", fontWeight: 500 }}>$50 UST</span>{" "}
-                for every <b>$10,000 UST</b> deposited to{` `}
+                for every <b>$10.000 UST</b> deposited to{` `}
                 <a
                   href="https://ukraine.angelprotocol.io/"
                   target="_blank"
@@ -67,8 +67,8 @@ const Ukraine = () => {
             </li>
             <li>
               <p>
-                <b>Every Wednesday</b> the Kallisto team will transfer the
-                donation amount in UST to Angel Protocol from the wallet address<br/>
+                <b>Every Wednesday</b> the Kallisto team will deposit the
+                collected to Angel Protocol in UST from the wallet address<br/>
                 <a
                   href="https://finder.terra.money/mainnet/address/terra16d52wwt6t79x3sd35rargp3y5es90m64t0fkzk"
                   target="_blank"
