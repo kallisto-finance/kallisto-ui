@@ -13,9 +13,8 @@ import { delay } from "utils/date";
 const usePool = () => {
   const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
-  const lcd = useLCDClient();
 
-  const fetchPoolValues = async () => {
+  const fetchPoolValues = async (lcd) => {
     // Get User Balance
     let res = connectedWallet
       ? await getBalance(
@@ -317,7 +316,7 @@ const usePool = () => {
     };
   };
 
-  const getTxInfo = async (txHash) => {
+  const getTxInfo = async (txHash, lcd) => {
     const txAPI = new TxAPI(lcd);
     const txInfo = await txAPI.txInfo(txHash);
     return txInfo;
