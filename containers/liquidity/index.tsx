@@ -59,7 +59,7 @@ const Liquidity = () => {
             try {
               await delay(200);
 
-              txInfo = await getTxInfo(result.data.result.txhash);
+              txInfo = await getTxInfo(result.data.result.txhash, lcd);
               txState = isTxSuccess(txInfo);
               if (txState === "success") {
                 msg = `Succesfully Deposited ${balance} UST.`;
@@ -77,7 +77,7 @@ const Liquidity = () => {
 
           if (txState === "success") {
             // Update Balance and Pool data
-            getPoolValues();
+            getPoolValues(lcd);
             getUSTBalance();
             get7daysVolume();
 
@@ -136,7 +136,7 @@ const Liquidity = () => {
             try {
               await delay(200);
 
-              txInfo = await getTxInfo(result.data.result.txhash);
+              txInfo = await getTxInfo(result.data.result.txhash, lcd);
               txState = isTxSuccess(txInfo);
               if (txState === "success") {
                 msg = `Succesfully Deposited ${balance} UST.`;
@@ -154,7 +154,7 @@ const Liquidity = () => {
 
           if (txState === "success") {
             // Update Balance and Pool data
-            getPoolValues();
+            getPoolValues(lcd);
             getUSTBalance();
             get7daysVolume();
 
@@ -197,8 +197,8 @@ const Liquidity = () => {
     }
   };
 
-  const getPoolValues = async () => {
-    const result = await fetchPoolValues();
+  const getPoolValues = async (lcd) => {
+    const result = await fetchPoolValues(lcd);
 
     setTotalLiquidity(result.totalLiquidity);
     setMyLiquidity(result.myLiquidity);
@@ -220,14 +220,14 @@ const Liquidity = () => {
   useEffect(() => {
     // Initial
     getUSTBalance();
-    getPoolValues();
+    getPoolValues(lcd);
     get7daysVolume();
 
     let interval = null;
 
     interval = setInterval(() => {
       getUSTBalance();
-      getPoolValues();
+      getPoolValues(lcd);
     }, 10000);
 
     return () => clearInterval(interval);
