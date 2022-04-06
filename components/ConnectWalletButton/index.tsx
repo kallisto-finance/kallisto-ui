@@ -47,7 +47,6 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
         const bLunaBalance = await getBalance(
           addresses.contracts.bLuna.address,
           connectedWallet.walletAddress,
-          network.chainID
         );
 
         const ustBalance =
