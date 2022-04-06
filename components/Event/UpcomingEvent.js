@@ -6,6 +6,7 @@ import {
   convertDateStringWithWeekDay,
   convertTimeString,
   GetRemainDays,
+  convertUTCtoLocalTime
 } from "utils/date";
 
 const UpcomingEvent = ({ data }) => {
@@ -22,7 +23,7 @@ const UpcomingEvent = ({ data }) => {
           minute: m,
         } = GetRemainDays(
           new Date().getTime(),
-          new Date(data.content.EventTime).getTime()
+          convertUTCtoLocalTime(new Date(data.content.EventTime).getTime())
         );
         let str = "";
 
@@ -47,13 +48,13 @@ const UpcomingEvent = ({ data }) => {
           <div className="event-row">
             <div className="event-row-title">Event Date:</div>
             <div className="event-row-value">
-              {convertDateStringWithWeekDay(data.content.EventTime)}
+              {convertDateStringWithWeekDay(data.content.EventTime, true)}
             </div>
           </div>
           <div className="event-row">
             <div className="event-row-title">Event Time:</div>
             <div className="event-row-value">
-              {convertTimeString(data.content.EventTime)}
+              {convertTimeString(data.content.EventTime, true)}
             </div>
           </div>
           <div className="event-row">
