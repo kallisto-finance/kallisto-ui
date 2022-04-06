@@ -16,13 +16,13 @@ const PastEvent = ({ data }) => {
           <div className="event-row">
             <div className="event-row-title">Event Date:</div>
             <div className="event-row-value">
-              {convertDateStringWithWeekDay(data.content.EventTime)}
+              {convertDateStringWithWeekDay(data.content.EventTime, true)}
             </div>
           </div>
           <div className="event-row">
             <div className="event-row-title">Event Time:</div>
             <div className="event-row-value">
-              {convertTimeString(data.content.EventTime)}
+              {convertTimeString(data.content.EventTime, true)}
             </div>
           </div>
           <div className="event-row">
