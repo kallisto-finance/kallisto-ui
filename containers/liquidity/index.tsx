@@ -30,6 +30,7 @@ const Liquidity = () => {
   const [myCap, setMyCap] = useState(new BigNumber(0));
   const [poolShare, setPoolShare] = useState(new BigNumber(0));
   const [lastDepositTime, setLastDepositTime] = useState(0);
+  const [donutValues, setDonutValues ] = useState(null);
 
   const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
 
@@ -197,16 +198,15 @@ const Liquidity = () => {
   };
 
   const getPoolValues = async () => {
-    if (connectedWallet && network) {
-      const result = await fetchPoolValues();
+    const result = await fetchPoolValues();
 
-      setTotalLiquidity(result.totalLiquidity);
-      setMyLiquidity(result.myLiquidity);
-      setPoolShare(result.poolShare);
-      setTotalSupply(result.totalSupply);
-      setLastDepositTime(result.lastDepositTime);
-      setMyCap(result.myDeposited);
-    }
+    setTotalLiquidity(result.totalLiquidity);
+    setMyLiquidity(result.myLiquidity);
+    setPoolShare(result.poolShare);
+    setTotalSupply(result.totalSupply);
+    setLastDepositTime(result.lastDepositTime);
+    setMyCap(result.myDeposited);
+    setDonutValues(result.donutData)
   };
 
   const get7daysVolume = async () => {
@@ -261,6 +261,7 @@ const Liquidity = () => {
               totalLiquidity={totalLiquidity}
               poolShare={poolShare}
               lastDepositTime={lastDepositTime}
+              donutValues={donutValues}
               onWithdraw={() => {
                 moveScrollToTop();
                 setStep(2);

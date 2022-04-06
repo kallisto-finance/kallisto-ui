@@ -43,11 +43,11 @@
 
     .ukraine-container {
       display: flex;
+      justify-content: flex-end;
       width: 100%;
       height: 204.34px;
-      background: #053c8a;
-      border-top-left-radius: 9.60578px;
-      border-top-right-radius: 9.60578px;
+      background: #4B72AC;
+      border-radius: 9.60578px;
       color: #fff;
 
       @media screen and (max-width: 768px) {
@@ -57,7 +57,6 @@
 
       @media screen and (max-width: 500px) {
         height: 130px;
-        padding-right: 10px;
       }
     }
 
@@ -82,29 +81,26 @@
     }
 
     .banner-content {
-      margin-left: 413px;
+      width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-
-      @media screen and (max-width: 1024px) {
-        margin-left: 287px;
-      }
+      padding: 39px 76px;
+      
 
       @media screen and (max-width: 768px) {
-        margin-left: 240px;
-        margin-right: 20px;
+        padding: 19px 36px;
       }
 
       @media screen and (max-width: 500px) {
-        margin-left: 90px;
       }
 
       .title {
         font-weight: bold;
-        font-size: 39.7899px;
+        font-size: 34x;
         margin: 0px;
+        max-width: 441px;
 
         @media screen and (max-width: 768px) {
           font-size: 27px;
@@ -117,10 +113,11 @@
 
       .content {
         font-weight: 500;
-        font-size: 23.2108px;
-        line-height: 34px;
+        font-size: 20px;
+        line-height: 29px;
         margin: 0;
         margin-top: 8px;
+        max-width: 441px;
 
         @media screen and (max-width: 768px) {
           font-size: 12px;
@@ -150,7 +147,7 @@
 
     .ukraine-page-title {
       font-weight: 700;
-      font-size: 39.7899px;
+      font-size: 30px;
       text-align: center;
 
       @media screen and (max-width: 768px) {
@@ -160,8 +157,9 @@
 
     .ukraine-page-description {
       font-weight: 400;
-      font-size: 23.2108px;
-      line-height: 34px;
+      font-size: 20px;
+      line-height: 29px;
+      max-width: 496px;
 
       @media screen and (max-width: 768px) {
         font-size: 18px;
@@ -189,7 +187,7 @@
       justify-content: center;
       align-items: center;
       font-weight: 500;
-      font-size: 17.7143px;
+      font-size: 15px;
       line-height: 18px;
       margin-bottom: 40px;
 
@@ -209,7 +207,7 @@
 
         span {
           font-weight: 700;
-          font-size: 54.5388px;
+          font-size: 50px;
 
           @media screen and (max-width: 500px) {
             font-size: 32px;

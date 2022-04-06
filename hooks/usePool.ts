@@ -17,31 +17,24 @@ const usePool = () => {
 
   const fetchPoolValues = async () => {
     // Get User Balance
-    let res = await getBalance(
-      addresses[network.chainID].contracts.kallistoPool.address,
-      connectedWallet.walletAddress,
-      network.chainID
-    );
+    let res = connectedWallet
+      ? await getBalance(
+          addresses.contracts.kallistoPool.address,
+          connectedWallet.walletAddress
+        )
+      : { balance: 0 };
     const myLiquidity = new BigNumber(res["balance"]);
 
     // Get Total Liquidity
-    res = await getContractQuery(
-      addresses[network.chainID].contracts.kallistoPool.address,
-      network.chainID,
-      {
-        total_cap: {},
-      }
-    );
+    res = await getContractQuery(addresses.contracts.kallistoPool.address, {
+      total_cap: {},
+    });
     const totalLiquidity = new BigNumber(res["total_cap"]);
 
     // Get PoolInfo
-    res = await getContractQuery(
-      addresses[network.chainID].contracts.kallistoPool.address,
-      network.chainID,
-      {
-        get_info: {},
-      }
-    );
+    res = await getContractQuery(addresses.contracts.kallistoPool.address, {
+      get_info: {},
+    });
     const totalSupply = new BigNumber(res["total_supply"]);
     const poolShare =
       compare(totalSupply, 0) === 0
@@ -49,25 +42,74 @@ const usePool = () => {
         : myLiquidity.dividedBy(totalSupply).multipliedBy(100);
 
     // Get Last Deposit Time
-    res = await getContractQuery(
-      addresses[network.chainID].contracts.kallistoPool.address,
-      network.chainID,
-      {
-        last_deposit_timestamp: {
-          address: connectedWallet.walletAddress,
-        },
-      }
-    );
+    res = connectedWallet
+      ? await getContractQuery(addresses.contracts.kallistoPool.address, {
+          last_deposit_timestamp: {
+            address: connectedWallet.walletAddress,
+          },
+        })
+      : { timestamp: 0 };
     const lastDepositTime = res["timestamp"];
+
+    // My Cap in UST
+    const myDeposited = myLiquidity
+      .dividedBy(totalSupply)
+      .multipliedBy(totalLiquidity);
+
+    /**
+     * Get donut values: [UST in Liquidity], [UST in Bids], [UST in bLuna]
+     * [Total Cap] = [UST in Liquidity] + [UST in Bids] + [UST in bLuna]
+     */
+    // Get bLuna balance
+    res = await getBalance(
+      addresses.contracts.bLuna.address,
+      addresses.contracts.kallistoPool.address
+    );
+    const bLunaBalance = new BigNumber(res["balance"]);
+
+    // get bLuna Price
+    res = await getContractQuery(addresses.contracts.oracle.address, {
+      price: {
+        base: addresses.contracts.bLuna.address,
+        quote: "uusd",
+      },
+    });
+    const price = new BigNumber(res["rate"]);
+    const bLunaBalanceForUST = bLunaBalance.multipliedBy(price);
+
+    // get Vault UST price
+    const vaultBank =
+      lcd !== null
+        ? await lcd.bank.balance(addresses.contracts.kallistoPool.address)
+        : [{ _coins: {} }];
+
+    const ustBalance =
+      "uusd" in vaultBank[0]._coins ? vaultBank[0]._coins.uusd.amount : 0;
+
+    const donutUST = new BigNumber(ustBalance)
+      .multipliedBy(poolShare)
+      .dividedBy(100);
+    const donutBLuna = bLunaBalance.multipliedBy(poolShare).dividedBy(100);
+    const donutBLunaForUST = bLunaBalanceForUST
+      .multipliedBy(poolShare)
+      .dividedBy(100);
+    const donutUSTBid = myDeposited.minus(donutUST).minus(donutBLunaForUST);
+
+    const donutData = {
+      ust: donutUST,
+      bluna: donutBLuna,
+      blunaUST: donutBLunaForUST,
+      ustBid: donutUSTBid,
+    };
+    /** ------------------------------------------------------------------------------------- */
 
     return {
       myLiquidity: myLiquidity,
-      myDeposited: myLiquidity
-        .dividedBy(totalSupply)
-        .multipliedBy(totalLiquidity),
+      myDeposited,
       totalLiquidity,
       totalSupply,
       poolShare,
+      donutData,
       lastDepositTime,
     };
   };
@@ -77,10 +119,10 @@ const usePool = () => {
       return;
     }
 
-    console.log(addresses[network.chainID].contracts.kallistoPool.address);
+    console.log(addresses.contracts.kallistoPool.address);
     const msg = new MsgExecuteContract(
       connectedWallet.walletAddress,
-      addresses[network.chainID].contracts.kallistoPool.address,
+      addresses.contracts.kallistoPool.address,
       {
         deposit: {},
       },
@@ -97,7 +139,7 @@ const usePool = () => {
 
     const msg = new MsgExecuteContract(
       connectedWallet.walletAddress,
-      addresses[network.chainID].contracts.kallistoPool.address,
+      addresses.contracts.kallistoPool.address,
       {
         withdraw_ust: {
           share: amount.toString(),
@@ -115,8 +157,7 @@ const usePool = () => {
       return volume;
     }
 
-    const contractAddress =
-      addresses[network.chainID].contracts.kallistoPool.address;
+    const contractAddress = addresses.contracts.kallistoPool.address;
 
     const currentTime = new Date().getTime();
     const searchDateTime = currentTime - days * 86400 * 1000;
