@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import { fetchEvents } from "utils/storyblok";
 
 import { UpcomingEvent, EventSearchBar, PastEvent } from "components/Event";
+import {
+  convertDateStringWithWeekDay,
+  convertTimeString,
+  GetRemainDays,
+  convertUTCtoLocalTime
+} from "utils/date";
 
 const Event = () => {
   const [eventType, setEventType] = useState("upcoming");
@@ -29,7 +35,7 @@ const Event = () => {
         <div className="event-list-wrapper">
           {events.map((event) => {
             const currentTime = (new Date()).getTime();
-            const eventTime = (new Date(event.content.EventTime)).getTime();
+            const eventTime = convertUTCtoLocalTime((new Date(event.content.EventTime)).getTime());
             if (eventType === "upcoming") {
               if (eventTime < currentTime) {
                 return null;

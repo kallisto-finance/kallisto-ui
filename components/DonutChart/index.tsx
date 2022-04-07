@@ -43,7 +43,7 @@ const DonutChart = ({ donutValues, data }) => {
               bLUNA Balance
             </div>
             <div className="value">{`${formatBalance(donutValues.blunaUST, 1)} UST`}</div>
-						<div className="value" style={{ fontSize: 13, fontWeight: 400 }}>{`${formatBalance(donutValues.bluna, 1)} bLUNA`}</div>
+						<div className="value" style={{ fontSize: 13, fontWeight: 400 }}>{`${formatBalance(donutValues.bluna, 4)} bLUNA`}</div>
           </div>
         </div>
       </div>
