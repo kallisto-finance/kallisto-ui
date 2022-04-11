@@ -2,7 +2,7 @@ export const ZERO = "0x0000000000000000000000000000000000000000";
 
 export const DEFAULT_NETWORK = "columbus-5";
 
-export const UKRAINE_WALLET = "terra16d52wwt6t79x3sd35rargp3y5es90m64t0fkzk";
+export const UKRAINE_WALLET = "terra1zsm74pnpr508jy02zzxwhrc2gwg2tn87w9fgn9";
 
 export const WITHDRAW_LOCK_TIME = 3600 * 1000 * 1000 * 1000; // NANO SECONDS
 
