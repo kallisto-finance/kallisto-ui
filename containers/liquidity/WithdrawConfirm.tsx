@@ -113,7 +113,7 @@ const WithdrawConfirm = ({
         className="view-container-button"
         onClick={() => {
           if (loading) return;
-          mixpanel.track('CONFIRM_WITHDRAWAL', { 'amount': withdrawAmount});
+          mixpanel.track('CONFIRM_WITHDRAWAL');
           onConfirmWithdraw(collectType)
         }}
         label={

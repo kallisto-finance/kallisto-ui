@@ -35,7 +35,6 @@ const WithdrawAmountInput = ({
       .multipliedBy(value)
       .dividedBy(100)
       .dividedBy(10 ** 6);
-    mixpanel.track('WITHDRAW', {'balance': balance });
     onChangeWithdrawAmount(balance);
   };
 

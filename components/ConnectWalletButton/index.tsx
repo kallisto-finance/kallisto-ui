@@ -43,6 +43,7 @@ const ConnectWalletButton = ({ className = "", children = null }) => {
 
   const fetchBalances = async () => {
     if (connectedWallet && lcd && network) {
+      mixpanel.identify(connectedWallet.walletAddress);
       lcd.bank.balance(connectedWallet.walletAddress).then(async ([coins]) => {
         const bLunaBalance = await getBalance(
           addresses.contracts.bLuna.address,
