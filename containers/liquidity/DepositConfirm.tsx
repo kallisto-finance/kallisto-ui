@@ -14,23 +14,22 @@ import mixpanel from 'mixpanel-browser';
 mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
 
 const DepositConfirm = ({
-  myBalance,
-  totalSupply,
+  pool,
   onBack,
   balance,
   onConfirmDeposit,
   loading,
 }) => {
   const expectedPoolShare = useMemo(() => {
-    const expectedMyBalance = myBalance.plus(
+    const expectedMyBalance = pool.userBalance.plus(
       new BigNumber(isNaN(balance) ? 0 : balance).multipliedBy(10 ** 6)
     );
-    const expectedTotalSupply = totalSupply.plus(
+    const expectedTotalSupply = pool.totalSupply.plus(
       new BigNumber(isNaN(balance) ? 0 : balance).multipliedBy(10 ** 6)
     );
 
     return expectedMyBalance.dividedBy(expectedTotalSupply).multipliedBy(100);
-  }, [myBalance, totalSupply, balance]);
+  }, [pool, balance]);
 
   return (
     <ViewContainer

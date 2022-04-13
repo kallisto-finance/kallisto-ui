@@ -2,9 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0px 28px 36px;
-  border-bottom: 1px solid #60699e;
-  margin-bottom: 27px;
+  padding: 10px 28px 10px;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
