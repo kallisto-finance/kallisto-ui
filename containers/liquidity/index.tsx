@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import BigNumber from "bignumber.js";
 import { useConnectedWallet, useWallet } from "@terra-money/wallet-provider";
 import { toast } from "react-toastify";
 
 import YourLiquidityPanel from "./YourLiquidityPanel";
+import MyLiquidityPanel from "./MyLiquidityPanel";
+import MainLiquidityPanel from "./MainLiquidityPanel";
+import PoolListPanel from "./PoolListPanel";
 import DepositPool from "./DepositPool";
 import DepositConfirm from "./DepositConfirm";
 import WithdrawConfirm from "./WithdrawConfirm";
 import TransactionFeedbackToast from "components/TransactionFeedbackToast";
 import { UkraineBanner } from "components/Banner";
+import ConnectionMask from "components/ConnectionMask";
 
 import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
@@ -23,28 +27,46 @@ let valueLoadingProgressBarInterval = null;
 
 const Liquidity = () => {
   const lcd = useLCDClient();
-  const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
   const {
     fetchPoolValues,
     deposit,
     withdrawUst,
-    getVolumeHistory,
+    getPool7DayDeposits,
     getTxInfo,
     isTxSuccess,
   } = usePool();
 
-  const [ustBalance, setUstBalance] = useState("0");
+  const [pools, setPools] = useState([]);
+  const [bLunaPrice, setBLunaPrice] = useState({
+    price: new BigNumber(0),
+    increase: "",
+  });
 
-  const [totalLiquidity, setTotalLiquidity] = useState(new BigNumber(0));
-  const [totalSupply, setTotalSupply] = useState(new BigNumber(0));
-  const [myLiquidity, setMyLiquidity] = useState(new BigNumber(0));
-  const [myCap, setMyCap] = useState(new BigNumber(0));
-  const [poolShare, setPoolShare] = useState(new BigNumber(0));
-  const [lastDepositTime, setLastDepositTime] = useState(0);
-  const [donutValues, setDonutValues] = useState(null);
+  const [selectedPoolId, setSelectedPoolId] = useState(0);
+  const selectedPool = useMemo(() => {
+    const findIndex = pools.findIndex((item) => item.id === selectedPoolId);
 
-  const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
+    if (findIndex >= 0) {
+      return pools[findIndex];
+    }
+
+    return null;
+  }, [selectedPoolId, pools]);
+
+  // My UST Balance
+  const [ustBalance, setUstBalance] = useState("");
+
+  const [deposit7Days, setDeposit7Days] = useState([]);
+  const selectedPool7DayDeposits = useMemo(() => {
+    const findIndex = deposit7Days.findIndex((item) => item.id === selectedPoolId);
+
+    if (findIndex >= 0) {
+      return deposit7Days[findIndex].deposits;
+    }
+
+    return new BigNumber(0);
+  }, [selectedPoolId, deposit7Days]);
 
   const [valueLoading, setValueLoading] = useState(false);
   const [valueProgress, setValueProgress] = useState(100);
@@ -108,6 +130,7 @@ const Liquidity = () => {
     // return;
     setDepositLoading(true);
     deposit(
+      selectedPool.address,
       new BigNumber(balance).multipliedBy(10 ** 6).toString(),
       async (result) => {
         let txHash = "";
@@ -147,12 +170,11 @@ const Liquidity = () => {
 
           if (txState === "success") {
             // Update Balance and Pool data
-            getPoolValues(lcd);
-            getUSTBalance();
-            get7daysVolume();
+            getPoolValues(addresses.contracts.vaultList, connectedWallet, lcd);
+            get7daysDeposits();
 
             setBalance("");
-            setStep(0);
+            setStep(1);
 
             moveScrollToTop("#your-liquidity-panel");
           }
@@ -189,11 +211,11 @@ const Liquidity = () => {
     console.log(collectType);
     if (collectType == "UST") {
       setWithdrawLoading(true);
-      const withdrawAmount = myLiquidity
-        .multipliedBy(withdrawPercentage)
-        .dividedBy(100);
-      console.log("withdrawAmount", withdrawAmount.toString());
-      withdrawUst(withdrawAmount, async (result) => {
+
+      const withdrawAmount = selectedPool.userBalance.multipliedBy(withdrawPercentage).dividedBy(100);
+      console.log('withdrawAmount', withdrawAmount.toString());
+
+      withdrawUst(selectedPool.address, withdrawAmount, async (result) => {
         console.log("*********** Withdraw UST Transaction **************");
 
         let txHash = "";
@@ -232,12 +254,11 @@ const Liquidity = () => {
 
           if (txState === "success") {
             // Update Balance and Pool data
-            getPoolValues(lcd);
-            getUSTBalance();
-            get7daysVolume();
+            getPoolValues(addresses.contracts.vaultList, connectedWallet, lcd);
+            get7daysDeposits();
 
             setWithdrawPercentage(50);
-            setStep(0);
+            setStep(1);
 
             moveScrollToTop("#your-liquidity-panel");
           }
@@ -264,39 +285,40 @@ const Liquidity = () => {
     }
   };
 
-  /**
-   * Fetch values
-   */
-  const getUSTBalance = async () => {
-    if (connectedWallet && lcd) {
-      lcd.bank.balance(connectedWallet.walletAddress).then(([coins]) => {
-        const ustBalance =
-          "uusd" in coins._coins ? coins._coins.uusd.amount : 0;
-        setUstBalance(formatBalance(ustBalance, 6));
-        setValueLoading(true);
-      });
+  const getPoolValues = async (poolList, connectedWallet, lcd) => {
+    const result = await fetchPoolValues(poolList, connectedWallet, lcd);
+
+    setPools([...result.poolList]);
+    setUstBalance(formatBalance(result.userUSTBalance, 6));
+
+    const bPrice = {
+      price: new BigNumber(0),
+      increase: "",
+    };
+
+    if (
+      compare(result.bLunaPrice, 0) === 0 ||
+      compare(bLunaPrice.price, 0) === 0
+    ) {
+      bPrice.increase = "";
     } else {
-      setUstBalance("0");
+      const increase = bLunaPrice.price
+        .minus(result.bLunaPrice)
+        .dividedBy(bLunaPrice.price)
+        .multipliedBy(100);
+      bPrice.increase = compare(increase, 0) !== 0 ? increase.toFixed(2) : "";
     }
+
+    bPrice.price = result.bLunaPrice;
+
+    await delay(500);
+
+    setBLunaPrice({ ...bPrice });
   };
 
-  const getPoolValues = async (lcd) => {
-    const result = await fetchPoolValues(lcd);
-
-    setValueLoading(true);
-
-    setTotalLiquidity(result.totalLiquidity);
-    setMyLiquidity(result.myLiquidity);
-    setPoolShare(result.poolShare);
-    setTotalSupply(result.totalSupply);
-    setLastDepositTime(result.lastDepositTime);
-    setMyCap(result.myDeposited);
-    setDonutValues(result.donutData);
-  };
-
-  const get7daysVolume = async () => {
-    const volume = await getVolumeHistory();
-    setVolume7Days(volume);
+  const get7daysDeposits = async () => {
+    const res = await getPool7DayDeposits(addresses.contracts.vaultList);
+    setDeposit7Days(res);
   };
 
   const getQueryParam = (url, param) => {
@@ -349,97 +371,105 @@ const Liquidity = () => {
   getCampaignParams();
   useEffect(() => {
     // Initial
-    getUSTBalance();
-    getPoolValues(lcd);
-    get7daysVolume();
+    getPoolValues(addresses.contracts.vaultList, connectedWallet, lcd);
+    get7daysDeposits();
 
     let interval = null;
 
     interval = setInterval(() => {
-      getUSTBalance();
-      getPoolValues(lcd);
+      getPoolValues(addresses.contracts.vaultList, connectedWallet, lcd);
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [connectedWallet, lcd, network]);
-
-  // useEffect(() => {
-  //   let interval = null;
-
-  //   interval = setInterval(() => {
-  //     get7daysVolume();
-  //   }, 10000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
+  }, [connectedWallet, lcd]);
 
   const [step, setStep] = useState(0);
 
   return (
     <div className="liquidity-container">
-      {/* {step === 0 && (
-        <div className="banner-wrapper">
-          <DeFiBanner />
-        </div>
-      )} */}
       <div className="liquidity-wrapper">
         {step === 0 && (
           <>
-            <YourLiquidityPanel
-              myBalance={myLiquidity}
-              myCap={myCap}
-              totalLiquidity={totalLiquidity}
-              poolShare={poolShare}
-              lastDepositTime={lastDepositTime}
-              donutValues={donutValues}
-              progress={valueProgress}
-              onWithdraw={() => {
-                moveScrollToTop();
-                setStep(2);
-              }}
-            />
-            <DepositPool
-              onDeposit={() => {
-                moveScrollToTop();
-                setStep(1);
-                mixpanel.track("DEPOSIT");
-              }}
-              ustBalance={ustBalance}
-              balance={balance}
-              volume={volume7Days}
-              totalLiquidity={totalLiquidity}
-              onChangeDepositInputAmount={(value) =>
-                handleChangeDepositInputAmount(value)
-              }
-            />
+            <div className="liquidity-wrapper-general">
+              <MainLiquidityPanel pools={pools} bLunaPrice={bLunaPrice} />
+            </div>
+            <div className="liquidity-wrapper-poolist">
+              <PoolListPanel
+                pools={pools}
+                deposits={deposit7Days}
+                onSelectPool={(id) => {
+                  setSelectedPoolId(id);
+                  setStep(1);
+                }}
+              />
+            </div>
           </>
         )}
         {step === 1 && (
-          <DepositConfirm
-            myBalance={myLiquidity}
-            totalSupply={totalSupply}
-            onBack={() => setStep(0)}
-            balance={balance}
-            onConfirmDeposit={() => handleConfirmDeposit()}
-            loading={depositLoading}
-          />
+          <>
+            <div
+              className="liquidity-wrapper-general"
+              style={{ background: "none" }}
+            >
+              <MyLiquidityPanel
+                pool={selectedPool}
+                bLunaPrice={bLunaPrice}
+                onBackToPools={() => {
+                  setSelectedPoolId(0);
+                  setStep(0);
+                }}
+                onWithdraw={() => {
+                  moveScrollToTop();
+                  setStep(3);
+                }}
+              />
+            </div>
+            <div className="liquidity-wrapper-deposit">
+              <DepositPool
+                pool={selectedPool}
+                onDeposit={() => {
+                  moveScrollToTop();
+                  setStep(2);
+                }}
+                ustBalance={ustBalance}
+                balance={balance}
+                volume={selectedPool7DayDeposits}
+                onChangeDepositInputAmount={(value) =>
+                  handleChangeDepositInputAmount(value)
+                }
+              />
+            </div>
+          </>
         )}
         {step === 2 && (
-          <WithdrawConfirm
-            onBack={() => setStep(0)}
-            myCap={myCap}
-            withdrawPercentage={withdrawPercentage}
-            onChangeWithdrawPercentage={(value) => {
-              setWithdrawPercentage(value);
-            }}
-            onConfirmWithdraw={(collectType) =>
-              handleConfirmWithdraw(collectType)
-            }
-            loading={withdrawLoading}
-          />
+          <div className="liquidity-wrapper-deposit" style={{ marginLeft: 0 }}>
+            <DepositConfirm
+              pool={selectedPool}
+              onBack={() => setStep(1)}
+              balance={balance}
+              onConfirmDeposit={() => handleConfirmDeposit()}
+              loading={depositLoading}
+            />
+          </div>
+        )}
+        {step === 3 && (
+          <div className="liquidity-wrapper-deposit" style={{ marginLeft: 0 }}>
+            <WithdrawConfirm
+              pool={selectedPool}
+              onBack={() => setStep(1)}
+              withdrawAmount={withdrawAmount}
+              onChangeWithdrawAmount={(value) =>
+                handleChangeWithdrawAmount(value)
+              }
+              onConfirmWithdraw={(collectType) =>
+                handleConfirmWithdraw(collectType)
+              }
+              loading={withdrawLoading}
+            />{" "}
+          </div>
         )}
       </div>
-      <UkraineBanner />
+      {/* <UkraineBanner /> */}
     </div>
   );
 };
