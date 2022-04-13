@@ -391,6 +391,7 @@ const Liquidity = () => {
         {step === 0 && (
           <>
             <div className="liquidity-wrapper-general">
+              {!connectedWallet && <ConnectionMask />}
               <MainLiquidityPanel pools={pools} bLunaPrice={bLunaPrice} />
             </div>
             <div className="liquidity-wrapper-poolist">
@@ -411,6 +412,7 @@ const Liquidity = () => {
               className="liquidity-wrapper-general"
               style={{ background: "none" }}
             >
+              {!connectedWallet && <ConnectionMask className="long" />}
               <MyLiquidityPanel
                 pool={selectedPool}
                 bLunaPrice={bLunaPrice}

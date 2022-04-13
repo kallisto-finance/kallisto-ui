@@ -1,4 +1,5 @@
 import React from "react";
+import BigNumber from "bignumber.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -20,7 +21,7 @@ const PoolListPanel = ({ pools, deposits, onSelectPool }) => {
           {pools.map((pool, index) => (
             <VaultPool
               pool={pool}
-              deposits={deposits[index].deposits}
+              deposits={deposits.length > 0 ? deposits[index].deposits : new BigNumber(0)}
               key={`valut-pool-${pool.name}`}
               onSelectPool={(id) => onSelectPool(id)}
             />

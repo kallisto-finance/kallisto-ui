@@ -3,11 +3,21 @@ import { useConnectedWallet } from "@terra-money/wallet-provider";
 
 import ConnectWalletButton from "components/ConnectWalletButton";
 
-const ConnectionMask = () => {
+import cn from "classnames";
+
+const ConnectionMask = ({ className }) => {
   const connectedWallet = useConnectedWallet();
 
   return connectedWallet ? null : (
-    <div className="connection-mask-container">dfsdf</div>
+    <div className={cn("connection-mask-container", className)}>
+      <img src="/assets/kallisto.png" />
+      <span>
+        Decentralized Liquidations for
+        <br />
+        the Rest of Us
+      </span>
+      <ConnectWalletButton className="connect-wallet-button" />
+    </div>
   );
 };
 
