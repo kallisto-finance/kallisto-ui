@@ -22,13 +22,30 @@ export const addresses = {
       icon: "https://whitelist.anchorprotocol.com/logo/bETH.png",
     },
     kallistoPool: {
-      // address: "terra1hqtsau586tmzwl6apmf5u6u0avlafeef6w0qpp",
-      // address: "terra1xqwqt9q54lr89wm6dpt0gxrsy5pewhdh2yjnjg",
-      //testing only contract:
       address: process.env.LIQUIDITY_CONTRACT,
     },
     oracle: {
       address: "terra1cgg6yef7qcdm070qftghfulaxmllgmvk77nc7t",
     },
+    vaultList: [
+      {
+        id: 1,
+        apy: 0,
+        name: "aUST/bLuna",
+        category: "Kujira - Anchor",
+        address: "",
+        theme: "kujira",
+        icon: "/assets/tokens/kujira.png"
+      },
+      {
+        id: 2,
+        apy: 3.58,
+        name: "bLuna",
+        category: "Anchor",
+        address: process.env.LIQUIDITY_CONTRACT,
+        theme: "default",
+        icon: "/assets/tokens/bLuna.png"
+      }
+    ]
   },
 };

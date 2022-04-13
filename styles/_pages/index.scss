@@ -1,33 +1,4 @@
-.liquidity-container {
-  width: 100%;
-
-  .liquidity-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-
-    @media screen and (max-width: 768px) {
-      display: flex;
-      flex-direction: column-reverse;
-    }
-  }
-
-  .banner-wrapper {
-    width: 100%;
-    max-width: 1158px;
-    margin: 0px auto;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-
-    @media screen and (max-width: 768px) {
-      flex-direction: column;
-      margin-top: 20px;
-    }
-  }
-}
-
+@import "liquidity";
 @import "ukraine";
 @import "blog";
 @import "event";
