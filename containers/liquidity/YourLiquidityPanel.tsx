@@ -16,6 +16,7 @@ import { WITHDRAW_LOCK_TIME } from "utils/constants";
 import cn from "classnames";
 
 const YourLiquidityPanel = ({
+  pool,
   myBalance,
   myCap,
   totalLiquidity,
@@ -26,7 +27,7 @@ const YourLiquidityPanel = ({
   donutValues,
 }) => {
   const connectedWallet = useConnectedWallet();
-
+// console.log(pool)
   return (
     <ViewContainer className="your-liquidity-panel" header={false}>
       <a href="/" id="your-liquidity-panel" />
@@ -34,7 +35,7 @@ const YourLiquidityPanel = ({
         <div className="your-liquidity-value">
           <div className="your-liquidity-value-title">Your Total Liquidity</div>
           <div className="your-liquidity-value-value">
-            {`${formatBalance(myCap, 1)} UST`}
+            {`${formatBalance(pool.userCap, 3)} UST`}
           </div>
         </div>
         <div
@@ -77,7 +78,7 @@ const YourLiquidityPanel = ({
       <div className="view-container-row">
         <AmountView
           label="Your % of the Pool"
-          value={`${poolShare.toFixed(2)}%`}
+          value={`${(pool.userBalance.dividedBy(pool.totalSupply).multipliedBy(100)).toFixed(2)}%`}
           vertical={true}
         />
       </div>
