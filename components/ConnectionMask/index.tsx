@@ -5,7 +5,7 @@ import ConnectWalletButton from "components/ConnectWalletButton";
 
 import cn from "classnames";
 
-const ConnectionMask = ({ className }) => {
+const ConnectionMask = ({ className = "" }) => {
   const connectedWallet = useConnectedWallet();
 
   return connectedWallet ? null : (
