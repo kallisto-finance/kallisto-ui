@@ -10,28 +10,44 @@
 
     @media screen and (max-width: 768px) {
       display: flex;
-      flex-direction: column-reverse;
+      flex-direction: column;
     }
   }
 
   .liquidity-wrapper-general {
     width: 483px;
-    min-height: 519px;
+
     background: #262b43;
     border-radius: 30px;
     margin-top: 75px;
+    padding-bottom: 38px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-top: 0px;
+      min-height: 0px;
+      padding-bottom: 25px;
+    }
 
     .title {
       color: #b6b2ef;
       font-weight: 500;
       font-size: 20px;
       text-align: center;
+
+      @media screen and (max-width: 768px) {
+        font-size: 13px;
+      }
     }
 
     .value {
       color: #ffffff;
       font-weight: 700;
       font-size: 34px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 20px;
+      }
     }
 
     .total-liquidity-wrapper {
@@ -43,6 +59,11 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      @media screen and (max-width: 768px) {
+        height: 109px;
+        margin: 25px 24px 0px;
+      }
 
       .withdraw-button {
         width: 110px;
@@ -70,6 +91,11 @@
       width: 100%;
       margin-top: 44px;
       margin-bottom: 36px;
+
+      @media screen and (max-width: 768px) {
+        margin-top: 40px;
+        margin-bottom: 25px;
+      }
     }
 
     .liquidation-volume-wrapper {
@@ -87,6 +113,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        @media screen and (max-width: 768px) {
+          height: 118px;
+        }
 
         &.full {
           width: 100%;
@@ -151,10 +181,21 @@
     line-height: 24px;
     color: #ffffff;
 
+    @media screen and (max-width: 768px) {
+      font-size: 10px;
+      line-height: 14px;
+      width: 174px;
+      height: 26px;
+    }
+
     svg {
       height: 18px;
       color: #b6b2ef;
       margin-left: 5px;
+
+      @media screen and (max-width: 768px) {
+        height: 11px;
+      }
     }
   }
 
@@ -174,10 +215,21 @@
     cursor: pointer;
     margin-bottom: 26px;
 
+    @media screen and (max-width: 768px) {
+      font-size: 10px;
+      line-height: 14px;
+      width: 86px;
+      height: 26px;
+    }
+
     svg {
       height: 11px;
       color: #b6b2ef;
-      margin-right: 14px;
+      margin-right: 6px;
+
+      @media screen and (max-width: 768px) {
+        height: 7px;
+      }
     }
   }
 
@@ -185,12 +237,23 @@
     max-width: 550px;
     width: 100%;
     margin-left: 62px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-left: 0px;
+      margin-top: 30px;
+    }
   }
 
   .liquidity-wrapper-deposit {
     max-width: 653px;
     width: 100%;
     margin-left: 62px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-left: 0px;
+    }
 
     .pool-token-wrapper {
       background: #313650;
@@ -200,32 +263,50 @@
       justify-content: center;
       padding: 5px 24px;
       margin: 38px 32px 20px;
-  
+
+      @media screen and (max-width: 768px) {
+        padding: 3px 14px;
+        margin-left: 11px;
+        margin-right: 11px;
+      }
+
       &.kujira {
         background: #323843;
         border: none;
       }
-  
+
       img {
         height: 64px;
+
+        @media screen and (max-width: 768px) {
+          height: 39px;
+        }
       }
-  
+
       .pool-name {
         margin-left: 11px;
-  
+
         &-text {
           color: #ffffff;
           font-weight: 700;
           font-size: 30px;
+
+          @media screen and (max-width: 768px) {
+            font-size: 20px;
+          }
         }
-  
+
         &-category {
           color: #b6b2ef;
           font-weight: 500;
           font-size: 16px;
 
+          @media screen and (max-width: 768px) {
+            font-size: 13px;
+          }
+
           &.kujira {
-            color: #D3483E;
+            color: #d3483e;
           }
         }
       }
