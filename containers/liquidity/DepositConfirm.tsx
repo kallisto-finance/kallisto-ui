@@ -76,7 +76,7 @@ const DepositConfirm = ({
         className={cn("view-container-button", { loading })}
         onClick={(e) => {
           if (loading) return;
-          mixpanel.track('CONFIRM_DEPOSIT', { 'balance': balance});
+          mixpanel.track('CONFIRM_DEPOSIT');
           onConfirmDeposit();
         }}
       >

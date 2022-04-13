@@ -14,7 +14,7 @@ import { formatBalance } from "utils/wasm";
 import mixpanel from "mixpanel-browser";
 
 mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
-mixpanel.track("DEPOSIT");
+
 
 const DepositPool = ({
   onDeposit,

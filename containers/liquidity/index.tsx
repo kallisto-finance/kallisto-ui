@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import BigNumber from "bignumber.js";
 import { useConnectedWallet, useWallet } from "@terra-money/wallet-provider";
 
@@ -15,6 +16,9 @@ import { isNaN } from "utils/number";
 import { moveScrollToTop } from "utils/document";
 import { delay } from "utils/date"
 import { toast } from "react-toastify";
+import mixpanel from "mixpanel-browser";
+mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
+import {useRouter} from 'next/router';
 
 const Liquidity = () => {
   const lcd = useLCDClient();
@@ -33,6 +37,7 @@ const Liquidity = () => {
   const [donutValues, setDonutValues ] = useState(null);
 
   const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
+
 
   /**
    * Deposit
@@ -63,6 +68,10 @@ const Liquidity = () => {
               txState = isTxSuccess(txInfo);
               if (txState === "success") {
                 msg = `Succesfully Deposited ${balance} UST.`;
+
+                mixpanel.track("COMPLETED_DEPOSIT", { 'balance': balance});
+                mixpanel.people.set({ 'balance': balance});
+                mixpanel.people.set({ 'anchor-bluna-balance': balance });
               } else {
                 if (txState.includes("insufficient funds"))  {
                   msg = "Error submitting the deposit. Insufficient funds for gas fees.";
@@ -132,6 +141,7 @@ const Liquidity = () => {
           let msg = "";
           let txState = "";
 
+
           while (true) {
             try {
               await delay(200);
@@ -139,7 +149,10 @@ const Liquidity = () => {
               txInfo = await getTxInfo(result.data.result.txhash, lcd);
               txState = isTxSuccess(txInfo);
               if (txState === "success") {
-                msg = `Succesfully Deposited ${balance} UST.`;
+                msg = `Succesfully Withdraw ${balance} UST.`;
+                mixpanel.track("COMPLETED_WITHDRAW", { 'balance': `-${balance}`});
+                mixpanel.people.set({ 'balance':`-${balance}`});
+                mixpanel.people.set({ 'anchor-bluna-balance': balance });
               } else {
                 if (txState.includes("insufficient funds")) {
                   msg = "Error submitting the deposit. Insufficient funds for gas fees.";
@@ -214,14 +227,59 @@ const Liquidity = () => {
     setVolume7Days(volume);
   };
 
+  const getQueryParam = (url, param) => {
+    // Expects a raw URL
+    param = param.replace(/[[]/, "\[").replace(/[]]/, "\]");
+    let regexS = "[\?&]" + param + "=([^&#]*)",
+      regex = new RegExp( regexS ),
+      results = regex.exec(url);
+    if (results === null || (results && typeof(results[1]) !== 'string' && results[1]['length'] )) {
+      return '';
+    } else {
+      return decodeURIComponent(results[1]).replace(/\W/gi, ' ');
+      }
+    };
+
+  const getCampaignParams = async () => {
+
+    let campaign_keywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(' ')
+      , kw = ''
+      , params = {}
+      , first_params = {}
+      , index;
+    const router = useRouter()
+    //console.log(router.asPath)
+
+    for (index = 0; index < campaign_keywords.length; ++index) {
+      kw = getQueryParam(router.asPath, campaign_keywords[index]);
+      if (kw.length) {
+        params[campaign_keywords[index] + ' [last touch]'] = kw;
+      }
+    }
+    for (index = 0; index < campaign_keywords.length; ++index) {
+      kw = getQueryParam(router.asPath, campaign_keywords[index]);
+      if (kw.length) {
+        first_params[campaign_keywords[index] + ' [first touch]'] = kw;
+      }
+    }
+
+    mixpanel.people.set(params);
+    mixpanel.people.set_once(first_params);
+    mixpanel.register(params);
+
+
+  };
+
   /**
    * Init
    */
+  getCampaignParams();
   useEffect(() => {
     // Initial
     getUSTBalance();
     getPoolValues(lcd);
     get7daysVolume();
+
 
     let interval = null;
 
@@ -271,6 +329,7 @@ const Liquidity = () => {
               onDeposit={() => {
                 moveScrollToTop();
                 setStep(1);
+                mixpanel.track('DEPOSIT');
               }}
               ustBalance={ustBalance}
               balance={balance}
