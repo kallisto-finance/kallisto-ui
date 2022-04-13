@@ -32,7 +32,7 @@ const dateOptionsWithWeekDay = {
   year: "numeric",
   month: "long",
   day: "numeric",
-  weekday: "long" 
+  weekday: "long"
 } as const;
 
 const timeOptions = {
@@ -60,7 +60,11 @@ export const convertTimeString = (dateStr, toLocal = false) => {
 
   const date = new Date(stamp);
 
-  return date.toLocaleDateString("en-US", timeOptions).split(",")[1].trim();
+  if (date === null) {
+    return ""
+  } else {
+    return date.toLocaleDateString("en-US", timeOptions).split(",")[1].trim();
+  }
 };
 
 export const getHourOffsetLocalTimezone = () => {
