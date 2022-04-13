@@ -74,7 +74,7 @@ const DepositPool = ({
         />
       </div>
       <div className="view-container-row">
-        <AmountView label="APY" value="-0.67%" highlight={true} />
+        <AmountView label="APY" value="3.09%" highlight={true} />
       </div>
       <div className="view-container-row">
         <AmountView
