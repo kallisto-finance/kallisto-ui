@@ -78,6 +78,10 @@
 
   &.add-liquidity-panel {
     margin-top: 145px;
+
+    @media screen and (max-width: 768px) {
+      margin-top: 25px;
+    }
   }
 
   &.pool-list-panel {
@@ -293,6 +297,11 @@
       font-size: 16px;
       color: #fff;
       margin-left: 15px;
+
+      @media screen and (max-width: 768px) {
+        font-weight: 400;
+        font-size: 10px;
+      }
     }
   }
 
