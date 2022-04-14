@@ -1,6 +1,6 @@
 .vault-pool-container {
   background: #262b43;
-  border: 2px solid #b6b2ef;
+  border: 2px solid transparent;
   border-radius: 30px;
   padding-top: 20px;
   width: 100%;
@@ -12,9 +12,12 @@
     padding-top: 11px;
   }
 
+  &:hover {
+    border: 2px solid #b6b2ef;
+  }
+
   &.kujira {
     background: #22252e;
-    border: none;
   }
 
   &.disabled {
