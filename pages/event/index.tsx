@@ -12,15 +12,6 @@ const Event = () => {
   useEffect(() => {
     const getData = async () => {
       const data = await fetchEvents();
-
-      data.sort((a, b) => {
-        const aEventTime = new Date(a.content.EventTime).getTime();
-        const bEventTime = new Date(b.content.EventTime).getTime();
-
-        const currentTime = new Date().getTime();
-
-        return aEventTime > bEventTime ? 1 : -1;
-      });
       setEvents(data);
     };
 
