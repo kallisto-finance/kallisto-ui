@@ -60,6 +60,13 @@ const PastEvent = ({ data }) => {
               ),
             },
           })}
+          <a
+            href="https://t.me/kallistofinance"
+            className="event-join-community"
+            target="_blank"
+          >
+            Join Our Community
+          </a>
         </div>
       </div>
     </div>

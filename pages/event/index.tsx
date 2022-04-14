@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchEvents } from "utils/storyblok";
 
 import { UpcomingEvent, EventSearchBar, PastEvent } from "components/Event";
-import {
-  convertDateStringWithWeekDay,
-  convertTimeString,
-  GetRemainDays,
-  convertUTCtoLocalTime
-} from "utils/date";
+import { convertUTCtoLocalTime } from "utils/date";
 
 const Event = () => {
   const [eventType, setEventType] = useState("upcoming");
@@ -17,6 +12,13 @@ const Event = () => {
   useEffect(() => {
     const getData = async () => {
       const data = await fetchEvents();
+
+      data.sort((a, b) => {
+        const aEventTime = new Date(a.content.EventTime);
+        const bEventTime = new Date(b.content.EventTime);
+
+        return aEventTime > bEventTime ? -1 : 1;
+      });
       setEvents(data);
     };
 
@@ -34,8 +36,10 @@ const Event = () => {
         </div>
         <div className="event-list-wrapper">
           {events.map((event) => {
-            const currentTime = (new Date()).getTime();
-            const eventTime = convertUTCtoLocalTime((new Date(event.content.EventTime)).getTime());
+            const currentTime = new Date().getTime();
+            const eventTime = convertUTCtoLocalTime(
+              new Date(event.content.EventTime).getTime()
+            );
             if (eventType === "upcoming") {
               if (eventTime < currentTime) {
                 return null;
