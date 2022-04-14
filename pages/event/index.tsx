@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { fetchEvents } from "utils/storyblok";
 
-import { UpcomingEvent, EventSearchBar, PastEvent } from "components/Event";
-import { convertUTCtoLocalTime } from "utils/date";
+import { UpcomingEvent, EventSearchBar, PastEvent, } from "components/Event";
+import { convertUTCtoLocalTime, parseDate } from "utils/date";
 
 const Event = () => {
   const [eventType, setEventType] = useState("upcoming");
@@ -20,9 +20,9 @@ const Event = () => {
 
   const filteredEvents = useMemo(() => {
     const tempEvents = events.filter((event) => {
-      const currentTime = new Date().getTime();
+      const currentTime = (new Date()).getTime();
       const eventTime = convertUTCtoLocalTime(
-        new Date(event.content.EventTime).getTime()
+        parseDate(event.content.EventTime).getTime()
       );
 
       if (eventType === "upcoming") {
@@ -37,10 +37,10 @@ const Event = () => {
 
       return false;
     });
-
+   
     tempEvents.sort((a, b) => {
-      const aEventTime = new Date(a.content.EventTime).getTime();
-      const bEventTime = new Date(b.content.EventTime).getTime();
+      const aEventTime = parseDate(a.content.EventTime).getTime();
+      const bEventTime = parseDate(b.content.EventTime).getTime();
 
       if (eventType === "upcoming") {
         return aEventTime > bEventTime ? 1 : -1;
