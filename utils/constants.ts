@@ -44,7 +44,7 @@ export const addresses = {
         category: "Anchor",
         address: process.env.LIQUIDITY_CONTRACT,
         theme: "default",
-        icon: "/assets/tokens/bLuna.png"
+        icon: "/assets/tokens/bluna-anchor.png"
       }
     ]
   },
