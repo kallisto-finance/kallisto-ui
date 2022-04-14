@@ -7,6 +7,7 @@ import {
   convertTimeString,
   GetRemainDays,
   convertUTCtoLocalTime,
+  parseDate
 } from "utils/date";
 
 const UpcomingEvent = ({ data }) => {
@@ -23,7 +24,7 @@ const UpcomingEvent = ({ data }) => {
           minute: m,
         } = GetRemainDays(
           new Date().getTime(),
-          convertUTCtoLocalTime(new Date(data.content.EventTime).getTime())
+          convertUTCtoLocalTime(parseDate(data.content.EventTime).getTime())
         );
         let str = "";
 
