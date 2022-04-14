@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { fetchEvents } from "utils/storyblok";
 
 import { UpcomingEvent, EventSearchBar, PastEvent } from "components/Event";
-import {
-  convertDateStringWithWeekDay,
-  convertTimeString,
-  GetRemainDays,
-  convertUTCtoLocalTime
-} from "utils/date";
+import { convertUTCtoLocalTime } from "utils/date";
 
 const Event = () => {
   const [eventType, setEventType] = useState("upcoming");
@@ -23,6 +18,40 @@ const Event = () => {
     getData();
   }, []);
 
+  const filteredEvents = useMemo(() => {
+    const tempEvents = events.filter((event) => {
+      const currentTime = new Date().getTime();
+      const eventTime = convertUTCtoLocalTime(
+        new Date(event.content.EventTime).getTime()
+      );
+
+      if (eventType === "upcoming") {
+        if (eventTime >= currentTime) {
+          return true;
+        }
+      } else if (eventType === "past") {
+        if (eventTime < currentTime) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+
+    tempEvents.sort((a, b) => {
+      const aEventTime = new Date(a.content.EventTime).getTime();
+      const bEventTime = new Date(b.content.EventTime).getTime();
+
+      if (eventType === "upcoming") {
+        return aEventTime > bEventTime ? 1 : -1;
+      }
+
+      return aEventTime > bEventTime ? -1 : 1;
+    });
+
+    return tempEvents;
+  }, [events, eventType]);
+
   return (
     <div className="page-container">
       <div className="event-page-container">
@@ -33,22 +62,13 @@ const Event = () => {
           />
         </div>
         <div className="event-list-wrapper">
-          {events.map((event) => {
-            const currentTime = (new Date()).getTime();
-            const eventTime = convertUTCtoLocalTime((new Date(event.content.EventTime)).getTime());
-            if (eventType === "upcoming") {
-              if (eventTime < currentTime) {
-                return null;
-              }
-              return <UpcomingEvent data={event} key={event.uuid} />;
-            } else if (eventType === "past") {
-              if (eventTime > currentTime) {
-                return null;
-              }
-              return <PastEvent data={event} key={event.uuid} />;
-            }
-            return null;
-          })}
+          {filteredEvents.map((event) =>
+            eventType === "upcoming" ? (
+              <UpcomingEvent data={event} key={event.uuid} />
+            ) : (
+              <PastEvent data={event} key={event.uuid} />
+            )
+          )}
         </div>
       </div>
     </div>

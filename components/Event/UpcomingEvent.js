@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import { render, NODE_IMAGE } from "storyblok-rich-text-react-renderer";
 
@@ -6,7 +6,7 @@ import {
   convertDateStringWithWeekDay,
   convertTimeString,
   GetRemainDays,
-  convertUTCtoLocalTime
+  convertUTCtoLocalTime,
 } from "utils/date";
 
 const UpcomingEvent = ({ data }) => {
@@ -39,6 +39,19 @@ const UpcomingEvent = ({ data }) => {
       return () => clearInterval(interval);
     }
   }, [data.content.EventTime]);
+
+  const registerLink = useMemo(() => {
+    if (!("RegistrationLink" in data.content)) {
+      return "";
+    }
+    const registrationLink = data.content.RegistrationLink;
+
+    if (registrationLink !== null) {
+      return registrationLink.url;
+    }
+
+    return "";
+  }, [data]);
 
   return (
     <div className="event-item-container">
@@ -110,6 +123,11 @@ const UpcomingEvent = ({ data }) => {
               ),
             },
           })}
+          {registerLink !== "" && (
+            <a href={registerLink} className="event-register" target="_blank">
+              Register
+            </a>
+          )}
         </div>
       </div>
     </div>
