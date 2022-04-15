@@ -1,14 +1,13 @@
+// This file sets a custom webpack configuration to use your Next.js app
+// with Sentry.
+// https://nextjs.org/docs/api-reference/next.config.js/introduction
+// https://docs.sentry.io/platforms/javascript/guides/nextjs/
+
 const { withSentryConfig } = require('@sentry/nextjs');
 
-module.exports = {
-  trailingSlash: true,
-  env: {
-    STORYBLOK_ACCESS_TOKEN: process.env.STORYBLOK_ACCESS_TOKEN,
-    LIQUIDITY_CONTRACT: process.env.LIQUIDITY_CONTRACT,
-  },
-}
-
-
+const moduleExports = {
+  // Your existing module.exports
+};
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
