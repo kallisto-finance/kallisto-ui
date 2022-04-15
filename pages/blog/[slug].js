@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { render, NODE_IMAGE } from "storyblok-rich-text-react-renderer";
 
 import { fetchBlogs } from "utils/storyblok";
-import { convertDateString } from "utils/date";
+import { convertDateString2 } from "utils/date";
 
 function Blog() {
   const router = useRouter();
@@ -46,7 +46,7 @@ function Blog() {
                 </div>
               ))}
               <div className="blog-summary-pubtime">
-                Published {convertDateString(post.published_at)}
+                Published {convertDateString2(post.published_at)}
               </div>
             </div>
             <div className="blog-intro">{post.content.intro}</div>

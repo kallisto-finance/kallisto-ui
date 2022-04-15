@@ -48,6 +48,13 @@ export const convertDateString = (dateStr) => {
   return date.toLocaleDateString("en-US", dateOptions);
 };
 
+export const convertDateString2 = (dateStr) => {
+  const stamp = Date.parse(dateStr);
+  const date = new Date(stamp);
+
+  return date.toLocaleDateString("en-US", dateOptions);
+};
+
 export const convertDateStringWithWeekDay = (dateStr, toLocal = false) => {
   const stamp = toLocal
     ? convertUTCtoLocalTime(parseDate(dateStr))
