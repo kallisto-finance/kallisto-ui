@@ -4,7 +4,7 @@ import Link from "next/link";
 import { BlogLatestItem } from "components/Blog";
 
 import { fetchBlogs } from "utils/storyblok";
-import { convertDateString } from "utils/date";
+import { convertDateString2 } from "utils/date";
 
 const Blog = () => {
   const [blog, setBlog] = useState(null);
@@ -42,7 +42,7 @@ const Blog = () => {
               {blog.tag_list.map((tag, index) => (
                 <div className="blog-summary-category" key={`blog-main-tage-${index}`}>{tag}</div>
               ))}
-              <div className="blog-summary-pubtime">Published {convertDateString(blog.published_at)}</div>
+              <div className="blog-summary-pubtime">Published {convertDateString2(blog.published_at)}</div>
             </div>
             <div className="blog-intro">
               {blog.content.intro}
