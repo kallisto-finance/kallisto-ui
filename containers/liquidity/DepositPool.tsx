@@ -21,6 +21,7 @@ const DepositPool = ({
   ustBalance,
   balance,
   volume,
+  totalLiquidity,
   onChangeDepositInputAmount,
 }) => {
   const connectedWallet = useConnectedWallet();
@@ -80,6 +81,12 @@ const DepositPool = ({
         <AmountView
           label="7 day Volume"
           value={`${formatBalance(volume, 1)} UST`}
+        />
+      </div>
+      <div className="view-container-row">
+        <AmountView
+          label="Total Liquidity"
+          value={`${formatBalance(totalLiquidity, 1)} UST`}
         />
       </div>
       <div className="view-container-row">
