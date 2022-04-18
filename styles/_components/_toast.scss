@@ -18,10 +18,29 @@
   }
 
   .transaction-toast-text {
-    color: #20253b;
+  
     font-weight: 600;
     font-size: 16px;
     line-height: 21px;
     margin-left: 12px;
+
+    .text {
+      color: #20253b;
+    }
+
+    .link {
+      margin-top: 7px;
+      a {
+        text-decoration: underline;
+
+        &.success {
+          color: #30B59B;
+        }
+
+        &.error {
+          color: #FF6F03;
+        }
+      }
+    }
   }
 }
