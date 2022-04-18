@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
-import BigNumber from "bignumber.js";
+import React, { useState, useMemo } from "react";
 
 import ViewContainer from "components/ViewContainer";
 import AmountView from "components/AmountView";
@@ -7,7 +6,7 @@ import WithdrawAmountInput from "components/WithdrawAmountInput";
 import LiquidityButton from "components/LiquidityButton";
 
 import { formatBalance } from "utils/wasm";
-import { isNaN, compare } from "utils/number";
+import { compare } from "utils/number";
 import { COLLECT_TYPE, LIQUIDITY_BALANCE_STATUS } from "types";
 import mixpanel from 'mixpanel-browser';
 

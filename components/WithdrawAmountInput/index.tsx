@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import BigNumber from "bignumber.js";
+import React, { useMemo } from "react";
+import ReactTooltip from 'react-tooltip';
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
@@ -29,6 +29,7 @@ const WithdrawAmountInput = ({
       <div className="withdraw-balance-section">
         <div className="balance-input">
         <img
+            data-tip="The exact amount may differ depending on<br/>the price of bLuna"
             src="/assets/approx.png"
             style={{ height: 18 }}
           />
@@ -90,6 +91,7 @@ const WithdrawAmountInput = ({
           </Button>
         </div>
       </div>
+      <ReactTooltip effect="solid" multiline={true} backgroundColor="#B6B2EF" textColor="#262B43" className="withdraw-tooltip" />
     </div>
   );
 };
