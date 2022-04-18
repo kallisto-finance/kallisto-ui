@@ -17,15 +17,15 @@ const MainLiquidityPanel = ({ pools, bLunaPrice }) => {
   useEffect(() => {
     let mySum = new BigNumber(0);
     let sum = new BigNumber(0);
-    
+
     for (let i = 0; i < pools.length; i++) {
-      mySum = mySum.plus(pools[i].userCap)
+      mySum = mySum.plus(pools[i].userCap);
       sum = sum.plus(pools[i].totalCap);
     }
 
     setMyLiquidity(mySum);
     setLiquidity(sum);
-  }, [pools])
+  }, [pools]);
 
   return (
     <ViewContainer className="main-liquidity-panel" header={false}>
@@ -41,9 +41,9 @@ const MainLiquidityPanel = ({ pools, bLunaPrice }) => {
       <div className="liquidation-volume-wrapper">
         <div className="liquidation-volume-item">
           <div className="title">
-            Liquiditation
+            Kallisto Total
             <br />
-            Volume
+            Liquidity
           </div>
           <div className="value">{formatBalance(liquidity)}</div>
         </div>
