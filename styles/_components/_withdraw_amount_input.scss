@@ -44,6 +44,7 @@
   .balance-input {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
 
     .divider {
@@ -77,7 +78,7 @@
       font-weight: bold;
       font-size: 34px;
       color: #fff;
-      padding-left: 16px;
+      padding-left: 8px;
 
       @media screen and (max-width: 768px) {
         font-size: 17.2px;
@@ -87,9 +88,9 @@
 
   .withdraw-percentage-selector {
     margin-top: 20px;
-    width: 100%;
+    width: 90%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 
     @media screen and (max-width: 768px) {
       margin-top: 10px;
@@ -125,5 +126,6 @@
 
 .amount-slider-section {
   width: 100%;
-  margin-top: 45px;
+  max-width: 360px;
+  margin-top: 25px;
 }

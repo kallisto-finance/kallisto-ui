@@ -139,25 +139,16 @@ const Liquidity = () => {
   /**
    * Withdraw
    */
-  const [withdrawAmount, setWithdrawAmount] = useState({
-    format: "",
-    value: new BigNumber(0),
-  });
+  const [withdrawPercentage, setWithdrawPercentage] = useState(50);
   const [withdrawLoading, setWithdrawLoading] = useState(false);
-  const handleChangeWithdrawAmount = (value) => {
-    setWithdrawAmount({
-      format: value,
-      value: isNaN(value)
-        ? new BigNumber(0)
-        : new BigNumber(value).multipliedBy(10 ** 6),
-    });
-  };
 
   const handleConfirmWithdraw = (collectType) => {
     console.log(collectType);
     if (collectType == "UST") {
       setWithdrawLoading(true);
-      withdrawUst(withdrawAmount.value, async (result) => {
+      const withdrawAmount = myLiquidity.multipliedBy(withdrawPercentage).dividedBy(100);
+      console.log('withdrawAmount', withdrawAmount.toString());
+      withdrawUst(withdrawAmount, async (result) => {
         console.log("*********** Withdraw UST Transaction **************");
         
         let txHash = "";
@@ -200,10 +191,7 @@ const Liquidity = () => {
             getUSTBalance();
             get7daysVolume();
 
-            setWithdrawAmount({
-              format: "0",
-              value: new BigNumber(0),
-            });
+            setWithdrawPercentage(50);
             setStep(0);
 
             moveScrollToTop("#your-liquidity-panel");
@@ -212,7 +200,7 @@ const Liquidity = () => {
           toast(
             <TransactionFeedbackToast
               status="success"
-              msg={`Succesfully Withdrawn ${withdrawAmount.format} UST `}
+              msg={`Succesfully Withdrawn ${withdrawAmount.toFixed(0)} UST `}
               hash={txHash}
             />
           );
@@ -390,11 +378,11 @@ const Liquidity = () => {
         {step === 2 && (
           <WithdrawConfirm
             onBack={() => setStep(0)}
-            totalAvailableBalance={myLiquidity}
-            withdrawAmount={withdrawAmount}
-            onChangeWithdrawAmount={(value) =>
-              handleChangeWithdrawAmount(value)
-            }
+            myCap={myCap}
+            withdrawPercentage={withdrawPercentage}
+            onChangeWithdrawPercentage={(value) => {
+              setWithdrawPercentage(value);
+            }}
             onConfirmWithdraw={(collectType) =>
               handleConfirmWithdraw(collectType)
             }
