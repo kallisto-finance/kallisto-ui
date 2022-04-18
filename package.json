@@ -30,6 +30,7 @@
     "react-dom": "17.0.1",
     "react-notifications": "^1.7.3",
     "react-toastify": "^8.2.0",
+    "react-tooltip": "^4.2.21",
     "sass": "^1.32.12",
     "storyblok-js-client": "^4.2.1",
     "storyblok-rich-text-react-renderer": "^2.5.2",
