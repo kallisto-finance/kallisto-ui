@@ -14,17 +14,24 @@ import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
 import { isNaN } from "utils/number";
 import { moveScrollToTop } from "utils/document";
-import { delay } from "utils/date"
+import { delay } from "utils/date";
 import { toast } from "react-toastify";
 import mixpanel from "mixpanel-browser";
 mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 
 const Liquidity = () => {
   const lcd = useLCDClient();
   const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
-  const { fetchPoolValues, deposit, withdrawUst, getVolumeHistory, getTxInfo, isTxSuccess } = usePool();
+  const {
+    fetchPoolValues,
+    deposit,
+    withdrawUst,
+    getVolumeHistory,
+    getTxInfo,
+    isTxSuccess,
+  } = usePool();
 
   const [ustBalance, setUstBalance] = useState("0");
 
@@ -34,10 +41,9 @@ const Liquidity = () => {
   const [myCap, setMyCap] = useState(new BigNumber(0));
   const [poolShare, setPoolShare] = useState(new BigNumber(0));
   const [lastDepositTime, setLastDepositTime] = useState(0);
-  const [donutValues, setDonutValues ] = useState(null);
+  const [donutValues, setDonutValues] = useState(null);
 
   const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
-
 
   /**
    * Deposit
@@ -49,12 +55,24 @@ const Liquidity = () => {
   };
 
   const handleConfirmDeposit = async () => {
+    // toast(
+    //   <TransactionFeedbackToast
+    //     status="error"
+    //     msg="dsfsdf"
+    //     hash="A204B5DCF075D10EDEA843AA09CFA7FCC3B2D985F0535699E909786F6BF62622"
+    //   />
+    // );
+    // return;
     setDepositLoading(true);
     deposit(
       new BigNumber(balance).multipliedBy(10 ** 6).toString(),
       async (result) => {
+        let txHash = "";
+
         if (result.status === "Success") {
           console.log("*********** Deposit Transaction **************");
+
+          txHash = result.data.result.txhash;
 
           let txInfo = null;
           let msg = "";
@@ -64,24 +82,24 @@ const Liquidity = () => {
             try {
               await delay(200);
 
-              txInfo = await getTxInfo(result.data.result.txhash, lcd);
+              txInfo = await getTxInfo(txHash, lcd);
               txState = isTxSuccess(txInfo);
               if (txState === "success") {
                 msg = `Succesfully Deposited ${balance} UST.`;
 
-                mixpanel.track("COMPLETED_DEPOSIT", { 'balance': balance});
-                mixpanel.people.set({ 'balance': balance});
-                mixpanel.people.set({ 'anchor-bluna-balance': balance });
+                mixpanel.track("COMPLETED_DEPOSIT", { balance: balance });
+                mixpanel.people.set({ balance: balance });
+                mixpanel.people.set({ "anchor-bluna-balance": balance });
               } else {
-                if (txState.includes("insufficient funds"))  {
-                  msg = "Error submitting the deposit. Insufficient funds for gas fees.";
+                if (txState.includes("insufficient funds")) {
+                  msg =
+                    "Error submitting the deposit. Insufficient funds for gas fees.";
                 } else {
                   msg = txState;
                 }
               }
               break;
-            } catch (e) {
-            }
+            } catch (e) {}
           }
 
           if (txState === "success") {
@@ -100,10 +118,17 @@ const Liquidity = () => {
             <TransactionFeedbackToast
               status={txState === "success" ? "success" : "error"}
               msg={msg}
+              hash={txHash}
             />
           );
         } else {
-          toast(<TransactionFeedbackToast status="error" msg={result.data.message} />);
+          toast(
+            <TransactionFeedbackToast
+              status="error"
+              msg={result.data.message}
+              hash={txHash}
+            />
+          );
         }
 
         setDepositLoading(false);
@@ -114,55 +139,50 @@ const Liquidity = () => {
   /**
    * Withdraw
    */
-  const [withdrawAmount, setWithdrawAmount] = useState({
-    format: "",
-    value: new BigNumber(0),
-  });
+  const [withdrawPercentage, setWithdrawPercentage] = useState(50);
   const [withdrawLoading, setWithdrawLoading] = useState(false);
-  const handleChangeWithdrawAmount = (value) => {
-    setWithdrawAmount({
-      format: value,
-      value: isNaN(value)
-        ? new BigNumber(0)
-        : new BigNumber(value).multipliedBy(10 ** 6),
-    });
-  };
 
   const handleConfirmWithdraw = (collectType) => {
     console.log(collectType);
     if (collectType == "UST") {
       setWithdrawLoading(true);
-      withdrawUst(withdrawAmount.value, async (result) => {
+      const withdrawAmount = myLiquidity.multipliedBy(withdrawPercentage).dividedBy(100);
+      console.log('withdrawAmount', withdrawAmount.toString());
+      withdrawUst(withdrawAmount, async (result) => {
         console.log("*********** Withdraw UST Transaction **************");
-        console.log(result);
+        
+        let txHash = "";
 
         if (result.status === "Success") {
           let txInfo = null;
           let msg = "";
           let txState = "";
 
+          txHash = result.data.result.txhash;
 
           while (true) {
             try {
               await delay(200);
 
-              txInfo = await getTxInfo(result.data.result.txhash, lcd);
+              txInfo = await getTxInfo(txHash, lcd);
               txState = isTxSuccess(txInfo);
               if (txState === "success") {
                 msg = `Succesfully Withdraw ${balance} UST.`;
-                mixpanel.track("COMPLETED_WITHDRAW", { 'balance': `-${balance}`});
-                mixpanel.people.set({ 'balance':`-${balance}`});
-                mixpanel.people.set({ 'anchor-bluna-balance': balance });
+                mixpanel.track("COMPLETED_WITHDRAW", {
+                  balance: `-${balance}`,
+                });
+                mixpanel.people.set({ balance: `-${balance}` });
+                mixpanel.people.set({ "anchor-bluna-balance": balance });
               } else {
                 if (txState.includes("insufficient funds")) {
-                  msg = "Error submitting the deposit. Insufficient funds for gas fees.";
+                  msg =
+                    "Error submitting the deposit. Insufficient funds for gas fees.";
                 } else {
                   msg = txState;
                 }
               }
               break;
-            } catch (e) {
-            }
+            } catch (e) {}
           }
 
           if (txState === "success") {
@@ -171,10 +191,7 @@ const Liquidity = () => {
             getUSTBalance();
             get7daysVolume();
 
-            setWithdrawAmount({
-              format: "0",
-              value: new BigNumber(0),
-            });
+            setWithdrawPercentage(50);
             setStep(0);
 
             moveScrollToTop("#your-liquidity-panel");
@@ -183,11 +200,18 @@ const Liquidity = () => {
           toast(
             <TransactionFeedbackToast
               status="success"
-              msg={`Succesfully Withdrawn ${withdrawAmount.format} UST `}
+              msg={`Succesfully Withdrawn ${withdrawAmount.toFixed(0)} UST `}
+              hash={txHash}
             />
           );
         } else {
-          toast(<TransactionFeedbackToast status="error" msg={result.data.message} />);
+          toast(
+            <TransactionFeedbackToast
+              status="error"
+              msg={result.data.message}
+              hash={txHash}
+            />
+          );
         }
 
         setWithdrawLoading(false);
@@ -219,7 +243,7 @@ const Liquidity = () => {
     setTotalSupply(result.totalSupply);
     setLastDepositTime(result.lastDepositTime);
     setMyCap(result.myDeposited);
-    setDonutValues(result.donutData)
+    setDonutValues(result.donutData);
   };
 
   const get7daysVolume = async () => {
@@ -229,45 +253,46 @@ const Liquidity = () => {
 
   const getQueryParam = (url, param) => {
     // Expects a raw URL
-    param = param.replace(/[[]/, "\[").replace(/[]]/, "\]");
-    let regexS = "[\?&]" + param + "=([^&#]*)",
-      regex = new RegExp( regexS ),
+    param = param.replace(/[[]/, "[").replace(/[]]/, "]");
+    let regexS = "[?&]" + param + "=([^&#]*)",
+      regex = new RegExp(regexS),
       results = regex.exec(url);
-    if (results === null || (results && typeof(results[1]) !== 'string' && results[1]['length'] )) {
-      return '';
+    if (
+      results === null ||
+      (results && typeof results[1] !== "string" && results[1]["length"])
+    ) {
+      return "";
     } else {
-      return decodeURIComponent(results[1]).replace(/\W/gi, ' ');
-      }
-    };
+      return decodeURIComponent(results[1]).replace(/\W/gi, " ");
+    }
+  };
 
   const getCampaignParams = async () => {
-
-    let campaign_keywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(' ')
-      , kw = ''
-      , params = {}
-      , first_params = {}
-      , index;
-    const router = useRouter()
+    let campaign_keywords =
+        "utm_source utm_medium utm_campaign utm_content utm_term".split(" "),
+      kw = "",
+      params = {},
+      first_params = {},
+      index;
+    const router = useRouter();
     //console.log(router.asPath)
 
     for (index = 0; index < campaign_keywords.length; ++index) {
       kw = getQueryParam(router.asPath, campaign_keywords[index]);
       if (kw.length) {
-        params[campaign_keywords[index] + ' [last touch]'] = kw;
+        params[campaign_keywords[index] + " [last touch]"] = kw;
       }
     }
     for (index = 0; index < campaign_keywords.length; ++index) {
       kw = getQueryParam(router.asPath, campaign_keywords[index]);
       if (kw.length) {
-        first_params[campaign_keywords[index] + ' [first touch]'] = kw;
+        first_params[campaign_keywords[index] + " [first touch]"] = kw;
       }
     }
 
     mixpanel.people.set(params);
     mixpanel.people.set_once(first_params);
     mixpanel.register(params);
-
-
   };
 
   /**
@@ -279,7 +304,6 @@ const Liquidity = () => {
     getUSTBalance();
     getPoolValues(lcd);
     get7daysVolume();
-
 
     let interval = null;
 
@@ -329,11 +353,12 @@ const Liquidity = () => {
               onDeposit={() => {
                 moveScrollToTop();
                 setStep(1);
-                mixpanel.track('DEPOSIT');
+                mixpanel.track("DEPOSIT");
               }}
               ustBalance={ustBalance}
               balance={balance}
               volume={volume7Days}
+              totalLiquidity={totalLiquidity}
               onChangeDepositInputAmount={(value) =>
                 handleChangeDepositInputAmount(value)
               }
@@ -353,11 +378,11 @@ const Liquidity = () => {
         {step === 2 && (
           <WithdrawConfirm
             onBack={() => setStep(0)}
-            totalAvailableBalance={myLiquidity}
-            withdrawAmount={withdrawAmount}
-            onChangeWithdrawAmount={(value) =>
-              handleChangeWithdrawAmount(value)
-            }
+            myCap={myCap}
+            withdrawPercentage={withdrawPercentage}
+            onChangeWithdrawPercentage={(value) => {
+              setWithdrawPercentage(value);
+            }}
             onConfirmWithdraw={(collectType) =>
               handleConfirmWithdraw(collectType)
             }

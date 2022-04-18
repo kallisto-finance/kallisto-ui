@@ -142,7 +142,7 @@ const usePool = () => {
       addresses.contracts.kallistoPool.address,
       {
         withdraw_ust: {
-          share: amount.toString(),
+          share: amount.toFixed(0),
         },
       }
     );
