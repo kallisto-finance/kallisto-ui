@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useConnectedWallet } from "@terra-money/wallet-provider";
 import { Chart, ArcElement } from "chart.js";
 
@@ -19,6 +19,7 @@ const YourLiquidityPanel = ({
   myBalance,
   myCap,
   totalLiquidity,
+  progress,
   poolShare,
   onWithdraw,
   lastDepositTime,
@@ -36,8 +37,14 @@ const YourLiquidityPanel = ({
             {`${formatBalance(myCap, 1)} UST`}
           </div>
         </div>
-        <div className="your-liquidity-header-border">
-          <div className="insider"></div>
+        <div
+          className={cn("your-liquidity-header-border", {
+            zero: progress === 0,
+          })}
+        >
+          {progress > 0 && (
+            <div className="insider" style={{ width: `${progress}%` }}></div>
+          )}
         </div>
       </div>
       <div className="view-container-chart">

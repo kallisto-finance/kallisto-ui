@@ -4,6 +4,7 @@ import BigNumber from "bignumber.js";
 import ViewContainer from "components/ViewContainer";
 import Button from "components/Button";
 import AmountView from "components/AmountView";
+import LoadingIcon from "components/LoadingIcon";
 
 import { isNaN } from "utils/number";
 
@@ -82,7 +83,7 @@ const DepositConfirm = ({
       >
         {loading ? (
           <>
-            {/* <img src="/assets/loader.gif" /> */}
+            <LoadingIcon />
             {`Depositing UST`}
           </>
         ) : (

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-
+import { useRouter } from "next/router";
 import BigNumber from "bignumber.js";
 import { useConnectedWallet, useWallet } from "@terra-money/wallet-provider";
+import { toast } from "react-toastify";
 
 import YourLiquidityPanel from "./YourLiquidityPanel";
 import DepositPool from "./DepositPool";
@@ -12,13 +13,13 @@ import { UkraineBanner } from "components/Banner";
 
 import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
-import { isNaN } from "utils/number";
 import { moveScrollToTop } from "utils/document";
 import { delay } from "utils/date";
-import { toast } from "react-toastify";
+
 import mixpanel from "mixpanel-browser";
 mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
-import { useRouter } from "next/router";
+
+let valueLoadingProgressBarInterval = null;
 
 const Liquidity = () => {
   const lcd = useLCDClient();
@@ -45,6 +46,48 @@ const Liquidity = () => {
 
   const [volume7Days, setVolume7Days] = useState(new BigNumber(0));
 
+  const [valueLoading, setValueLoading] = useState(false);
+  const [valueProgress, setValueProgress] = useState(100);
+
+  useEffect(() => {
+    // console.log('dddddddddddddddddddddddddddddddddddddddddd')
+    // if (valueProgress === 0) {
+    //   clearInterval(valueLoadingProgressBarInterval);
+    //   return;
+    // };  
+
+    // valueLoadingProgressBarInterval = setInterval(() => {
+    //   let tempProgress = 0;
+
+    //   if (valueLoading) {
+    //     tempProgress = valueProgress > 60 ? 60 : valueProgress - 1;
+    //   } else {
+    //     tempProgress = valueProgress - 1;
+    //   }
+
+    //   if (tempProgress < 0) {
+    //     tempProgress = 0;
+    //   }
+
+    //   setValueProgress(tempProgress);
+    // }, 200);
+
+    valueLoadingProgressBarInterval = setInterval(() => {
+      setValueProgress((prev) => {
+        if (prev === 0) {
+          clearInterval(valueLoadingProgressBarInterval);
+          return 0;
+        }
+
+        if (!valueLoading && prev === 60) {
+          return 60;
+        }
+
+        return prev - 0.5;
+      });
+    }, 10)
+  }, [valueLoading]);
+
   /**
    * Deposit
    */
@@ -58,7 +101,7 @@ const Liquidity = () => {
     // toast(
     //   <TransactionFeedbackToast
     //     status="error"
-    //     msg="dsfsdf"
+    //     msg="test"
     //     hash="A204B5DCF075D10EDEA843AA09CFA7FCC3B2D985F0535699E909786F6BF62622"
     //   />
     // );
@@ -146,11 +189,13 @@ const Liquidity = () => {
     console.log(collectType);
     if (collectType == "UST") {
       setWithdrawLoading(true);
-      const withdrawAmount = myLiquidity.multipliedBy(withdrawPercentage).dividedBy(100);
-      console.log('withdrawAmount', withdrawAmount.toString());
+      const withdrawAmount = myLiquidity
+        .multipliedBy(withdrawPercentage)
+        .dividedBy(100);
+      console.log("withdrawAmount", withdrawAmount.toString());
       withdrawUst(withdrawAmount, async (result) => {
         console.log("*********** Withdraw UST Transaction **************");
-        
+
         let txHash = "";
 
         if (result.status === "Success") {
@@ -228,6 +273,7 @@ const Liquidity = () => {
         const ustBalance =
           "uusd" in coins._coins ? coins._coins.uusd.amount : 0;
         setUstBalance(formatBalance(ustBalance, 6));
+        setValueLoading(true);
       });
     } else {
       setUstBalance("0");
@@ -236,6 +282,8 @@ const Liquidity = () => {
 
   const getPoolValues = async (lcd) => {
     const result = await fetchPoolValues(lcd);
+
+    setValueLoading(true);
 
     setTotalLiquidity(result.totalLiquidity);
     setMyLiquidity(result.myLiquidity);
@@ -344,6 +392,7 @@ const Liquidity = () => {
               poolShare={poolShare}
               lastDepositTime={lastDepositTime}
               donutValues={donutValues}
+              progress={valueProgress}
               onWithdraw={() => {
                 moveScrollToTop();
                 setStep(2);
