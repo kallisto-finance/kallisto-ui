@@ -459,9 +459,9 @@ const Liquidity = () => {
             <WithdrawConfirm
               pool={selectedPool}
               onBack={() => setStep(1)}
-              withdrawAmount={withdrawAmount}
-              onChangeWithdrawAmount={(value) =>
-                handleChangeWithdrawAmount(value)
+              withdrawPercentage={withdrawPercentage}
+              onChangeWithdrawPercentage={(value) =>
+                setWithdrawPercentage(value)
               }
               onConfirmWithdraw={(collectType) =>
                 handleConfirmWithdraw(collectType)
