@@ -16,7 +16,6 @@ mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
 const WithdrawConfirm = ({
   pool,
   onBack,
-  myCap,
   withdrawPercentage,
   onChangeWithdrawPercentage,
   onConfirmWithdraw,
@@ -52,7 +51,7 @@ const WithdrawConfirm = ({
       <div className="view-container-row">
         <AmountView
           icon="/assets/tokens/ust.png"
-          value={`${formatBalance(myCap, 2)} UST`}
+          value={`${formatBalance(pool.userCap, 2)} UST`}
           iconBack={true}
           containerStyle={{
             height: 91,
@@ -66,7 +65,7 @@ const WithdrawConfirm = ({
 
       <div className="view-container-row">
         <WithdrawAmountInput
-          myCap={myCap}
+          myCap={pool.userCap}
           withdrawPercentage={withdrawPercentage}
           onChangeWithdrawPercentage={(value) => onChangeWithdrawPercentage(value)}
           collectType={collectType}
