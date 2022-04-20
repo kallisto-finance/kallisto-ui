@@ -196,4 +196,25 @@
       }
     }
   }
+
+  .pool-tooltip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+
+    &:hover {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    img {
+      margin-right: 5px;
+    }
+
+    a {
+      color: #20253b;
+      text-decoration: underline;
+    }
+  }
 }
