@@ -32,7 +32,7 @@ const MainLiquidityPanel = ({ pools, bLunaPrice, progress }) => {
       <a href="/" id="main-liquidity-panel" />
       <div className="total-liquidity-wrapper">
         <div className="title">My Total Liquidity</div>
-        <div className="value">{formatBalance(myLiquidity)} UST</div>
+        <div className="value">{formatBalance(myLiquidity, 1)} UST</div>
         {/* <div className="withdraw-button">
           Withdraw <img src="/assets/arrows/arrow-top-right.png" />
         </div> */}
@@ -49,11 +49,11 @@ const MainLiquidityPanel = ({ pools, bLunaPrice, progress }) => {
             <br />
             Liquidity
           </div>
-          <div className="value">{formatBalance(liquidity)}</div>
+          <div className="value">{formatBalance(liquidity, 1)}</div>
         </div>
         <div className="liquidation-volume-item">
           <div className="title">bLuna Price</div>
-          <div className="value">{bLunaPrice.price.toFixed(3)}</div>
+          <div className="value">{bLunaPrice.price.toFixed(1)}</div>
           {bLunaPrice.increase !== "" && bLunaPrice.increase !== "0" && (
             <div
               className={cn("price-change", {
