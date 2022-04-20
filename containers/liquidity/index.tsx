@@ -19,6 +19,8 @@ import { useLCDClient, usePool } from "hooks";
 import { formatBalance } from "utils/wasm";
 import { moveScrollToTop } from "utils/document";
 import { delay } from "utils/date";
+import { addresses } from "utils/constants";
+import { compare } from "utils/number";
 
 import mixpanel from "mixpanel-browser";
 mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
