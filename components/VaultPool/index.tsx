@@ -71,7 +71,7 @@ const VaultPool = ({ pool, deposits, onSelectPool }) => {
             >
               <img src="/assets/link.svg" />
               <a
-                href={`https://finder.terra.money/mainnet/address/${dataTip}`}
+                href={`https://terrasco.pe/mainnet/address/${dataTip}`}
                 target="_blank"
               >
                 {getWalletAddressEllipsis(dataTip, 15, 15)}

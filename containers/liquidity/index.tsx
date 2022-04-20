@@ -61,7 +61,9 @@ const Liquidity = () => {
 
   const [deposit7Days, setDeposit7Days] = useState([]);
   const selectedPool7DayDeposits = useMemo(() => {
-    const findIndex = deposit7Days.findIndex((item) => item.id === selectedPoolId);
+    const findIndex = deposit7Days.findIndex(
+      (item) => item.id === selectedPoolId
+    );
 
     if (findIndex >= 0) {
       return deposit7Days[findIndex].deposits;
@@ -74,28 +76,6 @@ const Liquidity = () => {
   const [valueProgress, setValueProgress] = useState(100);
 
   useEffect(() => {
-    // console.log('dddddddddddddddddddddddddddddddddddddddddd')
-    // if (valueProgress === 0) {
-    //   clearInterval(valueLoadingProgressBarInterval);
-    //   return;
-    // };  
-
-    // valueLoadingProgressBarInterval = setInterval(() => {
-    //   let tempProgress = 0;
-
-    //   if (valueLoading) {
-    //     tempProgress = valueProgress > 60 ? 60 : valueProgress - 1;
-    //   } else {
-    //     tempProgress = valueProgress - 1;
-    //   }
-
-    //   if (tempProgress < 0) {
-    //     tempProgress = 0;
-    //   }
-
-    //   setValueProgress(tempProgress);
-    // }, 200);
-
     valueLoadingProgressBarInterval = setInterval(() => {
       setValueProgress((prev) => {
         if (prev === 0) {
@@ -109,7 +89,7 @@ const Liquidity = () => {
 
         return prev - 0.5;
       });
-    }, 10)
+    }, 10);
   }, [valueLoading]);
 
   /**
@@ -214,8 +194,10 @@ const Liquidity = () => {
     if (collectType == "UST") {
       setWithdrawLoading(true);
 
-      const withdrawAmount = selectedPool.userBalance.multipliedBy(withdrawPercentage).dividedBy(100);
-      console.log('withdrawAmount', withdrawAmount.toString());
+      const withdrawAmount = selectedPool.userBalance
+        .multipliedBy(withdrawPercentage)
+        .dividedBy(100);
+      console.log("withdrawAmount", withdrawAmount.toString());
 
       withdrawUst(selectedPool.address, withdrawAmount, async (result) => {
         console.log("*********** Withdraw UST Transaction **************");
@@ -316,6 +298,8 @@ const Liquidity = () => {
     await delay(500);
 
     setBLunaPrice({ ...bPrice });
+
+    setValueLoading(true);
   };
 
   const get7daysDeposits = async () => {
@@ -394,7 +378,11 @@ const Liquidity = () => {
           <>
             <div className="liquidity-wrapper-general">
               {!connectedWallet && <ConnectionMask />}
-              <MainLiquidityPanel pools={pools} bLunaPrice={bLunaPrice} />
+              <MainLiquidityPanel
+                pools={pools}
+                bLunaPrice={bLunaPrice}
+                progress={valueProgress}
+              />
             </div>
             <div className="liquidity-wrapper-poolist">
               <PoolListPanel
@@ -404,6 +392,7 @@ const Liquidity = () => {
                   setSelectedPoolId(id);
                   setStep(1);
                 }}
+                valueLoading={valueLoading}
               />
             </div>
           </>
