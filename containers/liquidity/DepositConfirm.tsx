@@ -4,14 +4,14 @@ import BigNumber from "bignumber.js";
 import ViewContainer from "components/ViewContainer";
 import Button from "components/Button";
 import AmountView from "components/AmountView";
-import LoadingIcon from "components/LoadingIcon";
+import { LoadingSpinner } from "components/LoadingIcon";
 
 import { isNaN } from "utils/number";
 
 import cn from "classnames";
-import mixpanel from 'mixpanel-browser';
+import mixpanel from "mixpanel-browser";
 
-mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
+mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
 
 const DepositConfirm = ({
   pool,
@@ -52,16 +52,19 @@ const DepositConfirm = ({
         <AmountView
           value={`${
             balance === "" ? 0 : new BigNumber(balance).toFormat()
-            } UST`}
+          } UST`}
           icon="/assets/tokens/ust.png"
           iconBack={true}
-          button={<Button className="amount-edit-button" onClick={(e) => onBack()}>EDIT</Button>}
+          button={
+            <Button className="amount-edit-button" onClick={(e) => onBack()}>
+              EDIT
+            </Button>
+          }
         />
       </div>
 
       <div className="view-container-row">
         <div className="view-container-subtitle">Your % of the Pool* </div>
-
       </div>
       <div className="view-container-row">
         <AmountView value={`${expectedPoolShare.toFixed(2)} %`} />
@@ -76,18 +79,18 @@ const DepositConfirm = ({
         className={cn("view-container-button", { loading })}
         onClick={(e) => {
           if (loading) return;
-          mixpanel.track('CONFIRM_DEPOSIT');
+          mixpanel.track("CONFIRM_DEPOSIT");
           onConfirmDeposit();
         }}
       >
         {loading ? (
           <>
-            <LoadingIcon />
+            <LoadingSpinner />
             {`Depositing UST`}
           </>
         ) : (
-            "Confirm Deposit"
-          )}
+          "Confirm Deposit"
+        )}
       </Button>
     </ViewContainer>
   );
