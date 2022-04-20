@@ -10,7 +10,7 @@ import { formatBalance } from "utils/wasm";
 
 import cn from "classnames";
 
-const MainLiquidityPanel = ({ pools, bLunaPrice }) => {
+const MainLiquidityPanel = ({ pools, bLunaPrice, progress }) => {
   const [myLiquidity, setMyLiquidity] = useState(new BigNumber(0));
   const [liquidity, setLiquidity] = useState(new BigNumber(0));
 
@@ -37,7 +37,11 @@ const MainLiquidityPanel = ({ pools, bLunaPrice }) => {
           Withdraw <img src="/assets/arrows/arrow-top-right.png" />
         </div> */}
       </div>
-      <div className="divider"></div>
+      <div className={cn("divider", { zero: progress === 0 })}>
+        {progress > 0 && (
+          <div className="divider-progress" style={{ width: `${progress}%` }} />
+        )}
+      </div>
       <div className="liquidation-volume-wrapper">
         <div className="liquidation-volume-item">
           <div className="title">
