@@ -52,7 +52,7 @@ const MyLiquidityPanel = ({ pool, bLunaPrice, onBackToPools, onWithdraw }) => {
         <a href="/" id="main-liquidity-panel" />
         <div className="total-liquidity-wrapper">
           <div className="title">My Pool Liquidity</div>
-          <div className="value">{formatBalance(pool.userCap)} UST</div>
+          <div className="value">{formatBalance(pool.userCap, 1)} UST</div>
           <div className="withdraw-button" onClick={(e) => onWithdraw()}>
             Withdraw <img src="/assets/arrows/arrow-top-right.png" />
           </div>
