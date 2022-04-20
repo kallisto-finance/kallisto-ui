@@ -39,7 +39,7 @@ export const addresses = {
       },
       {
         id: 2,
-        apy: 3.58,
+        apy: 343.48,
         name: "bLuna",
         category: "Anchor",
         address: process.env.LIQUIDITY_CONTRACT,
