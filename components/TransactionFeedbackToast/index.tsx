@@ -22,7 +22,7 @@ const TransactionFeedbackToast = ({
       {hash && hash !== "" && (
         <div className="link">
           <a
-            href={`https://finder.terra.money/mainnet/tx/${hash}`}
+            href={`https://terrasco.pe/mainnet/tx/${hash}`}
             className={status}
             target="_blank"
           >

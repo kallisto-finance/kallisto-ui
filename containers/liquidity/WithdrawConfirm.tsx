@@ -4,14 +4,14 @@ import ViewContainer from "components/ViewContainer";
 import AmountView from "components/AmountView";
 import WithdrawAmountInput from "components/WithdrawAmountInput";
 import LiquidityButton from "components/LiquidityButton";
-import LoadingIcon from "components/LoadingIcon";
+import { LoadingSpinner } from "components/LoadingIcon";
 
 import { formatBalance } from "utils/wasm";
 import { compare } from "utils/number";
 import { COLLECT_TYPE, LIQUIDITY_BALANCE_STATUS } from "types";
 
-import mixpanel from 'mixpanel-browser';
-mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
+import mixpanel from "mixpanel-browser";
+mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
 
 const WithdrawConfirm = ({
   pool,
@@ -44,9 +44,7 @@ const WithdrawConfirm = ({
       onLeft={() => onBack()}
     >
       <div className="view-container-row">
-        <div className="view-container-subtitle">
-          Amount available
-        </div>
+        <div className="view-container-subtitle">Amount available</div>
       </div>
       <div className="view-container-row">
         <AmountView
@@ -67,7 +65,9 @@ const WithdrawConfirm = ({
         <WithdrawAmountInput
           myCap={pool.userCap}
           withdrawPercentage={withdrawPercentage}
-          onChangeWithdrawPercentage={(value) => onChangeWithdrawPercentage(value)}
+          onChangeWithdrawPercentage={(value) =>
+            onChangeWithdrawPercentage(value)
+          }
           collectType={collectType}
         />
       </div>
@@ -76,13 +76,13 @@ const WithdrawConfirm = ({
         className="view-container-button"
         onClick={() => {
           if (loading) return;
-          mixpanel.track('CONFIRM_WITHDRAWAL');
-          onConfirmWithdraw(collectType)
+          mixpanel.track("CONFIRM_WITHDRAWAL");
+          onConfirmWithdraw(collectType);
         }}
         label={
           loading ? (
             <>
-              <LoadingIcon />
+              <LoadingSpinner />
               Withdrawing UST
             </>
           ) : (
