@@ -22,6 +22,8 @@ import { delay } from "utils/date";
 import { addresses } from "utils/constants";
 import { compare } from "utils/number";
 
+import cn from "classnames";
+
 import mixpanel from "mixpanel-browser";
 mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
 
@@ -369,6 +371,12 @@ const Liquidity = () => {
     return () => clearInterval(interval);
   }, [connectedWallet, lcd]);
 
+  useEffect(() => {
+    if (!connectedWallet) {
+      setStep(0);
+    }
+  }, [connectedWallet]);
+
   const [step, setStep] = useState(0);
 
   return (
@@ -376,7 +384,11 @@ const Liquidity = () => {
       <div className="liquidity-wrapper">
         {step === 0 && (
           <>
-            <div className="liquidity-wrapper-general">
+            <div
+              className={cn("liquidity-wrapper-general", {
+                hide: !connectedWallet,
+              })}
+            >
               {!connectedWallet && <ConnectionMask />}
               <MainLiquidityPanel
                 pools={pools}
@@ -400,7 +412,9 @@ const Liquidity = () => {
         {step === 1 && (
           <>
             <div
-              className="liquidity-wrapper-general"
+              className={cn("liquidity-wrapper-general", {
+                hide: !connectedWallet,
+              })}
               style={{ background: "none" }}
             >
               {!connectedWallet && <ConnectionMask className="long" />}
