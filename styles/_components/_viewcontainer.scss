@@ -88,6 +88,10 @@
     background: none;
     margin-top: 25px;
     min-height: 507px;
+
+    @media screen and (max-width: 768px) {
+      min-height: 0px;
+    }
   }
 
   &-header {

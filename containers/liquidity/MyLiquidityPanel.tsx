@@ -57,7 +57,7 @@ const MyLiquidityPanel = ({ pool, bLunaPrice, onBackToPools, onWithdraw }) => {
             Withdraw <img src="/assets/arrows/arrow-top-right.png" />
           </div>
         </div>
-        <div className="divider"></div>
+        <div className="divider zero"></div>
         <div className="liqudation-donut-wrapper">
           <DonutChart
             donutValues={donutData}
@@ -81,7 +81,7 @@ const MyLiquidityPanel = ({ pool, bLunaPrice, onBackToPools, onWithdraw }) => {
             }}
           />
         </div>
-        <div className="divider"></div>
+        <div className="divider zero"></div>
         <div className="liqudation-percentage">
           <div className="title">My % of the Pool</div>
           <div className="value">{`${pool.userBalance
