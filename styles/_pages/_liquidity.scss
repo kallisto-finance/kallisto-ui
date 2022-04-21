@@ -2,6 +2,10 @@
   width: 100%;
   margin-top: 100px;
 
+  @media screen and (max-width: 768px) {
+    margin-top: 30px;
+  }
+
   .liquidity-wrapper {
     width: 100%;
     display: flex;
@@ -9,14 +13,14 @@
     align-items: flex-start;
 
     @media screen and (max-width: 768px) {
-      display: flex;
       flex-direction: column;
+      align-items: center;
     }
   }
 
   .liquidity-wrapper-general {
     width: 483px;
-
+    position: relative;
     background: #262b43;
     border-radius: 30px;
     margin-top: 75px;
@@ -27,6 +31,10 @@
       margin-top: 0px;
       min-height: 0px;
       padding-bottom: 25px;
+
+      &.hide {
+        display: none;;
+      }
     }
 
     .title {
@@ -89,8 +97,8 @@
       background: rgba(55, 250, 211, 0.4);
       height: 8px;
       width: 100%;
-      margin-top: 44px;
-      margin-bottom: 36px;
+      margin-top: 43px;
+      margin-bottom: 35px;
 
       @media screen and (max-width: 768px) {
         margin-top: 40px;
