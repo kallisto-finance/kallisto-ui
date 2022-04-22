@@ -57,7 +57,7 @@ const usePool = () => {
       // get pool UST balance
       if (lcd !== null) {
         const vaultBank = await lcd.bank.balance(
-          addresses.contracts.kallistoPool.address
+          pool.address
         );
         pool.poolUSTBalance =
           "uusd" in vaultBank[0]._coins ? vaultBank[0]._coins.uusd.amount : 0;
