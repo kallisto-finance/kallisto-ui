@@ -30,16 +30,16 @@ export const addresses = {
     vaultList: [
       {
         id: 1,
-        apy: 0,
+        apy: 307.5,
         name: "aUST/bLuna",
         category: "Kujira - Anchor",
-        address: "",
+        address: process.env.KUJIRA_AUST_VAULT,
         theme: "kujira",
         icon: "/assets/tokens/kujira.png"
       },
       {
         id: 2,
-        apy: 343.48,
+        apy: 307.5,
         name: "bLuna",
         category: "Anchor",
         address: process.env.LIQUIDITY_CONTRACT,
