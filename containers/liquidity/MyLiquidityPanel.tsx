@@ -26,12 +26,21 @@ const MyLiquidityPanel = ({ pool, bLunaPrice, onBackToPools, onWithdraw }) => {
     }
 
     const donut = { ...donutData };
-    donut.ust = pool.poolUSTBalance
-      .multipliedBy(pool.userBalance)
-      .dividedBy(pool.totalSupply);
-    donut.bluna = pool.poolbLunaBalance
-      .multipliedBy(pool.userBalance)
-      .dividedBy(pool.totalSupply);
+
+    donut.ust =
+      compare(pool.totalSupply, 0) === 1
+        ? new BigNumber(0)
+        : pool.poolUSTBalance
+            .multipliedBy(pool.userBalance)
+            .dividedBy(pool.totalSupply);
+
+    donut.bluna =
+      compare(pool.totalSupply, 0) === 1
+        ? new BigNumber(0)
+        : pool.poolbLunaBalance
+            .multipliedBy(pool.userBalance)
+            .dividedBy(pool.totalSupply);
+
     donut.blunaUST = donut.bluna.multipliedBy(bLunaPrice.price);
     donut.ustBid = pool.userCap.minus(donut.ust).minus(donut.blunaUST);
 
@@ -84,10 +93,14 @@ const MyLiquidityPanel = ({ pool, bLunaPrice, onBackToPools, onWithdraw }) => {
         <div className="divider zero"></div>
         <div className="liqudation-percentage">
           <div className="title">My % of the Pool</div>
-          <div className="value">{`${pool.userBalance
-            .dividedBy(pool.totalSupply)
-            .multipliedBy(100)
-            .toFixed(2)} %`}</div>
+          <div className="value">{`${
+            compare(pool.totalSupply, 0) === 0
+              ? "0"
+              : pool.userBalance
+                  .dividedBy(pool.totalSupply)
+                  .multipliedBy(100)
+                  .toFixed(2)
+          } %`}</div>
         </div>
       </ViewContainer>
     </>

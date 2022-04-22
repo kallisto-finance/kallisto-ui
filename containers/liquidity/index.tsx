@@ -218,6 +218,7 @@ const Liquidity = () => {
               await delay(200);
 
               txInfo = await getTxInfo(txHash, lcd);
+              console.log('withdrawTX', txInfo);
               txState = isTxSuccess(txInfo);
               if (txState === "success") {
                 msg = `Succesfully Withdraw ${balance} UST.`;
@@ -252,7 +253,7 @@ const Liquidity = () => {
           toast(
             <TransactionFeedbackToast
               status="success"
-              msg={`Succesfully Withdrawn ${withdrawAmount.toFixed(0)} UST `}
+              msg={`Succesfully Withdrawn ${formatBalance(withdrawAmount, 1)} UST `}
               hash={txHash}
             />
           );
@@ -273,7 +274,7 @@ const Liquidity = () => {
 
   const getPoolValues = async (poolList, connectedWallet, lcd) => {
     const result = await fetchPoolValues(poolList, connectedWallet, lcd);
-
+console.log(result.poolList)
     setPools([...result.poolList]);
     setUstBalance(formatBalance(result.userUSTBalance, 6));
 
