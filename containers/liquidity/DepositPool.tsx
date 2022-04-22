@@ -13,14 +13,16 @@ import { isNaN, compare } from "utils/number";
 import { formatBalance } from "utils/wasm";
 import mixpanel from "mixpanel-browser";
 
+import cn from "classnames";
+
 mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
 
 const DepositPool = ({
+  pool,
   onDeposit,
   ustBalance,
   balance,
   volume,
-  totalLiquidity,
   onChangeDepositInputAmount,
 }) => {
   const connectedWallet = useConnectedWallet();
@@ -62,30 +64,39 @@ const DepositPool = ({
   }, [balance, ustBalance, depositChecked]);
 
   return (
-    <ViewContainer className="add-liquidity-panel" title="Liquidation Pool ">
+    <ViewContainer
+      className={cn("add-liquidity-panel", pool.theme)}
+      header={false}
+    >
+      <div className={cn("pool-token-wrapper", pool.theme)}>
+        <img src={pool.icon} />
+        <div className="pool-name">
+          <div className="pool-name-text">{pool.name}</div>
+          <div className={cn("pool-name-category", pool.theme)}>
+            {pool.category}
+          </div>
+        </div>
+      </div>
       <div className="view-container-row">
         <AmountView
-          icon="/assets/tokens/anchor-bluna.png"
-          value="Anchor-bLUNA"
-          style={{
-            fontSize: 20,
-            fontWeight: 500,
-          }}
+          label="APY"
+          value={`${pool.apy} %`}
+          highlight={true}
+          theme={pool.theme}
         />
       </div>
       <div className="view-container-row">
-        <AmountView label="APY" value="307.5%" highlight={true} />
-      </div>
-      <div className="view-container-row">
         <AmountView
-          label="7 day Volume"
+          label="7 day Deposits"
           value={`${formatBalance(volume, 1)} UST`}
+          theme={pool.theme}
         />
       </div>
       <div className="view-container-row">
         <AmountView
-          label="Total Liquidity"
-          value={`${formatBalance(totalLiquidity, 1)} UST`}
+          label="Liquidity"
+          value={`${formatBalance(pool.totalCap, 1)} UST`}
+          theme={pool.theme}
         />
       </div>
       <div className="view-container-row">
@@ -98,13 +109,18 @@ const DepositPool = ({
           onChangeDepositInputAmount={(value) =>
             onChangeDepositInputAmount(value)
           }
+          theme={pool.theme}
         />
       </div>
       <div className="view-container-row">
         <div className="cooldown-notice">
           <img
             onClick={(e) => setDepositChecked(!depositChecked)}
-            src={depositChecked ? "/assets/deposit-checked-on.png" : "/assets/deposit-checked-off.png"}
+            src={
+              depositChecked
+                ? "/assets/deposit-checked-on.png"
+                : "/assets/deposit-checked-off.png"
+            }
             className="cooldown-notice-circle"
           />
           <div className="cooldown-notice-text">

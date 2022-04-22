@@ -1,0 +1,349 @@
+.liquidity-container {
+  width: 100%;
+  margin-top: 100px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 30px;
+  }
+
+  .liquidity-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .liquidity-wrapper-general {
+    width: 483px;
+    position: relative;
+    background: #262b43;
+    border-radius: 30px;
+    margin-top: 75px;
+    padding-bottom: 38px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-top: 0px;
+      min-height: 0px;
+      padding-bottom: 25px;
+
+      &.hide {
+        display: none;;
+      }
+    }
+
+    .title {
+      color: #b6b2ef;
+      font-weight: 500;
+      font-size: 20px;
+      text-align: center;
+
+      @media screen and (max-width: 768px) {
+        font-size: 13px;
+      }
+    }
+
+    .value {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 34px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 20px;
+      }
+    }
+
+    .total-liquidity-wrapper {
+      margin: 38px 24px 0px;
+      height: 174px;
+      background: #313650;
+      border-radius: 87px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      @media screen and (max-width: 768px) {
+        height: 109px;
+        margin: 25px 24px 0px;
+      }
+
+      .withdraw-button {
+        width: 110px;
+        height: 29px;
+        background: #b6b2ef;
+        border-radius: 17px;
+        font-weight: 500;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        margin-top: 13px;
+
+        img {
+          height: 9.2px;
+          margin-left: 6px;
+        }
+      }
+    }
+
+    .divider {
+      background: rgba(55, 250, 211, 0.4);
+      height: 8px;
+      width: 100%;
+      margin-top: 43px;
+      margin-bottom: 35px;
+
+      @media screen and (max-width: 768px) {
+        margin-top: 40px;
+        margin-bottom: 25px;
+      }
+
+      &.zero {
+        background: #60699e;
+        height: 1px;
+      }
+
+      &-progress {
+        background: rgba(55, 250, 211, 1);
+        height: 8px;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+    }
+
+    .liquidation-volume-wrapper {
+      display: flex;
+      width: 100%;
+      padding: 0px 24px;
+      justify-content: space-between;
+
+      .liquidation-volume-item {
+        width: calc(50% - 5px);
+        background: #313650;
+        border-radius: 30px;
+        height: 176px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @media screen and (max-width: 768px) {
+          height: 118px;
+        }
+
+        &.full {
+          width: 100%;
+        }
+      }
+
+      .price-change {
+        color: #caeb70;
+        font-weight: 500;
+        font-size: 20px;
+        margin-top: 8px;
+
+        &.up {
+          color: #caeb70;
+
+          svg {
+            color: #caeb70;
+          }
+        }
+
+        &.down {
+          color: #ff6230;
+          svg {
+            color: #ff6230;
+          }
+        }
+        svg {
+          height: 18px;
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .liqudation-percentage {
+      background: #313650;
+      border-radius: 50px;
+      height: 100px;
+      margin: 0px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 42px;
+    }
+
+    .liqudation-donut-wrapper {
+      margin: 0px 24px;
+    }
+  }
+
+  .select-liquidity-arrow {
+    width: 289px;
+    height: 45px;
+    border: 2px solid #313650;
+    box-sizing: border-box;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #ffffff;
+
+    @media screen and (max-width: 768px) {
+      font-size: 10px;
+      line-height: 14px;
+      width: 174px;
+      height: 26px;
+    }
+
+    svg {
+      height: 18px;
+      color: #b6b2ef;
+      margin-left: 5px;
+
+      @media screen and (max-width: 768px) {
+        height: 11px;
+      }
+    }
+  }
+
+  .back-to-pools {
+    width: 148px;
+    height: 45px;
+    border: 2px solid #313650;
+    box-sizing: border-box;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #ffffff;
+    cursor: pointer;
+    margin-bottom: 26px;
+
+    @media screen and (max-width: 768px) {
+      font-size: 10px;
+      line-height: 14px;
+      width: 86px;
+      height: 26px;
+    }
+
+    svg {
+      height: 11px;
+      color: #b6b2ef;
+      margin-right: 6px;
+
+      @media screen and (max-width: 768px) {
+        height: 7px;
+      }
+    }
+  }
+
+  .liquidity-wrapper-poolist {
+    max-width: 550px;
+    width: 100%;
+    margin-left: 62px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-left: 0px;
+      margin-top: 30px;
+    }
+  }
+
+  .liquidity-wrapper-deposit {
+    max-width: 653px;
+    width: 100%;
+    margin-left: 62px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-left: 0px;
+    }
+
+    .pool-token-wrapper {
+      background: #313650;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 24px;
+      margin: 38px 32px 20px;
+
+      @media screen and (max-width: 768px) {
+        padding: 3px 14px;
+        margin-left: 11px;
+        margin-right: 11px;
+      }
+
+      &.kujira {
+        background: #323843;
+        border: none;
+      }
+
+      img {
+        height: 64px;
+
+        @media screen and (max-width: 768px) {
+          height: 39px;
+        }
+      }
+
+      .pool-name {
+        margin-left: 11px;
+
+        &-text {
+          color: #ffffff;
+          font-weight: 700;
+          font-size: 30px;
+
+          @media screen and (max-width: 768px) {
+            font-size: 20px;
+          }
+        }
+
+        &-category {
+          color: #b6b2ef;
+          font-weight: 500;
+          font-size: 16px;
+
+          @media screen and (max-width: 768px) {
+            font-size: 13px;
+          }
+
+          &.kujira {
+            color: #d3483e;
+          }
+        }
+      }
+    }
+  }
+
+  .banner-wrapper {
+    width: 100%;
+    max-width: 1158px;
+    margin: 0px auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      margin-top: 20px;
+    }
+  }
+}

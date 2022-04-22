@@ -4,10 +4,13 @@ import Button from "components/Button";
 
 import { isNaN } from 'utils/number';
 
+import cn from 'classnames';
+
 const DepositAmountInput = ({
   maxBalance,
   balance,
   onChangeDepositInputAmount,
+  theme = "default"
 }) => {
   const inputEl = useRef(null)
 
@@ -20,7 +23,7 @@ const DepositAmountInput = ({
   }, [inputEl])
 
   return (
-    <div className="deposit-amount-input-container">
+    <div className={cn("deposit-amount-input-container", theme)}>
       {/* <div className="label">Deposit amount</div> */}
       <div className="input">
         <input

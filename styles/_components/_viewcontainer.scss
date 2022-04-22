@@ -1,17 +1,20 @@
 .view-container {
-  width: 90vw;
-  max-width: 653px;
+  width: 100%;
   background: #262b43;
   border-radius: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  // margin-top: 50px;
 
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 100%;
     border-radius: 17px;
+  }
+
+  &.kujira {
+    background: #22252E;
   }
 
   &.your-liquidity-panel {
@@ -70,6 +73,24 @@
           border-bottom-right-radius: 4px;
         }
       }
+    }
+  }
+
+  &.add-liquidity-panel {
+    margin-top: 145px;
+
+    @media screen and (max-width: 768px) {
+      margin-top: 25px;
+    }
+  }
+
+  &.pool-list-panel {
+    background: none;
+    margin-top: 25px;
+    min-height: 507px;
+
+    @media screen and (max-width: 768px) {
+      min-height: 0px;
     }
   }
 
@@ -146,7 +167,8 @@
   }
 
   &-subtitle {
-    color: #b6b2ef;
+    // color: #b6b2ef;
+    color: #fff;
     font-weight: 500;
     font-size: 16px;
     line-height: 18px;
@@ -280,6 +302,11 @@
       font-size: 16px;
       color: #fff;
       margin-left: 15px;
+
+      @media screen and (max-width: 768px) {
+        font-weight: 400;
+        font-size: 10px;
+      }
     }
   }
 

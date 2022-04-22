@@ -1,0 +1,220 @@
+.vault-pool-container {
+  background: #262b43;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  padding-top: 20px;
+  width: 100%;
+  margin-bottom: 59px;
+  cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    margin-bottom: 21px;
+    padding-top: 11px;
+  }
+
+  &:hover {
+    border: 2px solid #b6b2ef;
+  }
+
+  &.kujira {
+    background: #22252e;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  .pool-name-wrapper {
+    background: #313650;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    padding: 5px 24px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    @media screen and (max-width: 768px) {
+      padding: 3px 14px;
+      margin-left: 11px;
+      margin-right: 11px;
+    }
+
+    &.kujira {
+      background: #323843;
+      border: none;
+    }
+
+    img {
+      height: 64px;
+
+      @media screen and (max-width: 768px) {
+        height: 39px;
+      }
+    }
+
+    .pool-name {
+      margin-left: 11px;
+
+      &-text {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 30px;
+
+        @media screen and (max-width: 768px) {
+          font-size: 20px;
+        }
+      }
+
+      &-category {
+        color: #b6b2ef;
+        font-weight: 500;
+        font-size: 16px;
+
+        @media screen and (max-width: 768px) {
+          font-size: 13px;
+        }
+
+        &.kujira {
+          color: #d3483e;
+        }
+      }
+    }
+  }
+
+  .pool-values-wrapper {
+    margin-top: 15px;
+    width: calc(100% - 40px);
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    @media screen and (max-width: 768px) {
+      margin-top: 9px;
+      margin-left: 11px;
+      margin-right: 11px;
+      width: calc(100% - 22px);
+      padding-bottom: 11px;
+    }
+
+    .value-item {
+      background: #313650;
+      border-radius: 30px;
+      margin-left: 11px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 17px 26px;
+
+      @media screen and (max-width: 768px) {
+        padding: 9px 14px;
+        margin-left: 6px;
+      }
+
+      &.kujira {
+        background: #323843;
+        border: none;
+      }
+
+      &.apy {
+        margin-left: 0px;
+        max-width: 137px;
+
+        @media screen and (max-width: 768px) {
+          max-width: 70px;
+        }
+      }
+
+      &-name {
+        color: #b6b2ef;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 21px;
+
+        &.kujira {
+          color: #d3483e;
+        }
+
+        @media screen and (max-width: 768px) {
+          font-size: 10px;
+          line-height: 12px;
+        }
+      }
+
+      &-value {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 21px;
+        color: #ffffff;
+
+        @media screen and (max-width: 768px) {
+          font-size: 13px;
+          line-height: 13px;
+        }
+      }
+    }
+  }
+
+  .pool-active-wrapper {
+    border-radius: 0px 0px 30px 30px;
+    background: #295460;
+    display: flex;
+    align-items: center;
+    padding: 19px 45px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21px;
+
+    @media screen and (max-width: 768px) {
+      padding: 11px 39px;
+      font-size: 13px;
+      line-height: 13px;
+    }
+
+    img {
+      height: 15px;
+      margin-right: 5px;
+
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
+    }
+
+    span {
+      padding-left: 38px;
+      color: #37fad3;
+      font-weight: 700;
+      font-size: 30px;
+      line-height: 21px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 20px;
+        line-height: 20px;
+      }
+    }
+  }
+
+  .pool-tooltip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+
+    &:hover {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    img {
+      margin-right: 5px;
+    }
+
+    a {
+      color: #20253b;
+      text-decoration: underline;
+    }
+  }
+}

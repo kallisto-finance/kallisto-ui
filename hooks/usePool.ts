@@ -15,114 +15,118 @@ const usePool = () => {
   const { network } = useWallet();
   const connectedWallet = useConnectedWallet();
 
-  const fetchPoolValues = async (lcd) => {
-    // Get User Balance
-    let res = connectedWallet
-      ? await getBalance(
-          addresses.contracts.kallistoPool.address,
-          connectedWallet.walletAddress
-        )
-      : { balance: 0 };
-    const myLiquidity = new BigNumber(res["balance"]);
+  const fetchPoolValues = async (pools, connectedWallet, lcd) => {
+    const poolList = [];
 
-    // Get Total Liquidity
-    res = await getContractQuery(addresses.contracts.kallistoPool.address, {
-      total_cap: {},
-    });
-    const totalLiquidity = new BigNumber(res["total_cap"]);
+    for (let i = 0; i < pools.length; i++) {
+      const pool = {
+        ...pools[i],
+        totalCap: new BigNumber(0),
+        totalSupply: new BigNumber(0),
+        poolUSTBalance: new BigNumber(0),
+        poolbLunaBalance: new BigNumber(0),
+        userBalance: new BigNumber(0),
+        userCap: new BigNumber(0),
+        lastDepositedTime: 0,
+      };
 
-    // Get PoolInfo
-    res = await getContractQuery(addresses.contracts.kallistoPool.address, {
-      get_info: {},
-    });
-    const totalSupply = new BigNumber(res["total_supply"]);
-    const poolShare =
-      compare(totalSupply, 0) === 0
-        ? new BigNumber(0)
-        : myLiquidity.dividedBy(totalSupply).multipliedBy(100);
+      if (pool.address === "") {
+        poolList.push(pool);
+        continue;
+      }
 
-    // Get Last Deposit Time
-    res = connectedWallet
-      ? await getContractQuery(addresses.contracts.kallistoPool.address, {
+      // get total_cap for each pool
+      const resTotalCap = await getContractQuery(pool.address, {
+        total_cap: {},
+      });
+      pool.totalCap = new BigNumber(resTotalCap["total_cap"]);
+
+      // get total_supply
+      const resPoolInfo = await getContractQuery(pool.address, {
+        get_info: {},
+      });
+      pool.totalSupply = new BigNumber(resPoolInfo["total_supply"]);
+
+      // get bLuna balance
+      const resbLunaBalance = await getBalance(
+        addresses.contracts.bLuna.address,
+        pool.address
+      );
+      pool.poolbLunaBalance = new BigNumber(resbLunaBalance["balance"]);
+
+      // get pool UST balance
+      if (lcd !== null) {
+        const vaultBank = await lcd.bank.balance(
+          pool.address
+        );
+        pool.poolUSTBalance =
+          "uusd" in vaultBank[0]._coins ? vaultBank[0]._coins.uusd.amount : 0;
+        pool.poolUSTBalance = new BigNumber(pool.poolUSTBalance);
+      }
+
+      // Get My Liquidity for each Pool
+      if (connectedWallet) {
+        // get my balance
+        const resMyBalance = connectedWallet
+          ? await getBalance(pool.address, connectedWallet.walletAddress)
+          : { balance: 0 };
+        pool.userBalance = new BigNumber(resMyBalance["balance"]);
+
+        pool.userCap =
+          compare(pool.totalSupply, 0) === 0
+            ? new BigNumber(0)
+            : pool.userBalance
+                .dividedBy(pool.totalSupply)
+                .multipliedBy(pool.totalCap);
+
+        // get last deposited time
+        const resLastDepositedTime = await getContractQuery(pool.address, {
           last_deposit_timestamp: {
             address: connectedWallet.walletAddress,
           },
-        })
-      : { timestamp: 0 };
-    const lastDepositTime = res["timestamp"];
+        });
+        pool.lastDepositedTime = resLastDepositedTime["timestamp"];
+      }
 
-    // My Cap in UST
-    const myDeposited = myLiquidity
-      .dividedBy(totalSupply)
-      .multipliedBy(totalLiquidity);
+      poolList.push(pool);
+    }
 
-    /**
-     * Get donut values: [UST in Liquidity], [UST in Bids], [UST in bLuna]
-     * [Total Cap] = [UST in Liquidity] + [UST in Bids] + [UST in bLuna]
-     */
-    // Get bLuna balance
-    res = await getBalance(
-      addresses.contracts.bLuna.address,
-      addresses.contracts.kallistoPool.address
+    // Get bLuna Price
+    const resBLunaPrice = await getContractQuery(
+      addresses.contracts.oracle.address,
+      {
+        price: {
+          base: addresses.contracts.bLuna.address,
+          quote: "uusd",
+        },
+      }
     );
-    const bLunaBalance = new BigNumber(res["balance"]);
+    const bLunaPrice = new BigNumber(resBLunaPrice["rate"]);
 
-    // get bLuna Price
-    res = await getContractQuery(addresses.contracts.oracle.address, {
-      price: {
-        base: addresses.contracts.bLuna.address,
-        quote: "uusd",
-      },
-    });
-    const price = new BigNumber(res["rate"]);
-    const bLunaBalanceForUST = bLunaBalance.multipliedBy(price);
-
-    // get Vault UST price
-    const vaultBank =
-      lcd !== null
-        ? await lcd.bank.balance(addresses.contracts.kallistoPool.address)
-        : [{ _coins: {} }];
-
-    const ustBalance =
-      "uusd" in vaultBank[0]._coins ? vaultBank[0]._coins.uusd.amount : 0;
-
-    const donutUST = new BigNumber(ustBalance)
-      .multipliedBy(poolShare)
-      .dividedBy(100);
-    const donutBLuna = bLunaBalance.multipliedBy(poolShare).dividedBy(100);
-    const donutBLunaForUST = bLunaBalanceForUST
-      .multipliedBy(poolShare)
-      .dividedBy(100);
-    const donutUSTBid = myDeposited.minus(donutUST).minus(donutBLunaForUST);
-
-    const donutData = {
-      ust: donutUST,
-      bluna: donutBLuna,
-      blunaUST: donutBLunaForUST,
-      ustBid: donutUSTBid,
-    };
-    /** ------------------------------------------------------------------------------------- */
+    let userUSTBalance = new BigNumber(0);
+    if (connectedWallet && lcd) {
+      const userBank = await lcd.bank.balance(connectedWallet.walletAddress);
+      userUSTBalance = new BigNumber(
+        "uusd" in userBank[0]._coins ? userBank[0]._coins.uusd.amount : 0
+      );
+    }
 
     return {
-      myLiquidity: myLiquidity,
-      myDeposited,
-      totalLiquidity,
-      totalSupply,
-      poolShare,
-      donutData,
-      lastDepositTime,
+      poolList,
+      bLunaPrice,
+      userUSTBalance,
     };
   };
 
-  const deposit = (amount, callback) => {
+  const deposit = (vaultAddress, amount, callback) => {
     if (!connectedWallet || !network) {
       return;
     }
 
-    console.log(addresses.contracts.kallistoPool.address);
+    console.log(vaultAddress);
     const msg = new MsgExecuteContract(
       connectedWallet.walletAddress,
-      addresses.contracts.kallistoPool.address,
+      vaultAddress,
       {
         deposit: {},
       },
@@ -132,14 +136,14 @@ const usePool = () => {
     postMessage(connectedWallet, msg, callback);
   };
 
-  const withdrawUst = (amount, callback) => {
+  const withdrawUst = (vaultAddress, amount, callback) => {
     if (!connectedWallet || !network) {
       return;
     }
 
     const msg = new MsgExecuteContract(
       connectedWallet.walletAddress,
-      addresses.contracts.kallistoPool.address,
+      vaultAddress,
       {
         withdraw_ust: {
           share: amount.toFixed(0),
@@ -243,6 +247,110 @@ const usePool = () => {
     return volume;
   };
 
+  const getPoolDepositHistory = async (contractAddress, days = 7) => {
+    let volume = new BigNumber(0);
+
+    if (contractAddress === "") {
+      return volume;
+    }
+
+    const currentTime = new Date().getTime();
+    const searchDateTime = currentTime - days * 86400 * 1000;
+    const searchDateStartTime =
+      searchDateTime - (searchDateTime % (86400 * 1000)); // 7 days ago 12:00:00 am
+
+    const historyData = [];
+
+    let offset = 0;
+    let limit = 100;
+
+    try {
+      while (true) {
+        const txHistories = await getTxHistories(
+          contractAddress,
+          offset,
+          limit
+        );
+
+        if (txHistories.txs.length === 0) {
+          break;
+        }
+
+        for (let i = 0; i < txHistories.txs.length; i++) {
+          const tx = txHistories.txs[i];
+
+          const txTimestamp = new Date(tx.timestamp).getTime();
+
+          if (txTimestamp < searchDateStartTime) {
+            break;
+          }
+
+          historyData.push(tx);
+        }
+
+        if (!txHistories.next || txHistories.next === undefined) {
+          break;
+        }
+
+        offset = txHistories.next;
+
+        await delay(1000);
+      }
+    } catch (e) {}
+
+    for (let i = 0; i < historyData.length; i++) {
+      const tx = historyData[i];
+
+      const txTimestamp = new Date(tx.timestamp).getTime();
+      if (txTimestamp < searchDateStartTime) {
+        continue;
+      }
+
+      if (tx.logs.length === 0) {
+        continue;
+      }
+
+      const msgs = tx.tx.value.msg;
+
+      for (let j = 0; j < msgs.length; j++) {
+        const type = msgs[j].type;
+        if (type !== "wasm/MsgExecuteContract") {
+          continue;
+        }
+
+        const coins = msgs[j].value.coins;
+        const msgValue = msgs[j].value.execute_msg;
+
+        if ("deposit" in msgValue) {
+          for (let k = 0; k < coins.length; k++) {
+            if (coins[k].denom === "uusd") {
+              volume = volume.plus(coins[k].amount);
+            }
+          }
+        }
+      }
+    }
+
+    return volume;
+  };
+
+  const getPool7DayDeposits = async (poolList) => {
+    const resList = [];
+
+    for (let i = 0; i < poolList.length; i++) {
+      const deposits = await getPoolDepositHistory(poolList[i].address, 7);
+
+      const res = {
+        id: poolList[i].id,
+        deposits,
+      };
+
+      resList.push(res);
+    }
+
+    return resList;
+  };
+
   const getUkraineDepositHistory = async () => {
     let weeklyRaised = new BigNumber(0);
     let totalRaised = new BigNumber(0);
@@ -336,6 +444,7 @@ const usePool = () => {
     deposit,
     withdrawUst,
     getVolumeHistory,
+    getPool7DayDeposits,
     getUkraineDepositHistory,
     getTxInfo,
     isTxSuccess,

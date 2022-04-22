@@ -12,17 +12,18 @@ const AmountView = ({
   iconBack = false,
   containerStyle = {},
   button = null,
+  theme = "default",
   ...props
 }) => (
   <div
-    className={cn("amount-view-container", {
+    className={cn("amount-view-container", theme, {
       vertical,
       background,
       icon: icon !== "",
     })}
     style={{ ...containerStyle }}
   >
-    {label !== "" && <span className="amount-view-label">{label}</span>}
+    {label !== "" && <span className={cn("amount-view-label", theme)}>{label}</span>}
     {(icon !== "" && !iconBack) && <img className="amount-view-icon" src={icon} />}
     <span
       className={cn("amount-view-value", { highlight, vertical })}
