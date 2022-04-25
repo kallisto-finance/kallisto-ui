@@ -23,17 +23,16 @@ const WithdrawAmountInput = ({
     return myCap.multipliedBy(withdrawPercentage).dividedBy(100).toFixed(0)
   }, [myCap, withdrawPercentage])
 
-
   return (
     <div className="withdraw-amount-input-container">
       <div className="withdraw-balance-section">
         <div className="balance-input">
-        <img
+          <img
             data-tip="The exact amount may differ depending on<br/>the price of bLuna"
             src="/assets/approx.png"
             style={{ height: 18 }}
           />
-          <span className="collect-type">{formatBalance(withdrawAmount, 1)}</span>
+          <span className="collect-type">{formatBalance(withdrawAmount, 4)}</span>
           <span className="collect-type">UST</span>
           <img
             src="/assets/tokens/ust.png"

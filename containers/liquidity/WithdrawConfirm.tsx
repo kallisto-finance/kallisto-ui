@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import BigNumber from "bignumber.js";
 
 import ViewContainer from "components/ViewContainer";
 import AmountView from "components/AmountView";
@@ -37,6 +38,15 @@ const WithdrawConfirm = ({
     };
   }, [withdrawPercentage]);
 
+  const canWithdraw = useMemo(() => {
+    const curTime = new BigNumber(new Date().getTime()).multipliedBy(1000000);
+    const afterOneHourFromDeposited = new BigNumber(
+      pool.lastDepositedTime
+    ).plus(3600 * 1000000000);
+
+    return compare(afterOneHourFromDeposited, curTime) < 0;
+  }, [pool]);
+
   return (
     <ViewContainer
       title="Confirm Withdrawal"
@@ -49,7 +59,7 @@ const WithdrawConfirm = ({
       <div className="view-container-row">
         <AmountView
           icon="/assets/tokens/ust.png"
-          value={`${formatBalance(pool.userCap, 1)} UST`}
+          value={`${formatBalance(pool.userCap, 4)} UST`}
           iconBack={true}
           containerStyle={{
             height: 91,
@@ -76,6 +86,7 @@ const WithdrawConfirm = ({
         className="view-container-button"
         onClick={() => {
           if (loading) return;
+          if (!canWithdraw) return;
           mixpanel.track("CONFIRM_WITHDRAWAL");
           onConfirmWithdraw(collectType);
         }}
@@ -85,11 +96,19 @@ const WithdrawConfirm = ({
               <LoadingSpinner />
               Withdrawing UST
             </>
-          ) : (
+          ) : canWithdraw ? (
             liquidityButtonStatus.text
+          ) : (
+            "You can withdraw one hour after your last deposit"
           )
         }
-        status={loading ? "loading" : liquidityButtonStatus.status}
+        status={
+          loading
+            ? "loading"
+            : canWithdraw
+            ? liquidityButtonStatus.status
+            : "enter_amount"
+        }
       />
     </ViewContainer>
   );
