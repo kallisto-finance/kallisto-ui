@@ -151,6 +151,7 @@ const usePool = () => {
       }
     );
 
+    console.log(msg);
     postMessage(connectedWallet, msg, callback);
   };
 

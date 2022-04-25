@@ -37,13 +37,13 @@ const VaultPool = ({ pool, deposits, onSelectPool }) => {
         <div className={cn("value-item", theme)}>
           <div className={cn("value-item-name", theme)}>7 day Deposits</div>
           <div className="value-item-value">
-            {formatBalance(deposits, 1)} UST
+            {formatBalance(deposits, 2)} UST
           </div>
         </div>
         <div className={cn("value-item", theme)}>
           <div className={cn("value-item-name", theme)}>Liquidity</div>
           <div className="value-item-value">{`${formatBalance(
-            totalCap, 1
+            totalCap, 2
           )} UST`}</div>
         </div>
       </div>
@@ -51,7 +51,7 @@ const VaultPool = ({ pool, deposits, onSelectPool }) => {
         <div className="pool-active-wrapper">
           <img src="/assets/active.png" />
           Active Pool
-          <span>{`${formatBalance(userCap, 1)} UST`}</span>
+          <span>{`${formatBalance(userCap, 2)} UST`}</span>
         </div>
       )}
       <ReactTooltip
