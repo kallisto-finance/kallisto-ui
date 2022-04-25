@@ -274,7 +274,7 @@ const Liquidity = () => {
 
   const getPoolValues = async (poolList, connectedWallet, lcd) => {
     const result = await fetchPoolValues(poolList, connectedWallet, lcd);
-console.log(result.poolList)
+
     setPools([...result.poolList]);
     setUstBalance(formatBalance(result.userUSTBalance, 6));
 
