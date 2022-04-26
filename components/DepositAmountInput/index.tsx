@@ -10,17 +10,18 @@ const DepositAmountInput = ({
   maxBalance,
   balance,
   onChangeDepositInputAmount,
-  theme = "default"
+  theme = "default",
+  connectedWallet
 }) => {
   const inputEl = useRef(null)
 
   useEffect(() => {
-    if (inputEl) {
+    if (inputEl && connectedWallet) {
       setTimeout(() => {
         inputEl.current.focus();
       }, 500)
     }
-  }, [inputEl])
+  }, [inputEl, connectedWallet])
 
   return (
     <div className={cn("deposit-amount-input-container", theme)}>
@@ -38,6 +39,7 @@ const DepositAmountInput = ({
             onChangeDepositInputAmount(e.target.value)
           }}
           inputMode='numeric'
+          readOnly={!connectedWallet}
         />
       </div>
       <div className="token-icon">
@@ -46,6 +48,7 @@ const DepositAmountInput = ({
       <Button
         className="max-button"
         onClick={(e) => onChangeDepositInputAmount(maxBalance)}
+        disabled={!connectedWallet}
       >
         MAX
       </Button>
