@@ -35,7 +35,7 @@ export const addresses = {
         category: "Kujira - Anchor",
         address: process.env.KUJIRA_AUST_VAULT,
         theme: "kujira",
-        icon: "/assets/tokens/kujira.png"
+        icon: "/assets/tokens/kujira.png",
       },
       {
         id: 2,
@@ -44,8 +44,23 @@ export const addresses = {
         category: "Anchor",
         address: process.env.LIQUIDITY_CONTRACT,
         theme: "default",
-        icon: "/assets/tokens/bluna-anchor.png"
-      }
-    ]
+        icon: "/assets/tokens/bluna-anchor.png",
+      },
+    ],
+  },
+  migrations: {
+    show: false,
+    lastUpdated: "Monday, 18 April 2022",
+    contracts: [
+      {
+        id: 1,
+        updated: "Monday, 18 April 2022",
+        name: "aUST/bLuna",
+        category: "Kujira - Anchor",
+        theme: "kujira",
+        icon: "/assets/tokens/kujira.png",
+        address: "terra1kacp54wyg8c33pw6q9ypzhuwatrdwdmawmatgw",
+      },
+    ],
   },
 };

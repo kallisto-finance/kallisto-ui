@@ -17,14 +17,16 @@ import cn from "classnames";
 
 mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
 
-const DepositPool = ({
-  pool,
-  onDeposit,
-  ustBalance,
-  balance,
-  volume,
-  onChangeDepositInputAmount,
-}) => {
+const DepositPoolContent = (props) => {
+  const {
+    pool,
+    onDeposit,
+    ustBalance,
+    balance,
+    volume,
+    onChangeDepositInputAmount,
+  } = props;
+
   const connectedWallet = useConnectedWallet();
   const [depositChecked, setDepositChecked] = useState(false);
 
@@ -110,6 +112,7 @@ const DepositPool = ({
             onChangeDepositInputAmount(value)
           }
           theme={pool.theme}
+          connectedWallet={connectedWallet}
         />
       </div>
       <div className="view-container-row">
@@ -129,24 +132,27 @@ const DepositPool = ({
           </div>
         </div>
       </div>
-      {connectedWallet ? (
-        <LiquidityButton
-          className="view-container-button"
-          onClick={() => onDeposit()}
-          label={liquidityButtonStatus.text}
-          status={liquidityButtonStatus.status}
-        />
-      ) : (
-        <ConnectWalletButton className="full-width">
-          <LiquidityButton
-            className="view-container-button"
-            onClick={() => {}}
-            label={liquidityButtonStatus.text}
-            status={liquidityButtonStatus.status}
-          />
-        </ConnectWalletButton>
-      )}
+      <LiquidityButton
+        className="view-container-button"
+        onClick={() => onDeposit()}
+        label={liquidityButtonStatus.text}
+        status={liquidityButtonStatus.status}
+      />
     </ViewContainer>
+  );
+};
+
+const DepositPool = (props) => {
+  const connectedWallet = useConnectedWallet();
+
+  return connectedWallet ? (
+    <>
+      <DepositPoolContent {...props} />
+    </>
+  ) : (
+    <ConnectWalletButton className="full-width">
+      <DepositPoolContent {...props} />
+    </ConnectWalletButton>
   );
 };
 
