@@ -59,7 +59,9 @@ export const addresses = {
         category: "Kujira - Anchor",
         theme: "kujira",
         icon: "/assets/tokens/kujira.png",
-        address: "terra1kacp54wyg8c33pw6q9ypzhuwatrdwdmawmatgw",
+        // address: "terra1kacp54wyg8c33pw6q9ypzhuwatrdwdmawmatgw",
+        address: "terra1r7aq4gy4ruv2eqg8aeuep05gmylkhvf36066rk",
+        newAddress: "terra1uag6nddvufpagy3qg7nrlp6h922xaqwutfue5n" 
       },
     ],
   },
