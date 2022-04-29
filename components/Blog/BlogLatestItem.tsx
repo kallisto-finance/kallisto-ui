@@ -21,7 +21,7 @@ const BlogLatestItem = ({ blog }) => (
           {tag}
         </div>
       ))}
-      <div className="blog-latest-summary-pubtime">{`Published ${convertDateString2(blog.published_at)}`}</div>
+      <div className="blog-latest-summary-pubtime">{`Published ${convertDateString2(blog.first_published_at)}`}</div>
     </div>
   </div>
 );

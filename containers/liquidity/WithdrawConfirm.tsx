@@ -1,21 +1,22 @@
 import React, { useState, useMemo } from "react";
+import BigNumber from "bignumber.js";
 
 import ViewContainer from "components/ViewContainer";
 import AmountView from "components/AmountView";
 import WithdrawAmountInput from "components/WithdrawAmountInput";
 import LiquidityButton from "components/LiquidityButton";
-import LoadingIcon from "components/LoadingIcon";
+import { LoadingSpinner } from "components/LoadingIcon";
 
 import { formatBalance } from "utils/wasm";
 import { compare } from "utils/number";
 import { COLLECT_TYPE, LIQUIDITY_BALANCE_STATUS } from "types";
 
-import mixpanel from 'mixpanel-browser';
-mixpanel.init('f5f9ce712e36f5677629c9059c20f3dc');
+import mixpanel from "mixpanel-browser";
+mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
 
 const WithdrawConfirm = ({
+  pool,
   onBack,
-  myCap,
   withdrawPercentage,
   onChangeWithdrawPercentage,
   onConfirmWithdraw,
@@ -37,6 +38,15 @@ const WithdrawConfirm = ({
     };
   }, [withdrawPercentage]);
 
+  const canWithdraw = useMemo(() => {
+    const curTime = new BigNumber(new Date().getTime()).multipliedBy(1000000);
+    const afterOneHourFromDeposited = new BigNumber(
+      pool.lastDepositedTime
+    ).plus(3600 * 1000000000);
+
+    return compare(afterOneHourFromDeposited, curTime) < 0;
+  }, [pool]);
+
   return (
     <ViewContainer
       title="Confirm Withdrawal"
@@ -44,14 +54,12 @@ const WithdrawConfirm = ({
       onLeft={() => onBack()}
     >
       <div className="view-container-row">
-        <div className="view-container-subtitle">
-          Amount available
-        </div>
+        <div className="view-container-subtitle">Amount available</div>
       </div>
       <div className="view-container-row">
         <AmountView
           icon="/assets/tokens/ust.png"
-          value={`${formatBalance(myCap, 2)} UST`}
+          value={`${formatBalance(pool.userCap, 4)} UST`}
           iconBack={true}
           containerStyle={{
             height: 91,
@@ -65,9 +73,11 @@ const WithdrawConfirm = ({
 
       <div className="view-container-row">
         <WithdrawAmountInput
-          myCap={myCap}
+          myCap={pool.userCap}
           withdrawPercentage={withdrawPercentage}
-          onChangeWithdrawPercentage={(value) => onChangeWithdrawPercentage(value)}
+          onChangeWithdrawPercentage={(value) =>
+            onChangeWithdrawPercentage(value)
+          }
           collectType={collectType}
         />
       </div>
@@ -76,20 +86,29 @@ const WithdrawConfirm = ({
         className="view-container-button"
         onClick={() => {
           if (loading) return;
-          mixpanel.track('CONFIRM_WITHDRAWAL');
-          onConfirmWithdraw(collectType)
+          if (!canWithdraw) return;
+          mixpanel.track("CONFIRM_WITHDRAWAL");
+          onConfirmWithdraw(collectType);
         }}
         label={
           loading ? (
             <>
-              <LoadingIcon />
+              <LoadingSpinner />
               Withdrawing UST
             </>
-          ) : (
+          ) : canWithdraw ? (
             liquidityButtonStatus.text
+          ) : (
+            "You can withdraw one hour after your last deposit"
           )
         }
-        status={loading ? "loading" : liquidityButtonStatus.status}
+        status={
+          loading
+            ? "loading"
+            : canWithdraw
+            ? liquidityButtonStatus.status
+            : "enter_amount"
+        }
       />
     </ViewContainer>
   );

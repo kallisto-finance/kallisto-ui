@@ -22,13 +22,45 @@ export const addresses = {
       icon: "https://whitelist.anchorprotocol.com/logo/bETH.png",
     },
     kallistoPool: {
-      // address: "terra1hqtsau586tmzwl6apmf5u6u0avlafeef6w0qpp",
-      // address: "terra1xqwqt9q54lr89wm6dpt0gxrsy5pewhdh2yjnjg",
-      //testing only contract:
       address: process.env.LIQUIDITY_CONTRACT,
     },
     oracle: {
       address: "terra1cgg6yef7qcdm070qftghfulaxmllgmvk77nc7t",
     },
+    vaultList: [
+      {
+        id: 1,
+        apy: process.env.LIQUIDITY_APY,
+        name: "aUST/bLuna",
+        category: "Kujira - Anchor",
+        address: process.env.KUJIRA_AUST_VAULT,
+        theme: "kujira",
+        icon: "/assets/tokens/kujira.png",
+      },
+      {
+        id: 2,
+        apy:  process.env.KUJIRA_AUST_APY,
+        name: "bLuna",
+        category: "Anchor",
+        address: process.env.LIQUIDITY_CONTRACT,
+        theme: "default",
+        icon: "/assets/tokens/bluna-anchor.png",
+      },
+    ],
+  },
+  migrations: {
+    show: false,
+    lastUpdated: "Monday, 18 April 2022",
+    contracts: [
+      {
+        id: 1,
+        updated: "Monday, 18 April 2022",
+        name: "aUST/bLuna",
+        category: "Kujira - Anchor",
+        theme: "kujira",
+        icon: "/assets/tokens/kujira.png",
+        address: "terra1kacp54wyg8c33pw6q9ypzhuwatrdwdmawmatgw",
+      },
+    ],
   },
 };

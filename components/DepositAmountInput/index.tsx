@@ -4,23 +4,27 @@ import Button from "components/Button";
 
 import { isNaN } from 'utils/number';
 
+import cn from 'classnames';
+
 const DepositAmountInput = ({
   maxBalance,
   balance,
   onChangeDepositInputAmount,
+  theme = "default",
+  connectedWallet
 }) => {
   const inputEl = useRef(null)
 
   useEffect(() => {
-    if (inputEl) {
+    if (inputEl && connectedWallet) {
       setTimeout(() => {
         inputEl.current.focus();
       }, 500)
     }
-  }, [inputEl])
+  }, [inputEl, connectedWallet])
 
   return (
-    <div className="deposit-amount-input-container">
+    <div className={cn("deposit-amount-input-container", theme)}>
       {/* <div className="label">Deposit amount</div> */}
       <div className="input">
         <input
@@ -35,6 +39,7 @@ const DepositAmountInput = ({
             onChangeDepositInputAmount(e.target.value)
           }}
           inputMode='numeric'
+          readOnly={!connectedWallet}
         />
       </div>
       <div className="token-icon">
@@ -43,6 +48,7 @@ const DepositAmountInput = ({
       <Button
         className="max-button"
         onClick={(e) => onChangeDepositInputAmount(maxBalance)}
+        disabled={!connectedWallet}
       >
         MAX
       </Button>

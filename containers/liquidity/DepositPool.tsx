@@ -13,16 +13,20 @@ import { isNaN, compare } from "utils/number";
 import { formatBalance } from "utils/wasm";
 import mixpanel from "mixpanel-browser";
 
+import cn from "classnames";
+
 mixpanel.init("f5f9ce712e36f5677629c9059c20f3dc");
 
-const DepositPool = ({
-  onDeposit,
-  ustBalance,
-  balance,
-  volume,
-  totalLiquidity,
-  onChangeDepositInputAmount,
-}) => {
+const DepositPoolContent = (props) => {
+  const {
+    pool,
+    onDeposit,
+    ustBalance,
+    balance,
+    volume,
+    onChangeDepositInputAmount,
+  } = props;
+
   const connectedWallet = useConnectedWallet();
   const [depositChecked, setDepositChecked] = useState(false);
 
@@ -62,30 +66,39 @@ const DepositPool = ({
   }, [balance, ustBalance, depositChecked]);
 
   return (
-    <ViewContainer className="add-liquidity-panel" title="Liquidation Pool ">
+    <ViewContainer
+      className={cn("add-liquidity-panel", pool.theme)}
+      header={false}
+    >
+      <div className={cn("pool-token-wrapper", pool.theme)}>
+        <img src={pool.icon} />
+        <div className="pool-name">
+          <div className="pool-name-text">{pool.name}</div>
+          <div className={cn("pool-name-category", pool.theme)}>
+            {pool.category}
+          </div>
+        </div>
+      </div>
       <div className="view-container-row">
         <AmountView
-          icon="/assets/tokens/anchor-bluna.png"
-          value="Anchor-bLUNA"
-          style={{
-            fontSize: 20,
-            fontWeight: 500,
-          }}
+          label="APY"
+          value={`${pool.apy} %`}
+          highlight={true}
+          theme={pool.theme}
         />
       </div>
       <div className="view-container-row">
-        <AmountView label="APY" value="244.0%" highlight={true} />
-      </div>
-      <div className="view-container-row">
         <AmountView
-          label="7 day Volume"
-          value={`${formatBalance(volume, 1)} UST`}
+          label="7 day Deposits"
+          value={`${formatBalance(volume, 4)} UST`}
+          theme={pool.theme}
         />
       </div>
       <div className="view-container-row">
         <AmountView
-          label="Total Liquidity"
-          value={`${formatBalance(totalLiquidity, 1)} UST`}
+          label="Liquidity"
+          value={`${formatBalance(pool.totalCap, 4)} UST`}
+          theme={pool.theme}
         />
       </div>
       <div className="view-container-row">
@@ -98,13 +111,19 @@ const DepositPool = ({
           onChangeDepositInputAmount={(value) =>
             onChangeDepositInputAmount(value)
           }
+          theme={pool.theme}
+          connectedWallet={connectedWallet}
         />
       </div>
       <div className="view-container-row">
         <div className="cooldown-notice">
           <img
             onClick={(e) => setDepositChecked(!depositChecked)}
-            src={depositChecked ? "/assets/deposit-checked-on.png" : "/assets/deposit-checked-off.png"}
+            src={
+              depositChecked
+                ? "/assets/deposit-checked-on.png"
+                : "/assets/deposit-checked-off.png"
+            }
             className="cooldown-notice-circle"
           />
           <div className="cooldown-notice-text">
@@ -113,24 +132,27 @@ const DepositPool = ({
           </div>
         </div>
       </div>
-      {connectedWallet ? (
-        <LiquidityButton
-          className="view-container-button"
-          onClick={() => onDeposit()}
-          label={liquidityButtonStatus.text}
-          status={liquidityButtonStatus.status}
-        />
-      ) : (
-        <ConnectWalletButton className="full-width">
-          <LiquidityButton
-            className="view-container-button"
-            onClick={() => {}}
-            label={liquidityButtonStatus.text}
-            status={liquidityButtonStatus.status}
-          />
-        </ConnectWalletButton>
-      )}
+      <LiquidityButton
+        className="view-container-button"
+        onClick={() => onDeposit()}
+        label={liquidityButtonStatus.text}
+        status={liquidityButtonStatus.status}
+      />
     </ViewContainer>
+  );
+};
+
+const DepositPool = (props) => {
+  const connectedWallet = useConnectedWallet();
+
+  return connectedWallet ? (
+    <>
+      <DepositPoolContent {...props} />
+    </>
+  ) : (
+    <ConnectWalletButton className="full-width">
+      <DepositPoolContent {...props} />
+    </ConnectWalletButton>
   );
 };
 

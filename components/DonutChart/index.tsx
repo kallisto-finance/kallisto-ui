@@ -18,7 +18,7 @@ const DonutChart = ({ donutValues, data }) => {
             <div className="title" style={{ color: "#B6B2EF" }}>
               Liquid UST Balance
             </div>
-            <div className="value">{`${formatBalance(donutValues.ust, 1)} UST`}</div>
+            <div className="value">{`${formatBalance(donutValues.ust, 4)} UST`}</div>
           </div>
         </div>
         <div className="donut-chart-row">
@@ -30,7 +30,7 @@ const DonutChart = ({ donutValues, data }) => {
             <div className="title" style={{ color: "#fff" }}>
               UST in Bids
             </div>
-            <div className="value">{`${formatBalance(donutValues.ustBid, 1)} UST`}</div>
+            <div className="value">{`${formatBalance(donutValues.ustBid, 4)} UST`}</div>
           </div>
         </div>
         <div className="donut-chart-row">
@@ -42,7 +42,7 @@ const DonutChart = ({ donutValues, data }) => {
             <div className="title" style={{ color: "#37FAD3" }}>
               bLUNA Balance
             </div>
-            <div className="value">{`${formatBalance(donutValues.blunaUST, 1)} UST`}</div>
+            <div className="value">{`${formatBalance(donutValues.blunaUST, 4)} UST`}</div>
 						<div className="value" style={{ fontSize: 13, fontWeight: 400 }}>{`${formatBalance(donutValues.bluna, 4)} bLUNA`}</div>
           </div>
         </div>
