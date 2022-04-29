@@ -46,7 +46,7 @@ function Blog() {
                 </div>
               ))}
               <div className="blog-summary-pubtime">
-                Published {convertDateString2(post.published_at)}
+                Published {convertDateString2(post.first_published_at)}
               </div>
             </div>
             <div className="blog-intro">{post.content.intro}</div>
