@@ -15,8 +15,15 @@ export const fetchBlogs = async () => {
       }
     }
   }
-  // console.log(blogs);
-  return blogs;
+
+  blogs.sort((a, b) => {
+    const aTimestamp = Date.parse(a.first_published_at);
+    const bTimestamp = Date.parse(b.first_published_at);
+    
+    return aTimestamp > bTimestamp ? -1 : 1;
+  });
+
+  return blogs
 }
 
 export const fetchEvents = async () => {

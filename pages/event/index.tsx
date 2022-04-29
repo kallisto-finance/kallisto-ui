@@ -1,8 +1,26 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { fetchEvents } from "utils/storyblok";
 
-import { UpcomingEvent, EventSearchBar, PastEvent, } from "components/Event";
+import { UpcomingEvent, EventSearchBar, PastEvent } from "components/Event";
 import { convertUTCtoLocalTime, parseDate } from "utils/date";
+
+const NoEvents = () => (
+  <div className="no-events-container">
+    <img src="/assets/kallistos/sad-kalli.png" />
+    <p>
+      Kalli doesn't have any events planned yet! <br />
+      Join our community and stay updated on upcoming events.
+    </p>
+    <div className="no-events-buttons">
+      <a href="https://t.me/kallistofinance" target="_blank">
+        Telegram <img src="/assets/social/telegram.png" />
+      </a>
+      <a href="https://twitter.com/Kallistofinance" target="_blank">
+        Twitter <img src="/assets/social/twitter.png" />
+      </a>
+    </div>
+  </div>
+);
 
 const Event = () => {
   const [eventType, setEventType] = useState("upcoming");
@@ -20,7 +38,7 @@ const Event = () => {
 
   const filteredEvents = useMemo(() => {
     const tempEvents = events.filter((event) => {
-      const currentTime = (new Date()).getTime();
+      const currentTime = new Date().getTime();
       const eventTime = convertUTCtoLocalTime(
         parseDate(event.content.EventTime).getTime()
       );
@@ -37,7 +55,7 @@ const Event = () => {
 
       return false;
     });
-   
+
     tempEvents.sort((a, b) => {
       const aEventTime = parseDate(a.content.EventTime).getTime();
       const bEventTime = parseDate(b.content.EventTime).getTime();
@@ -62,12 +80,16 @@ const Event = () => {
           />
         </div>
         <div className="event-list-wrapper">
-          {filteredEvents.map((event) =>
-            eventType === "upcoming" ? (
-              <UpcomingEvent data={event} key={event.uuid} />
-            ) : (
-              <PastEvent data={event} key={event.uuid} />
+          {filteredEvents.length > 0 ? (
+            filteredEvents.map((event) =>
+              eventType === "upcoming" ? (
+                <UpcomingEvent data={event} key={event.uuid} />
+              ) : (
+                <PastEvent data={event} key={event.uuid} />
+              )
             )
+          ) : (
+            <NoEvents />
           )}
         </div>
       </div>
