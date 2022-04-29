@@ -13,7 +13,9 @@ const moduleExports = {
   env: {
     STORYBLOK_ACCESS_TOKEN: process.env.STORYBLOK_ACCESS_TOKEN,
     LIQUIDITY_CONTRACT: process.env.LIQUIDITY_CONTRACT,
-    KUJIRA_AUST_VAULT: process.env.KUJIRA_AUST_VAULT
+    KUJIRA_AUST_VAULT: process.env.KUJIRA_AUST_VAULT,
+    LIQUIDITY_APY: process.env.LIQUIDITY_APY,
+    KUJIRA_AUST_APY: process.env.KUJIRA_AUST_APY
   },
 };
 
