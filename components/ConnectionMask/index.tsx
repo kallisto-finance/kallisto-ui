@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import { useConnectedWallet } from "@terra-money/wallet-provider";
 
 import ConnectWalletButton from "components/ConnectWalletButton";

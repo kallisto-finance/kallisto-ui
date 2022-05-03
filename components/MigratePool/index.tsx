@@ -11,7 +11,7 @@ import { getWalletAddressEllipsis } from "utils/common";
 
 import cn from "classnames";
 
-const MigratePool = ({ pool, onWithdraw }) => {
+const MigratePool = ({ pool, onWithdraw, onMigrate }) => {
   const { id, name, category, icon, theme, userCap, address, updated } = pool;
 
   return (
@@ -33,10 +33,13 @@ const MigratePool = ({ pool, onWithdraw }) => {
         </div>
       </div>
       <div className={cn("pool-buttons-wrapper", theme)}>
-        {/* <Button className="pool-migrate-button migrate">
+        <Button
+          className="pool-migrate-button migrate"
+          onClick={(e) => onMigrate(id)}
+        >
           <span>Migrate</span>
           <FontAwesomeIcon icon={faArrowUp as IconProp} />
-        </Button> */}
+        </Button>
         <Button
           className="pool-migrate-button withdraw"
           onClick={(e) => onWithdraw(id)}
