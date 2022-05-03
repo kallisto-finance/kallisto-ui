@@ -59,7 +59,7 @@ const WithdrawConfirm = ({
       <div className="view-container-row">
         <AmountView
           icon="/assets/tokens/ust.png"
-          value={`${formatBalance(pool.userCap, 4)} UST`}
+          value={`${formatBalance(pool.userCap, 2)} UST`}
           iconBack={true}
           containerStyle={{
             height: 91,

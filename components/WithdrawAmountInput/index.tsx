@@ -32,7 +32,7 @@ const WithdrawAmountInput = ({
             src="/assets/approx.png"
             style={{ height: 18 }}
           />
-          <span className="collect-type">{formatBalance(withdrawAmount, 4)}</span>
+          <span className="collect-type">{formatBalance(withdrawAmount, 2)}</span>
           <span className="collect-type">UST</span>
           <img
             src="/assets/tokens/ust.png"

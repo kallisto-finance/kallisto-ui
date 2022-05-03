@@ -35,7 +35,7 @@ const VaultPool = ({ pool, deposits, onSelectPool }) => {
           <div className="value-item-value">{apy} %</div>
         </div>
         <div className={cn("value-item", theme)}>
-          <div className={cn("value-item-name", theme)}>7 day Deposits</div>
+          <div className={cn("value-item-name", theme)}>7 day Volume</div>
           <div className="value-item-value">
             {formatBalance(deposits, 2)} UST
           </div>
