@@ -90,14 +90,14 @@ const DepositPoolContent = (props) => {
       <div className="view-container-row">
         <AmountView
           label="7 day Deposits"
-          value={`${formatBalance(volume, 4)} UST`}
+          value={`${formatBalance(volume, 2)} UST`}
           theme={pool.theme}
         />
       </div>
       <div className="view-container-row">
         <AmountView
           label="Liquidity"
-          value={`${formatBalance(pool.totalCap, 4)} UST`}
+          value={`${formatBalance(pool.totalCap, 2)} UST`}
           theme={pool.theme}
         />
       </div>

@@ -48,7 +48,7 @@ const MigratePool = ({ pool, onWithdraw }) => {
       <div className="pool-active-wrapper">
         <img src="/assets/active.png" />
         Active Pool
-        <span>{`${formatBalance(userCap, 4)} UST`}</span>
+        <span>{`${formatBalance(userCap, 2)} UST`}</span>
       </div>
       <ReactTooltip
         effect="solid"

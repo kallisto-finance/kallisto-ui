@@ -32,7 +32,7 @@ const MainLiquidityPanel = ({ pools, bLunaPrice, progress }) => {
       <a href="/" id="main-liquidity-panel" />
       <div className="total-liquidity-wrapper">
         <div className="title">My Total Liquidity</div>
-        <div className="value">{formatBalance(myLiquidity, 4)} UST</div>
+        <div className="value">{formatBalance(myLiquidity, 2)} UST</div>
         {/* <div className="withdraw-button">
           Withdraw <img src="/assets/arrows/arrow-top-right.png" />
         </div> */}
