@@ -329,6 +329,10 @@ const usePool = () => {
             }
           }
         }
+
+        if ("withdraw_ust" in msgValue) {
+          volume = volume.plus(msgValue["withdraw_ust"].share);
+        }
       }
     }
 
