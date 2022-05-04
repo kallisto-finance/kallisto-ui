@@ -8,6 +8,8 @@ import {
 } from "@terra-money/wallet-provider";
 import { getGasPrices } from "utils/axios";
 
+import { addresses } from 'utils/constants';
+
 const useLCDClient = () => {
   const connectedWallet = useConnectedWallet();
   const {
@@ -22,7 +24,8 @@ const useLCDClient = () => {
       const gasPricesCoins = new Coins(gasPrices.data);
 
       const lcd = new LCDClient({
-        URL: network.lcd,
+        // URL: network.lcd,
+        URL: addresses.endpoint,
         chainID: network.chainID,
         gasPrices: gasPricesCoins,
         gasAdjustment: "1.5",
