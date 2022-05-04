@@ -290,17 +290,23 @@ const Liquidity = () => {
       increase: "",
     };
 
+    const prevBLunaPrice = localStorage.getItem("bLunaPrice") ? new BigNumber(localStorage.getItem("bLunaPrice")) : new BigNumber(0);
+
     if (
       compare(fetchedPrice, 0) === 0 ||
-      compare(bLunaPrice.price, 0) === 0
+      compare(prevBLunaPrice, 0) === 0
     ) {
       bPrice.increase = "";
     } else {
-      const increase = bLunaPrice.price
+      const increase = prevBLunaPrice
         .minus(fetchedPrice)
-        .dividedBy(bLunaPrice.price)
+        .dividedBy(prevBLunaPrice)
         .multipliedBy(100);
       bPrice.increase = compare(increase, 0) !== 0 ? increase.toFixed(2) : "";
+    }
+
+    if (compare(bLunaPrice.price, 0) !== 0) {
+      localStorage.setItem("bLunaPrice", fetchedPrice.toString());
     }
 
     bPrice.price = fetchedPrice;
