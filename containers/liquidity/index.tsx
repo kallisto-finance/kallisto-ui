@@ -34,6 +34,7 @@ const Liquidity = () => {
   const connectedWallet = useConnectedWallet();
   const {
     fetchPoolValues,
+    fetchBLunaPrice,
     deposit,
     withdrawUst,
     getPool7DayDeposits,
@@ -278,32 +279,42 @@ const Liquidity = () => {
     setPools([...result.poolList]);
     setUstBalance(formatBalance(result.userUSTBalance, 6));
 
+    setValueLoading(true);
+  };
+
+  const getBLunaPrice = async () => {
+    const fetchedPrice = await fetchBLunaPrice();
+
     const bPrice = {
       price: new BigNumber(0),
       increase: "",
     };
 
+    const prevBLunaPrice = localStorage.getItem("bLunaPrice") ? new BigNumber(localStorage.getItem("bLunaPrice")) : new BigNumber(0);
+
     if (
-      compare(result.bLunaPrice, 0) === 0 ||
-      compare(bLunaPrice.price, 0) === 0
+      compare(fetchedPrice, 0) === 0 ||
+      compare(prevBLunaPrice, 0) === 0
     ) {
       bPrice.increase = "";
     } else {
-      const increase = bLunaPrice.price
-        .minus(result.bLunaPrice)
-        .dividedBy(bLunaPrice.price)
+      const increase = prevBLunaPrice
+        .minus(fetchedPrice)
+        .dividedBy(prevBLunaPrice)
         .multipliedBy(100);
       bPrice.increase = compare(increase, 0) !== 0 ? increase.toFixed(2) : "";
     }
 
-    bPrice.price = result.bLunaPrice;
+    if (compare(bLunaPrice.price, 0) !== 0) {
+      localStorage.setItem("bLunaPrice", fetchedPrice.toString());
+    }
+
+    bPrice.price = fetchedPrice;
 
     await delay(500);
 
     setBLunaPrice({ ...bPrice });
-
-    setValueLoading(true);
-  };
+  }
 
   const get7daysDeposits = async () => {
     const res = await getPool7DayDeposits(addresses.contracts.vaultList);
@@ -361,15 +372,24 @@ const Liquidity = () => {
   useEffect(() => {
     // Initial
     getPoolValues(addresses.contracts.vaultList, connectedWallet, lcd);
+    getBLunaPrice();
     get7daysDeposits();
 
     let interval = null;
+    let interval2 = null;
 
     interval = setInterval(() => {
       getPoolValues(addresses.contracts.vaultList, connectedWallet, lcd);
     }, 10000);
 
-    return () => clearInterval(interval);
+    interval2 = setInterval(() => {
+      getBLunaPrice();
+    }, 5 * 60 * 1000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(interval2);
+    }
   }, [connectedWallet, lcd]);
 
   useEffect(() => {

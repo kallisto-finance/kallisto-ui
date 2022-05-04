@@ -91,6 +91,21 @@ const usePool = () => {
       poolList.push(pool);
     }
 
+    let userUSTBalance = new BigNumber(0);
+    if (connectedWallet && lcd) {
+      const userBank = await lcd.bank.balance(connectedWallet.walletAddress);
+      userUSTBalance = new BigNumber(
+        "uusd" in userBank[0]._coins ? userBank[0]._coins.uusd.amount : 0
+      );
+    }
+
+    return {
+      poolList,
+      userUSTBalance,
+    };
+  };
+
+  const fetchBLunaPrice = async () => {
     // Get bLuna Price
     const resBLunaPrice = await getContractQuery(
       addresses.contracts.oracle.address,
@@ -103,20 +118,8 @@ const usePool = () => {
     );
     const bLunaPrice = new BigNumber(resBLunaPrice["rate"]);
 
-    let userUSTBalance = new BigNumber(0);
-    if (connectedWallet && lcd) {
-      const userBank = await lcd.bank.balance(connectedWallet.walletAddress);
-      userUSTBalance = new BigNumber(
-        "uusd" in userBank[0]._coins ? userBank[0]._coins.uusd.amount : 0
-      );
-    }
-
-    return {
-      poolList,
-      bLunaPrice,
-      userUSTBalance,
-    };
-  };
+    return bLunaPrice;
+  }
 
   const deposit = (vaultAddress, amount, callback) => {
     if (!connectedWallet || !network) {
@@ -446,6 +449,7 @@ const usePool = () => {
 
   return {
     fetchPoolValues,
+    fetchBLunaPrice,
     deposit,
     withdrawUst,
     getVolumeHistory,

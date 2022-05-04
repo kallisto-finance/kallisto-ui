@@ -7,8 +7,8 @@ export const UKRAINE_WALLET = "terra1zsm74pnpr508jy02zzxwhrc2gwg2tn87w9fgn9";
 export const WITHDRAW_LOCK_TIME = 3600 * 1000 * 1000 * 1000; // NANO SECONDS
 
 export const addresses = {
-  // endpoint: "https://lcd.terra.dev",
-  endpoint: "https://terra-services.kallisto.finance",
+  endpoint: "https://lcd.terra.dev",
+  // endpoint: "https://terra-services.kallisto.finance",
   contracts: {
     aUST: {
       address: "terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu",
