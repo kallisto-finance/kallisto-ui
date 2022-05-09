@@ -29,15 +29,15 @@ export const addresses = {
       address: "terra1cgg6yef7qcdm070qftghfulaxmllgmvk77nc7t",
     },
     vaultList: [
-      {
-        id: 1,
-        apy: process.env.KUJIRA_AUST_APY,
-        name: "aUST/bLuna",
-        category: "Kujira - Anchor",
-        address: process.env.KUJIRA_AUST_VAULT,
-        theme: "kujira",
-        icon: "/assets/tokens/kujira.png",
-      },
+      // {
+      //   id: 1,
+      //   apy: process.env.KUJIRA_AUST_APY,
+      //   name: "aUST/bLuna",
+      //   category: "Kujira - Anchor",
+      //   address: process.env.KUJIRA_AUST_VAULT,
+      //   theme: "kujira",
+      //   icon: "/assets/tokens/kujira.png",
+      // },
       {
         id: 2,
         apy:  process.env.LIQUIDITY_APY,
