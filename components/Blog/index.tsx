@@ -1,3 +1,4 @@
+import HeadSeo from "./HeadSeo";
 import BlogLatestItem from './BlogLatestItem'
 
-export { BlogLatestItem }
+export { HeadSeo, BlogLatestItem }
