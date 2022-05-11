@@ -9,7 +9,7 @@ import { addresses, UKRAINE_WALLET } from "utils/constants";
 import { compare } from "utils/number";
 import { getTxHistories } from "utils/axios";
 import { delay } from "utils/date";
-
+import { leadZero } from "utils/string";
 
 const usePool = () => {
   const { network } = useWallet();
@@ -56,9 +56,7 @@ const usePool = () => {
 
       // get pool UST balance
       if (lcd !== null) {
-        const vaultBank = await lcd.bank.balance(
-          pool.address
-        );
+        const vaultBank = await lcd.bank.balance(pool.address);
         pool.poolUSTBalance =
           "uusd" in vaultBank[0]._coins ? vaultBank[0]._coins.uusd.amount : 0;
         pool.poolUSTBalance = new BigNumber(pool.poolUSTBalance);
@@ -119,7 +117,7 @@ const usePool = () => {
     const bLunaPrice = new BigNumber(resBLunaPrice["rate"]);
 
     return bLunaPrice;
-  }
+  };
 
   const deposit = (vaultAddress, amount, callback) => {
     if (!connectedWallet || !network) {
@@ -156,99 +154,6 @@ const usePool = () => {
 
     console.log(msg);
     postMessage(connectedWallet, msg, callback);
-  };
-
-  const getVolumeHistory = async (days = 7) => {
-    let volume = new BigNumber(0);
-
-    if (!network) {
-      return volume;
-    }
-
-    const contractAddress = addresses.contracts.kallistoPool.address;
-
-    const currentTime = new Date().getTime();
-    const searchDateTime = currentTime - days * 86400 * 1000;
-    const searchDateStartTime =
-      searchDateTime - (searchDateTime % (86400 * 1000)); // 7 days ago 12:00:00 am
-
-    const historyData = [];
-
-    let offset = 0;
-    let limit = 100;
-
-    try {
-      while (true) {
-        const txHistories = await getTxHistories(
-          contractAddress,
-          offset,
-          limit
-        );
-
-        if (txHistories.txs.length === 0) {
-          break;
-        }
-
-        for (let i = 0; i < txHistories.txs.length; i++) {
-          const tx = txHistories.txs[i];
-
-          const txTimestamp = new Date(tx.timestamp).getTime();
-
-          if (txTimestamp < searchDateStartTime) {
-            break;
-          }
-
-          historyData.push(tx);
-        }
-
-        if (!txHistories.next || txHistories.next === undefined) {
-          break;
-        }
-
-        offset = txHistories.next;
-
-        await delay(1000);
-      }
-    } catch (e) {}
-
-    for (let i = 0; i < historyData.length; i++) {
-      const tx = historyData[i];
-
-      const txTimestamp = new Date(tx.timestamp).getTime();
-      if (txTimestamp < searchDateStartTime) {
-        continue;
-      }
-
-      if (tx.logs.length === 0) {
-        continue;
-      }
-
-      const msgs = tx.tx.value.msg;
-
-      for (let j = 0; j < msgs.length; j++) {
-        const type = msgs[j].type;
-        if (type !== "wasm/MsgExecuteContract") {
-          continue;
-        }
-
-        const coins = msgs[j].value.coins;
-        const msgValue = msgs[j].value.execute_msg;
-
-        if ("deposit" in msgValue) {
-          for (let k = 0; k < coins.length; k++) {
-            if (coins[k].denom === "uusd") {
-              volume = volume.plus(coins[k].amount);
-            }
-          }
-        }
-
-        if ("withdraw_ust" in msgValue) {
-          volume = volume.plus(msgValue["withdraw_ust"].share);
-        }
-      }
-    }
-
-    return volume;
   };
 
   const getPoolDepositHistory = async (contractAddress, days = 7) => {
@@ -447,16 +352,199 @@ const usePool = () => {
     return "success";
   };
 
+  const fetchDashboardValues = async (pools, lcd) => {
+    const dashboardValues = {
+      totalCap: new BigNumber(0),
+      apy: 0,
+      ustBalance: new BigNumber(0),
+      bLunaBalance: new BigNumber(0),
+    };
+
+    for (let i = 0; i < pools.length; i++) {
+      const pool = pools[i];
+
+      if (pool.address === "") {
+        continue;
+      }
+
+      // get total_cap for each pool
+      const resTotalCap = await getContractQuery(pool.address, {
+        total_cap: {},
+      });
+      dashboardValues.totalCap = dashboardValues.totalCap.plus(
+        new BigNumber(resTotalCap["total_cap"])
+      );
+
+      // highest apy
+      if (pool.apy > dashboardValues.apy) {
+        dashboardValues.apy = pool.apy;
+      }
+
+      // get bLuna balance
+      const resbLunaBalance = await getBalance(
+        addresses.contracts.bLuna.address,
+        pool.address
+      );
+      dashboardValues.bLunaBalance = dashboardValues.bLunaBalance.plus(
+        new BigNumber(resbLunaBalance["balance"])
+      );
+
+      // get pool UST balance
+      if (lcd !== null) {
+        const vaultBank = await lcd.bank.balance(pool.address);
+        const ustBalance =
+          "uusd" in vaultBank[0]._coins ? vaultBank[0]._coins.uusd.amount : 0;
+        dashboardValues.ustBalance = dashboardValues.ustBalance.plus(
+          new BigNumber(ustBalance)
+        );
+      }
+    }
+
+    return dashboardValues;
+  };
+
+  const fetchDashboardTransactions = async (poolList) => {
+    const txValues = {
+      totalClaimedCount: 0,
+      lastClaim: {
+        ago: "",
+        time: "",
+        timestamp: 0,
+      },
+      lastSubmit: {
+        ago: "",
+        time: "",
+        timestamp: 0,
+      },
+    };
+
+    for (let poolIndex = 0; poolIndex < poolList.length; poolIndex++) {
+      const contractAddress = poolList[poolIndex].address;
+
+      if (contractAddress === "") {
+        continue;
+      }
+
+      const historyData = [];
+
+      let offset = 0;
+      let limit = 100;
+
+      try {
+        while (true) {
+          const txHistories = await getTxHistories(
+            contractAddress,
+            offset,
+            limit
+          );
+
+          if (txHistories.txs.length === 0) {
+            break;
+          }
+
+          for (let i = 0; i < txHistories.txs.length; i++) {
+            historyData.push(txHistories.txs[i]);
+          }
+
+          if (!txHistories.next || txHistories.next === undefined) {
+            break;
+          }
+
+          offset = txHistories.next;
+
+          await delay(1000);
+        }
+      } catch (e) {}
+
+      const currentTimeStamp = new Date().getTime();
+
+      for (let i = 0; i < historyData.length; i++) {
+        const tx = historyData[i];
+
+        if (tx.logs.length === 0) {
+          continue;
+        }
+
+        const txTimestamp = new Date(tx.timestamp).getTime();
+        const msgs = tx.tx.value.msg;
+
+        for (let j = 0; j < msgs.length; j++) {
+          const type = msgs[j].type;
+          if (type !== "wasm/MsgExecuteContract") {
+            continue;
+          }
+
+          const msgValue = msgs[j].value.execute_msg;
+
+          const txTimeDate = new Date(tx.timestamp);
+          const timeText = `${txTimeDate.getFullYear()}.${leadZero(
+            txTimeDate.getMonth() + 1
+          )}.${leadZero(txTimeDate.getDate())} ${leadZero(
+            txTimeDate.getHours()
+          )}:${leadZero(txTimeDate.getMinutes())}:${leadZero(
+            txTimeDate.getSeconds()
+          )}`;
+          const delayedTime = Math.floor(
+            (currentTimeStamp - txTimestamp) / 1000
+          );
+
+          let agoText = "";
+
+          if (delayedTime >= 365 * 24 * 60 * 60) {
+            agoText = `${Math.floor(delayedTime / (365 * 24 * 60 * 60))} year${
+              Math.floor(delayedTime / (365 * 24 * 60 * 60)) > 1 ? "s" : ""
+            } ago`;
+          } else if (delayedTime >= 24 * 60 * 60) {
+            agoText = `${Math.floor(delayedTime / (24 * 60 * 60))} day${
+              Math.floor(delayedTime / (24 * 60 * 60)) > 1 ? "s" : ""
+            } ago`;
+          } else if (delayedTime >= 60 * 60) {
+            agoText = `${Math.floor(delayedTime / (60 * 60))} hr${
+              Math.floor(delayedTime / (60 * 60)) > 1 ? "s" : ""
+            } ago`;
+          } else if (delayedTime >= 60) {
+            agoText = `${Math.floor(delayedTime / 60)} mins${
+              Math.floor(delayedTime / 60) > 1 ? "s" : ""
+            } ago`;
+          } else {
+            agoText = "Just now";
+          }
+
+          if ("claim_liquidation" in msgValue) {
+            txValues.totalClaimedCount += 1;
+
+            if (txTimestamp > txValues.lastClaim.timestamp) {
+              txValues.lastClaim.timestamp = txTimestamp;
+              txValues.lastClaim.time = timeText;
+              txValues.lastClaim.ago = agoText;
+            }
+          }
+
+          if ("submit_bid" in msgValue) {
+            if (txTimestamp > txValues.lastClaim.timestamp) {
+              txValues.lastSubmit.timestamp = txTimestamp;
+              txValues.lastSubmit.time = timeText;
+              txValues.lastSubmit.ago = agoText;
+            }
+          }
+        }
+      }
+    }
+
+    return txValues;
+  };
+
   return {
     fetchPoolValues,
     fetchBLunaPrice,
     deposit,
     withdrawUst,
-    getVolumeHistory,
     getPool7DayDeposits,
     getUkraineDepositHistory,
     getTxInfo,
     isTxSuccess,
+    fetchDashboardValues,
+    fetchDashboardTransactions,
   };
 };
 

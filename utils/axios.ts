@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { addresses } from "./constants";
+
 const axiosClient = () => {
   const client = axios.create();
 
@@ -11,10 +13,10 @@ const axiosClient = () => {
 };
 
 const getGasPrices = () =>
-  axiosClient().get("https://bombay-fcd.terra.dev/v1/txs/gas_prices");
+  axiosClient().get(`${addresses.fcdEndPoint}/txs/gas_prices`);
 
 const getTxHistories = async (address, offset = 0, limit = 100) => {
-  const res = await fetch(`https://fcd.terra.dev/v1/txs?offset=${offset}&limit=${limit}&account=${address}`);
+  const res = await fetch(`${addresses.fcdEndPoint}/txs?offset=${offset}&limit=${limit}&account=${address}`);
   // const res = await fetch(`https://terra-services.kallisto.finance/v1/txs?offset=${offset}&limit=${limit}&account=${address}`);
   const json = await res.json();
 
