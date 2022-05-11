@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import BigNumber from "bignumber.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,9 +34,11 @@ const MainLiquidityPanel = ({ pools, bLunaPrice, progress }) => {
       <div className="total-liquidity-wrapper">
         <div className="title">My Total Liquidity</div>
         <div className="value">{formatBalance(myLiquidity, 2)} UST</div>
-        {/* <div className="withdraw-button">
-          Withdraw <img src="/assets/arrows/arrow-top-right.png" />
-        </div> */}
+        <Link href="/dashboard">
+          <div className="withdraw-button">
+            Dashboard <img src="/assets/arrows/arrow-top-right.png" />
+          </div>
+        </Link>
       </div>
       <div className={cn("divider", { zero: progress === 0 })}>
         {progress > 0 && (

@@ -65,7 +65,7 @@ const DashboardContainer = () => {
     const ustInBid = result.totalCap
       .minus(result.bLunaBalance.multipliedBy(bLunaPrice))
       .minus(result.ustBalance);
-    setUSTInBid(ustInBid);
+    setUSTInBid(compare(ustInBid, 0) < 0 ? new BigNumber(0) : new BigNumber(ustInBid));
 
     setDashboardValueLoaded(true);
   };

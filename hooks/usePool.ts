@@ -521,7 +521,7 @@ const usePool = () => {
           }
 
           if ("submit_bid" in msgValue) {
-            if (txTimestamp > txValues.lastClaim.timestamp) {
+            if (txTimestamp > txValues.lastSubmit.timestamp) {
               txValues.lastSubmit.timestamp = txTimestamp;
               txValues.lastSubmit.time = timeText;
               txValues.lastSubmit.ago = agoText;
@@ -533,7 +533,7 @@ const usePool = () => {
 
     return txValues;
   };
-
+  
   return {
     fetchPoolValues,
     fetchBLunaPrice,

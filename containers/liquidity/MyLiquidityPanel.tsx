@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import BigNumber from "bignumber.js";
 import { Chart, ArcElement } from "chart.js";
 
@@ -62,9 +63,11 @@ const MyLiquidityPanel = ({ pool, bLunaPrice, onBackToPools, onWithdraw }) => {
         <div className="total-liquidity-wrapper">
           <div className="title">My Pool Liquidity</div>
           <div className="value">{formatBalance(pool.userCap, 2)} UST</div>
-          <div className="withdraw-button" onClick={(e) => onWithdraw()}>
-            Withdraw <img src="/assets/arrows/arrow-top-right.png" />
-          </div>
+          <Link href="/dashboard">
+            <div className="withdraw-button">
+              Dashboard <img src="/assets/arrows/arrow-top-right.png" />
+            </div>
+          </Link>
         </div>
         <div className="divider zero"></div>
         <div className="liqudation-donut-wrapper">
