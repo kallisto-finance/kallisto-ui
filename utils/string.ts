@@ -9,3 +9,5 @@ export function prevZero(val, fill = '0', len = 3) {
 }
 
 export const truncate = (str, n) => (str.length > n) ? str.substr(0, n - 1) + '....' : str;
+
+export const leadZero = (val) => val < 10 ? `0${val}` : val;

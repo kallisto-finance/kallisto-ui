@@ -9,6 +9,8 @@ export const WITHDRAW_LOCK_TIME = 3600 * 1000 * 1000 * 1000; // NANO SECONDS
 export const addresses = {
   endpoint: "https://lcd.terra.dev",
   // endpoint: "https://terra-services.kallisto.finance",
+  // endpoint: "https://fcd.terra.dev/",
+  fcdEndPoint: "https://fcd.terra.dev/v1",
   contracts: {
     aUST: {
       address: "terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu",
