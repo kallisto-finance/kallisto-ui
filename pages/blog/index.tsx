@@ -13,6 +13,7 @@ const Blog = () => {
   useEffect(() => {
     const getData = async () => {
       const data = await fetchBlogs();
+
       if (data.length > 0) {
         setBlog(data[0]);
       }
