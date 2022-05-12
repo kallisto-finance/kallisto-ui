@@ -60,7 +60,7 @@
 
     .total-liquidity-wrapper {
       margin: 38px 24px 0px;
-      height: 174px;
+      height: 156px;
       background: #313650;
       border-radius: 87px;
       display: flex;
@@ -97,8 +97,8 @@
       background: rgba(55, 250, 211, 0.4);
       height: 8px;
       width: 100%;
-      margin-top: 43px;
-      margin-bottom: 35px;
+      margin-top: 20px;
+      margin-bottom: 27px;
 
       @media screen and (max-width: 768px) {
         margin-top: 40px;
@@ -179,7 +179,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-bottom: 42px;
+      margin-bottom: 30px;
     }
 
     .liqudation-donut-wrapper {

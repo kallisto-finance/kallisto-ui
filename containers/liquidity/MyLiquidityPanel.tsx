@@ -2,18 +2,26 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import BigNumber from "bignumber.js";
 import { Chart, ArcElement } from "chart.js";
+import { useConnectedWallet } from "@terra-money/wallet-provider";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
+import ConnectWalletButton from "components/ConnectWalletButton";
 import ViewContainer from "components/ViewContainer";
 import DonutChart from "components/DonutChart";
+import Button from "components/Button";
 
 import { formatBalance, toBalance } from "utils/wasm";
 import { compare } from "utils/number";
+import { WITHDRAW_LOCK_TIME } from "utils/constants";
+
+import cn from "classnames";
 
 const MyLiquidityPanel = ({ pool, bLunaPrice, onBackToPools, onWithdraw }) => {
+  const connectedWallet = useConnectedWallet();
+
   const [donutData, setDonutData] = useState({
     ust: new BigNumber(0),
     bluna: new BigNumber(0),
@@ -105,6 +113,42 @@ const MyLiquidityPanel = ({ pool, bLunaPrice, onBackToPools, onWithdraw }) => {
                   .toFixed(2)
           } %`}</div>
         </div>
+        {connectedWallet ? (
+          <Button
+            className={cn("view-container-button", {
+              withdraw:
+                compare(pool.userBalance, 0) > 0 &&
+                new Date().getTime() * 1000 * 1000 >
+                  Number(pool.lastDepositedTime) + WITHDRAW_LOCK_TIME,
+              "enter-amount":
+                compare(pool.userBalance, 0) <= 0 ||
+                new Date().getTime() * 1000 * 1000 <=
+                  Number(pool.lastDepositedTime) + WITHDRAW_LOCK_TIME,
+            })}
+            onClick={() => {
+              // console.log(new Date().getTime() * 1000 * 1000);
+              // console.log(Number(pool.lastDepositedTime) + WITHDRAW_LOCK_TIME);
+              if (compare(pool.userBalance, 0) <= 0) return;
+              if (
+                new Date().getTime() * 1000 * 1000 <=
+                Number(pool.lastDepositedTime) + WITHDRAW_LOCK_TIME
+              )
+                return;
+              onWithdraw();
+            }}
+          >
+            Withdraw
+          </Button>
+        ) : (
+          <ConnectWalletButton className="full-width">
+            <Button
+              className="view-container-button enter-amount"
+              onClick={() => {}}
+            >
+              Withdraw
+            </Button>
+          </ConnectWalletButton>
+        )}
       </ViewContainer>
     </>
   );
