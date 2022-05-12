@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 
 import { render, NODE_IMAGE } from "storyblok-rich-text-react-renderer";
 
@@ -8,90 +7,68 @@ import { convertDateString2 } from "utils/date";
 
 import { HeadSeo } from "components/Blog";
 
-function Blog() {
-  const router = useRouter();
-  const { slug } = router.query;
-
-  const [post, setPost] = useState(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      const data = await fetchBlogs();
-
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].full_slug.includes(slug)) {
-          setPost(data[i]);
-          break;
-        }
-      }
-    };
-
-    getData();
-  }, []);
-
-  return (
-    <>
+const Blog = ({ post }) => (
+  <>
+    {post !== null && post !== undefined && (
+      <HeadSeo
+        title="Kallisto Finance"
+        description="Decentralized Liquidations for the Rest of Us"
+        content={post.content}
+      />
+    )}
+    <div className="page-container">
       {post !== null && post !== undefined && (
-        <HeadSeo
-          title="Kallisto Finance"
-          description="Decentralized Liquidations for the Rest of Us"
-          content={post.content}
-        />
-      )}
-      <div className="page-container">
-        {post !== null && post !== undefined && (
-          <div className="blog-page-container">
-            <div className="blog-content">
-              <div className="blog-featured-image">
-                <img src={`https:${post.content.image}`} />
-              </div>
-              <h1 className="blog-title">{post.content.title}</h1>
-              <div className="blog-summary">
-                {post.tag_list.map((tag, index) => (
-                  <div
-                    className="blog-summary-category"
-                    key={`blog-main-tage-${index}`}
-                  >
-                    {tag}
-                  </div>
-                ))}
-                <div className="blog-summary-pubtime">
-                  Published {convertDateString2(post.first_published_at)}
+        <div className="blog-page-container">
+          <div className="blog-content">
+            <div className="blog-featured-image">
+              <img src={`https:${post.content.image}`} />
+            </div>
+            <h1 className="blog-title">{post.content.title}</h1>
+            <div className="blog-summary">
+              {post.tag_list.map((tag, index) => (
+                <div
+                  className="blog-summary-category"
+                  key={`blog-main-tage-${index}`}
+                >
+                  {tag}
                 </div>
+              ))}
+              <div className="blog-summary-pubtime">
+                Published {convertDateString2(post.first_published_at)}
               </div>
-              <div className="blog-intro">{post.content.intro}</div>
             </div>
-            <div className="blog-post">
-              {render(post.content.long_text, {
-                nodeResolvers: {
-                  [NODE_IMAGE]: (children, props) => (
-                    <img
-                      {...props}
-                      style={{ borderRadius: "0px", width: "100%" }}
-                    />
-                  ),
-                },
-                blokResolvers: {
-                  ["YouTube-blogpost"]: (props) => (
-                    <div className="embed-responsive embed-responsive-16by9">
-                      <iframe
-                        className="embed-responsive-item"
-                        src={
-                          "https://www.youtube.com/embed/" +
-                          props.YouTube_id.replace("https://youtu.be/", "")
-                        }
-                      ></iframe>
-                    </div>
-                  ),
-                },
-              })}
-            </div>
+            <div className="blog-intro">{post.content.intro}</div>
           </div>
-        )}
-      </div>
-    </>
-  );
-}
+          <div className="blog-post">
+            {render(post.content.long_text, {
+              nodeResolvers: {
+                [NODE_IMAGE]: (children, props) => (
+                  <img
+                    {...props}
+                    style={{ borderRadius: "0px", width: "100%" }}
+                  />
+                ),
+              },
+              blokResolvers: {
+                ["YouTube-blogpost"]: (props) => (
+                  <div className="embed-responsive embed-responsive-16by9">
+                    <iframe
+                      className="embed-responsive-item"
+                      src={
+                        "https://www.youtube.com/embed/" +
+                        props.YouTube_id.replace("https://youtu.be/", "")
+                      }
+                    ></iframe>
+                  </div>
+                ),
+              },
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  </>
+);
 
 // This function gets called at build time
 export async function getStaticPaths() {
